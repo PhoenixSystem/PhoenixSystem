@@ -88,6 +88,8 @@ namespace PhoenixSystem.Engine
 
         #endregion
 
+        #region -- Has Component --
+
         public bool HasComponent(string componentTypeName)
         {
             return _Components.ContainsKey(componentTypeName);
@@ -98,15 +100,17 @@ namespace PhoenixSystem.Engine
             return HasComponent(componentType.Name);
         }
 
-        public bool HasComponents(IList<string> types)
+        public bool HasComponents(IEnumerable<string> types)
         {
             return types.All(t => HasComponent(t));
         }
 
-        public bool HasComponents(IList<Type> types)
+        public bool HasComponents(IEnumerable<Type> types)
         {
             return types.All(t => HasComponent(t));
         }
+
+        #endregion -- Has Component --
 
         public Entity Clone()
         {
