@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PhoenixSystem.Engine.Events;
+using System;
 using System.Collections.Generic;
 
 namespace PhoenixSystem.Engine
@@ -11,5 +12,8 @@ namespace PhoenixSystem.Engine
         bool HasComponent(string componentTypeName);
         bool HasComponents(IEnumerable<Type> types);
         bool HasComponents(IEnumerable<string> types);
+
+        event EventHandler<ComponentChangedEventArgs> ComponentAdded;
+        event EventHandler<ComponentChangedEventArgs> ComponentRemoved;
     }
 }

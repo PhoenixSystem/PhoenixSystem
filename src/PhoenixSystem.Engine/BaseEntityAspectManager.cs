@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace PhoenixSystem.Engine
 {
@@ -10,10 +11,6 @@ namespace PhoenixSystem.Engine
 
         public abstract void ComponentRemovedFromEntity(IEntity e, IComponent component);
 
-        public abstract IEntityAspectMatchingFamily CreateAspectFamily<AspectType>() where AspectType : BaseAspect, new();
-
-        
-
         public abstract IEnumerable<IAspect> GetAspectList<AspectType>() where AspectType : BaseAspect, new();
 
         public abstract IEnumerable<IAspect> GetUnfilteredAspectList<AspectType>() where AspectType : BaseAspect, new();
@@ -24,6 +21,8 @@ namespace PhoenixSystem.Engine
 
         public abstract void UnregisterEntity(IEntity e);
 
-        public abstract IEntityAspectMatchingFamily CreateAspectMatchingFamily<Aspect>();
+        public abstract IEntityAspectMatchingFamily CreateAspectMatchingFamily<AspectType>() where AspectType : BaseAspect, new();
+
+
     }
 }

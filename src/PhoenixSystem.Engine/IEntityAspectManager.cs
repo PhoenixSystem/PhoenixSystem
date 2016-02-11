@@ -12,6 +12,6 @@ namespace PhoenixSystem.Engine
         void ComponentRemovedFromEntity(IEntity e, IComponent component);
         void ComponentAddedToEntity(IEntity e, IComponent component);
         void ReleaseAspectList<AspectType>();      
-        IEntityAspectMatchingFamily CreateAspectFamily<AspectType>() where AspectType : BaseAspect, new();
+        IEntityAspectMatchingFamily CreateAspectMatchingFamily<AspectType>() where AspectType : BaseAspect, new();
     }
 }

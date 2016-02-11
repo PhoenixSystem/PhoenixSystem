@@ -42,5 +42,7 @@ namespace PhoenixSystem.Engine
         {
             RemovedFromGameManager?.Invoke(this, null);
         }
+
+        public abstract void AddToGameManager(IGameManager gameManager);
     }
 }

@@ -8,7 +8,10 @@ namespace PhoenixSystem.Engine
         Dictionary<string, IEntityAspectMatchingFamily> _aspectFamilies = new Dictionary<string, IEntityAspectMatchingFamily>();
         public override void ComponentAddedToEntity(IEntity e, IComponent component)
         {
-            throw new NotImplementedException();
+            foreach(var kvp in _aspectFamilies)
+            {
+                kvp.Value.ComponentAddedToEntity(e, component.GetType().Name);
+            }
         }
 
         public override void ComponentRemovedFromEntity(IEntity e, IComponent component)
@@ -19,15 +22,12 @@ namespace PhoenixSystem.Engine
             }
         }
 
-        public override IEntityAspectMatchingFamily CreateAspectFamily<AspectType>()
+        public override IEntityAspectMatchingFamily CreateAspectMatchingFamily<AspectType>()
         {
-            throw new NotImplementedException();
+            return new BasicAspectMatchingFamily<AspectType>();
         }
 
-        public override IEntityAspectMatchingFamily CreateAspectMatchingFamily<Aspect>()
-        {
-            throw new NotImplementedException();
-        }
+        
 
         public override IEnumerable<IAspect> GetAspectList<AspectType>() 
         {
@@ -38,12 +38,12 @@ namespace PhoenixSystem.Engine
                 nodeList = _aspectFamilies[aspectType].ActiveAspectList;
             }
             else {
-                var aspectFamily = CreateAspectFamily<AspectType>();
+                var aspectFamily = CreateAspectMatchingFamily<AspectType>();
                 aspectFamily.Init();
                 _aspectFamilies[aspectType] = aspectFamily;
-                foreach (var e in GameManager.Entities)
+                foreach (var kvp in GameManager.Entities)
                 {
-                    aspectFamily.NewEntity(e);
+                    aspectFamily.NewEntity(kvp.Value);
                 }
                 nodeList = aspectFamily.ActiveAspectList;
             }

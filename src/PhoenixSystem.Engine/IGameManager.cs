@@ -1,16 +1,17 @@
-﻿using System;
+﻿using PhoenixSystem.Engine.Events;
+using System;
 using System.Collections.Generic;
 
 namespace PhoenixSystem.Engine
 {
     public interface IGameManager
     {
-        IEnumerable<IEntity> Entities { get; }
-        IEnumerable<ISystem> Systems { get; }
+        IDictionary<Guid, IEntity> Entities { get; }
+        IDictionary<int, ISystem> Systems { get; }
         IEnumerable<IManager> Managers { get; }
         bool IsUpdating { get; }
         string CurrentChannel { get; }
-        event EventHandler ChannelChanged;
+        event EventHandler<ChannelChangedEventArgs> ChannelChanged;
         void SetChannel(string newChannel);
         event EventHandler Updating;
         event EventHandler UpdateComplete;

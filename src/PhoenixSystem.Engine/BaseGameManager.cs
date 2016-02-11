@@ -1,51 +1,35 @@
-﻿using System;
+﻿using PhoenixSystem.Engine.Events;
+using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace PhoenixSystem.Engine
 {
     public abstract class BaseGameManager : IGameManager
     {
+
+        private IEntityAspectManager _entityAspectManager;
+        public BaseGameManager(IEntityAspectManager  entityAspectManager)
+        {
+            _entityAspectManager = entityAspectManager;
+            _entityAspectManager.GameManager = this;
+        }
+        
         public string CurrentChannel
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
+            get;
+            private set;
         }
 
-        public IEnumerable<IEntity> Entities
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public IDictionary<Guid, IEntity> Entities { get; } = new Dictionary<Guid, IEntity>();
 
-        public bool IsUpdating
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public bool IsUpdating { get; private set; } = false;            
 
-        public IEnumerable<IManager> Managers
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public IEnumerable<IManager> Managers { get; } = new List<IManager>();
 
-        public IEnumerable<ISystem> Systems
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public IDictionary<int, ISystem> Systems { get; } = new SortedList<int,ISystem>();
 
-        public event EventHandler ChannelChanged;
+        public event EventHandler<ChannelChangedEventArgs> ChannelChanged;
         public event EventHandler EntityAdded;
         public event EventHandler EntityRemoved;
         public event EventHandler SystemAdded;
@@ -57,17 +41,45 @@ namespace PhoenixSystem.Engine
 
         public void AddEntities(IEnumerable<IEntity> entities)
         {
-            throw new NotImplementedException();
+            foreach(var e in entities)
+            {
+                AddEntity(e);
+            }
         }
 
         public void AddEntity(IEntity e)
         {
-            throw new NotImplementedException();
+            Entities[e.ID] = e;
+            e.ComponentAdded += entityOnComponentAdded;
+            e.ComponentRemoved += entityOnComponentRemoved;
+            _entityAspectManager.RegisterEntity(e);
+            EntityAdded(this, new EntityChangedEventArgs() { Entity = e });
+        }
+
+        private void entityOnComponentRemoved(object sender, ComponentChangedEventArgs e)
+        {
+            IEntity entity = sender as IEntity;
+            _entityAspectManager.ComponentRemovedFromEntity(entity, e.Component);
+        }
+
+        private void entityOnComponentAdded(object sender, ComponentChangedEventArgs e)
+        {
+            IEntity entity = sender as IEntity; 
+            _entityAspectManager.ComponentAddedToEntity(entity, e.Component);
         }
 
         public void AddSystem(ISystem system)
         {
-            throw new NotImplementedException();
+            if (hasSystem(system))
+                throw new ApplicationException("System " + system.GetType().Name + " already added to game manager");
+            Systems.Add(system.Priority,system);
+            system.AddToGameManager(this);
+            SystemAdded(this, new SystemChangedEventArgs() { System = system });
+        }
+
+        private bool hasSystem(ISystem system)
+        {
+            return Systems.Any(s => s.Value.ID == system.ID);
         }
 
         public IEnumerable<AspectType> GetAspectList<AspectType>()
@@ -112,7 +124,8 @@ namespace PhoenixSystem.Engine
 
         public void SetChannel(string newChannel)
         {
-            throw new NotImplementedException();
+            CurrentChannel = newChannel;
+            ChannelChanged(this, new ChannelChangedEventArgs() { Channel = CurrentChannel });
         }
 
         public void StartSystem(ISystem system)

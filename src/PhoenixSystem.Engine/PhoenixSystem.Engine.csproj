@@ -47,6 +47,8 @@
     <Compile Include="BaseAspect.cs" />
     <Compile Include="BaseSystem.cs" />
     <Compile Include="BasicEntityAspectManager.cs" />
+    <Compile Include="Events\EntityChangedEventArgs.cs" />
+    <Compile Include="Events\ChannelChangedEventArgs.cs" />
     <Compile Include="Events\ComponentChangedEventArgs.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="BasicEntityAspectMatchingFamily.cs" />
@@ -62,6 +64,7 @@
     <Compile Include="ISystem.cs" />
     <Compile Include="ITickEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Events\SystemChangedEventArgs.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
