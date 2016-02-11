@@ -7,47 +7,73 @@ namespace PhoenixSystem.Engine
         where AspectType : BaseAspect, new()
     {
         private readonly AspectManager<AspectType> _aspectManager = new AspectManager<AspectType>();
+        private readonly IList<string> _componentTypes = new List<string>();
         private readonly Dictionary<Guid, AspectType> _entities = new Dictionary<Guid, AspectType>();
-        private IEnumerable<string> _componentTypes = null;
 
         public void CleanUp()
         {
-            throw new NotImplementedException();
+            foreach (var kvp in _entities)
+            {
+                kvp.Value.Delete();
+            }
+
+            _entities.Clear();
         }
 
         public void ComponentAddedToEntity(Entity e, string componentType)
         {
-            throw new NotImplementedException();
+            if (_componentTypes.Contains(componentType) && IsMatch(e))
+            {
+                Add(e);
+            }
         }
 
         public void ComponentRemovedFromEntity(Entity e, string componentType)
         {
-            throw new NotImplementedException();
+            if (ContainsEntity(e) && _componentTypes.Contains(componentType))
+            {
+                Remove(e);
+            }
         }
 
-        public IEnumerable<BaseAspect> GetAspectList()
-        {
-            throw new NotImplementedException();
-        }
+        public IEnumerable<BaseAspect> ActiveAspectList => _aspectManager.ChannelAspects;
 
-        public IEnumerable<BaseAspect> GetEntireAspectList()
-        {
-            throw new NotImplementedException();
-        }
+        public IEnumerable<BaseAspect> EntireAspectList => _aspectManager.ActiveAspects;
 
         public void Init()
         {
-            throw new NotImplementedException();
+            var n = new AspectType();
+
+            foreach (var c in n.Components)
+            {
+                _componentTypes.Add(c.Key);
+            }
         }
 
         public void NewEntity(Entity e)
         {
-            throw new NotImplementedException();
+            if (!ContainsEntity(e) && IsMatch(e))
+            {
+                Add(e);
+            }
         }
 
         public void RemoveEntity(Entity e)
         {
-            throw new NotImplementedException();
+            if (ContainsEntity(e))
+            {
+                Remove(e);
+            }
+        }
+
+        private bool IsMatch(Entity e)
+        {
+            return e.HasComponents(_componentTypes);
+        }
+
+        private bool ContainsEntity(Entity e)
+        {
+            return _entities.ContainsKey(e.ID);
         }
 
         private void Add(Entity entity)

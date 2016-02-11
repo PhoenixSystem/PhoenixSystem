@@ -5,8 +5,8 @@ namespace PhoenixSystem.Engine
     public interface IEntityAspectMatchingFamily
     {
         void Init();
-        IEnumerable<BaseAspect> GetAspectList();
-        IEnumerable<BaseAspect> GetEntireAspectList();
+        IEnumerable<BaseAspect> ActiveAspectList { get; }
+        IEnumerable<BaseAspect> EntireAspectList { get; }
         void NewEntity(Entity e);
         void RemoveEntity(Entity e);
         void ComponentAddedToEntity(Entity e, string componentType);
