@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace PhoenixSystem.Engine
 {
@@ -13,11 +9,10 @@ namespace PhoenixSystem.Engine
         IEnumerable<BaseAspect> GetEntireAspectList();
         void NewEntity(Entity e);
         void RemoveEntity(Entity e);
-        //void ComponentAddedToEntity<ComponentType>(Entity e) : 
+        //        CleanUp: cleanUp
+        //        ComponentRemovedFromEntity: componentRemovedFromEntity,
 
         //ComponentAddedToEntity: componentAddedToEntity,
-        //        ComponentRemovedFromEntity: componentRemovedFromEntity,
-        //        CleanUp: cleanUp
-
+        //void ComponentAddedToEntity<ComponentType>(Entity e) : 
     }
 }
