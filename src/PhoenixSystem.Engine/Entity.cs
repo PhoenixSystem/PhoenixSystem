@@ -8,8 +8,14 @@ namespace PhoenixSystem.Engine
 {
     public class Entity
     {
+        public Guid ID { get; private set; }
+
         public string Name { get; set; }
 
+        public Entity()
+        {
+            this.ID = Guid.NewGuid();
+        }
         public bool IsDeleted { get; private set; }
         public event EventHandler Deleted;
         public virtual void OnDeleted()

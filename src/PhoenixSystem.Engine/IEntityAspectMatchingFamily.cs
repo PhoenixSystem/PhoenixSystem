@@ -13,11 +13,9 @@ namespace PhoenixSystem.Engine
         IEnumerable<BaseAspect> GetEntireAspectList();
         void NewEntity(Entity e);
         void RemoveEntity(Entity e);
-        //void ComponentAddedToEntity<ComponentType>(Entity e) : 
-
-        //ComponentAddedToEntity: componentAddedToEntity,
-        //        ComponentRemovedFromEntity: componentRemovedFromEntity,
-        //        CleanUp: cleanUp
+        void ComponentAddedToEntity(Entity e, string componentType);
+        void ComponentRemovedFromEntity(Entity e, string componentType);
+        void CleanUp();
 
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PhoenixSystem.Engine
 {
-    public abstract class BaseEntityAspectManager<AspectFamily>
+    public abstract class BaseEntityAspectManager<AspectFamily> where AspectFamily : IEntityAspectMatchingFamily
     {
         public BaseGameManager GameManager
         {
@@ -14,7 +14,10 @@ namespace PhoenixSystem.Engine
             set;
         }
 
-        
+        public IEntityAspectMatchingFamily CreateAspectMatchingFamily<Aspect>()
+        {
+            return null;
+        }
 
     }
 }

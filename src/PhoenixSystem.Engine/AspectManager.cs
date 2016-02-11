@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace PhoenixSystem.Engine
 {
+    //TODO: Channel mechanics
     public class AspectManager<AspectType> where AspectType : BaseAspect, new()
     {
         LinkedList<AspectType> _activeAspects = new LinkedList<AspectType>();
