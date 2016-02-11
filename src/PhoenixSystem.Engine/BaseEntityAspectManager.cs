@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PhoenixSystem.Engine
 {
-    public abstract class BaseEntityAspectManager<AspectFamily> : IEntityAspectManager<AspectFamily> where AspectFamily : IEntityAspectMatchingFamily
+    public abstract class BaseEntityAspectManager : IEntityAspectManager
     {
         public BaseGameManager GameManager
         {
@@ -15,13 +15,13 @@ namespace PhoenixSystem.Engine
 
         public abstract void ComponentRemovedFromEntity(Entity e, BaseComponent component);
 
-        public abstract IEntityAspectMatchingFamily CreateAspectFamily<AspectType>();
+        public abstract IEntityAspectMatchingFamily CreateAspectFamily<AspectType>() where AspectType : BaseAspect, new();
 
         public abstract IEntityAspectMatchingFamily CreateAspectMatchingFamily<Aspect>();
 
-        public abstract IEnumerable<AspectType> GetNodeList<AspectType>();
+        public abstract IEnumerable<IAspect> GetNodeList<AspectType>() where AspectType : BaseAspect, new();
 
-        public abstract IEnumerable<AspectType> GetUnfilteredNodeList<AspectType>();
+        public abstract IEnumerable<IAspect> GetUnfilteredNodeList<AspectType>() where AspectType : BaseAspect, new();
 
         public abstract void RegisterEntity(Entity e);
 

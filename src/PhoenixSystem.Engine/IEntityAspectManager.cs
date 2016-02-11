@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace PhoenixSystem.Engine
 {
-    public interface IEntityAspectManager<AspectMatchingFamily> where AspectMatchingFamily : IEntityAspectMatchingFamily
+    public interface IEntityAspectManager
     {
-        IEnumerable<AspectType> GetNodeList<AspectType>();
-        IEnumerable<AspectType> GetUnfilteredNodeList<AspectType>();
+        IEnumerable<IAspect> GetNodeList<AspectType>() where AspectType: BaseAspect, new();
+        IEnumerable<IAspect> GetUnfilteredNodeList<AspectType>() where AspectType : BaseAspect, new();
         void RegisterEntity(Entity e);
         void UnregisterEntity(Entity e);
         void ComponentRemovedFromEntity(Entity e, BaseComponent component);
@@ -14,7 +14,7 @@ namespace PhoenixSystem.Engine
         void ReleaseAspectList<AspectType>();      
         
         BaseGameManager GameManager { get; set; }
-        IEntityAspectMatchingFamily CreateAspectFamily<AspectType>();
+        IEntityAspectMatchingFamily CreateAspectFamily<AspectType>() where AspectType : BaseAspect, new();
 
     }
 }
