@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace PhoenixSystem.Engine
 {
-    public abstract class BaseAspect : EqualityComparer<BaseAspect>, ICloneable
+    public abstract class BaseAspect : EqualityComparer<BaseAspect>, ICloneable, IAspect
     {
         protected BaseAspect()
         {
@@ -16,7 +16,9 @@ namespace PhoenixSystem.Engine
         public Guid ID { get; } = Guid.NewGuid();
 
         public bool IsDeleted { get; private set; }
+
         public abstract object Clone();
+
         public event EventHandler Deleted;
 
         protected virtual void OnDeleted()

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using PhoenixSystem.Engine.Events;
 
 namespace PhoenixSystem.Engine
 {
@@ -12,7 +13,7 @@ namespace PhoenixSystem.Engine
 
         public Entity()
         {
-            this.ID = Guid.NewGuid();
+            ID = Guid.NewGuid();
         }
         public bool IsDeleted { get; private set; }
 
@@ -119,10 +120,5 @@ namespace PhoenixSystem.Engine
         }
 
         #endregion -- Has Component --
-    }
-
-    public class ComponentChangedEventArgs : EventArgs
-    {
-        public BaseComponent Component { get; set; }
     }
 }

@@ -47,11 +47,16 @@
     <Compile Include="BaseAspect.cs" />
     <Compile Include="BaseSystem.cs" />
     <Compile Include="BasicEntityAspectManager.cs" />
+    <Compile Include="Events\ComponentChangedEventArgs.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="BasicEntityAspectMatchingFamily.cs" />
     <Compile Include="EntityAspectMatchingFamily.cs" />
+    <Compile Include="Events\GameManagerChangedEventArgs.cs" />
+    <Compile Include="IAspect.cs" />
+    <Compile Include="IComponent.cs" />
     <Compile Include="IEntity.cs" />
     <Compile Include="IEntityAspectMatchingFamily.cs" />
+    <Compile Include="ISystem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

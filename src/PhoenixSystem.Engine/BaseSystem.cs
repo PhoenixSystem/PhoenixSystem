@@ -1,8 +1,9 @@
 ﻿using System;
+using PhoenixSystem.Engine.Events;
 
 namespace PhoenixSystem.Engine
 {
-    public abstract class BaseSystem
+    public abstract class BaseSystem : ISystem
     {
         protected BaseSystem(int priority)
         {
@@ -41,10 +42,5 @@ namespace PhoenixSystem.Engine
         {
             RemovedFromGameManager?.Invoke(this, null);
         }
-    }
-
-    public class GameManagerChangedEventArgs : EventArgs
-    {
-        public BaseGameManager GameManager { get; set; }
     }
 }
