@@ -2,7 +2,7 @@
 
 namespace PhoenixSystem.Engine
 {
-    public abstract class BaseComponent
+    public abstract class BaseComponent : IComponent
     {
         public Guid ID { get; } = Guid.NewGuid();
     }

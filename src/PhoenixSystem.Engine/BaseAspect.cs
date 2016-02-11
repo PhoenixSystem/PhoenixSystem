@@ -4,9 +4,10 @@ using System.Linq;
 
 namespace PhoenixSystem.Engine
 {
-    public abstract class BaseAspect : EqualityComparer<BaseAspect>, ICloneable
+    public abstract class BaseAspect : EqualityComparer<BaseAspect>, ICloneable, IAspect
     {
-        List<string> _Channels = new List<string>();
+        private readonly List<string> _channels = new List<string>();
+
         protected BaseAspect()
         {
             Components = new Dictionary<string, BaseComponent>();
@@ -14,10 +15,12 @@ namespace PhoenixSystem.Engine
 
         public Dictionary<string, BaseComponent> Components { get; }
 
+        public bool IsDeleted { get; private set; }
+
         public Guid ID { get; } = Guid.NewGuid();
 
-        public bool IsDeleted { get; private set; }
         public abstract object Clone();
+
         public event EventHandler Deleted;
 
         protected virtual void OnDeleted()
@@ -43,7 +46,7 @@ namespace PhoenixSystem.Engine
         {
             InitComponents(e);
             if (channels != null)
-                _Channels.AddRange(channels);
+                _channels.AddRange(channels);
         }
 
         public bool EntityIsMatch(Entity e)
@@ -61,7 +64,7 @@ namespace PhoenixSystem.Engine
 
         public bool IsInChannel(string channelName)
         {
-            return _Channels.Contains(channelName);
+            return _channels.Contains(channelName);
         }
     }
 }
