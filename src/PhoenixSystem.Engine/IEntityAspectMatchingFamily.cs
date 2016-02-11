@@ -12,6 +12,5 @@ namespace PhoenixSystem.Engine
         void ComponentAddedToEntity(Entity e, string componentType);
         void ComponentRemovedFromEntity(Entity e, string componentType);
         void CleanUp();
-
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PhoenixSystem.Engine
 {
@@ -50,13 +51,12 @@ namespace PhoenixSystem.Engine
             _activeAspects.Remove(aspect);
         }
 
-        private void applyChannelFilter(string channel)
+        private void ApplyChannelFilter(string channel)
         {
             _channelAspects.Clear();
-            foreach(var aspect in _activeAspects)
+            foreach (var aspect in _activeAspects.Where(aspect => aspect.IsInChannel(channel) || aspect.IsInChannel("all")))
             {
-                if (aspect.IsInChannel(channel) || aspect.IsInChannel("all"))
-                    _channelAspects.AddLast(aspect);
+                _channelAspects.AddLast(aspect);
             }
         }
 
