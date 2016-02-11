@@ -28,9 +28,9 @@
         void SuspendSystem(ISystem system);
         event EventHandler SystemStarted;
         void StartSystem(ISystem system);
-        IEnumerable<AspectType> GetNodeList<AspectType>();
-        IEnumerable<AspectType> GetUnfilteredNodeList<AspectType>();
-        IEnumerable<AspectType> ReleaseNodeList<AspectType>();
+        IEnumerable<AspectType> GetAspectList<AspectType>();
+        IEnumerable<AspectType> GetUnfilteredAspectList<AspectType>();
+        IEnumerable<AspectType> ReleaseAspectList<AspectType>();
         ISystem GetSystemByType<SystemType>();
         void RegisterManager(IManager manager);
 
