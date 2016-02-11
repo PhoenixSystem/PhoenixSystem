@@ -1,6 +1,6 @@
 ﻿namespace PhoenixSystem.Engine
 {
-    internal class BasicEntityAspectManager
+    public class AspectMatchingFamily<AspectType>
     {
     }
 }

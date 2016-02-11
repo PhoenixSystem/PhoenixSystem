@@ -1,61 +1,46 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PhoenixSystem.Engine
 {
     public abstract class BaseSystem
     {
-        private bool _active = false;
+        protected BaseSystem(int priority)
+        {
+            ID = Guid.NewGuid();
+            Priority = priority;
+        }
 
         public Guid ID { get; private set; }
-        public BaseSystem(int Priority)
-        {
-            this.ID = Guid.NewGuid();
-            this.Priority = Priority;
-
-        }
 
         public int Priority { get; private set; }
-        public bool IsActive
-        {
-            get { return _active; }
-        }
+
+        public bool IsActive { get; private set; }
+
         public void Start()
         {
-            _active = true;
+            IsActive = true;
         }
 
         public void Stop()
         {
-            _active = false;
+            IsActive = false;
         }
 
         protected abstract void Update();
 
         public event EventHandler<GameManagerChangedEventArgs> AddedToGameManager;
+
         protected virtual void OnAddedToGameManager(BaseGameManager gameManager)
         {
-            if(AddedToGameManager != null)
-            {
-                AddedToGameManager(this, new GameManagerChangedEventArgs() { GameManager = gameManager });
-            }
+            AddedToGameManager?.Invoke(this, new GameManagerChangedEventArgs {GameManager = gameManager});
         }
 
         public event EventHandler RemovedFromGameManager;
+
         protected virtual void OnRemovedFromGameManager()
         {
-            if (RemovedFromGameManager != null)
-            {
-                RemovedFromGameManager(this, null);
-            }
+            RemovedFromGameManager?.Invoke(this, null);
         }
-
-
-
-
     }
 
     public class GameManagerChangedEventArgs : EventArgs

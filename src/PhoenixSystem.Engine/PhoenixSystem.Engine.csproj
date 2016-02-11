@@ -50,6 +50,7 @@
     <Compile Include="Entity.cs" />
     <Compile Include="BasicEntityAspectMatchingFamily.cs" />
     <Compile Include="EntityAspectMatchingFamily.cs" />
+    <Compile Include="IEntity.cs" />
     <Compile Include="IEntityAspectMatchingFamily.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

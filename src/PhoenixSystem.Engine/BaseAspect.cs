@@ -1,34 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PhoenixSystem.Engine
 {
     public abstract class BaseAspect : EqualityComparer<BaseAspect>, ICloneable
     {
-        public Dictionary<string, BaseComponent> Components { get; private set; }
-        private Guid _ID = Guid.NewGuid();
-        public Guid ID
-        {
-            get
-            {
-                return _ID;
-            }
-        } 
-
-        public BaseAspect()
+        protected BaseAspect()
         {
             Components = new Dictionary<string, BaseComponent>();
         }
 
+        public Dictionary<string, BaseComponent> Components { get; }
+
+        public Guid ID { get; } = Guid.NewGuid();
+
         public bool IsDeleted { get; private set; }
+        public abstract object Clone();
         public event EventHandler Deleted;
+
         protected virtual void OnDeleted()
         {
-            if (this.Deleted != null)
-                Deleted(this, null);
+            Deleted?.Invoke(this, null);
         }
 
         public void Delete()
@@ -39,7 +32,7 @@ namespace PhoenixSystem.Engine
 
         public void InitComponents(Entity e)
         {
-            foreach(string componentType in Components.Keys)
+            foreach (var componentType in Components.Keys)
             {
                 Components[componentType] = e.Components[componentType];
             }
@@ -47,7 +40,7 @@ namespace PhoenixSystem.Engine
 
         public void Init(Entity e)
         {
-            this.InitComponents(e);
+            InitComponents(e);
         }
 
         public bool EntityIsMatch(Entity e)
@@ -56,8 +49,7 @@ namespace PhoenixSystem.Engine
             return e.HasComponents(componentTypes);
         }
 
-        public abstract void Reset();        
-        public abstract object Clone();
+        public abstract void Reset();
 
         public override bool Equals(BaseAspect x, BaseAspect y)
         {
