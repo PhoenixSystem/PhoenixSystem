@@ -14,9 +14,9 @@ namespace PhoenixSystem.Engine
 
         
 
-        public abstract IEnumerable<IAspect> GetNodeList<AspectType>() where AspectType : BaseAspect, new();
+        public abstract IEnumerable<IAspect> GetAspectList<AspectType>() where AspectType : BaseAspect, new();
 
-        public abstract IEnumerable<IAspect> GetUnfilteredNodeList<AspectType>() where AspectType : BaseAspect, new();
+        public abstract IEnumerable<IAspect> GetUnfilteredAspectList<AspectType>() where AspectType : BaseAspect, new();
 
         public abstract void RegisterEntity(IEntity e);
 

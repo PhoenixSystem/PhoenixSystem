@@ -3,16 +3,8 @@ using System.Collections.Generic;
 
 namespace PhoenixSystem.Engine
 {
-    public abstract class BaseGameManager :IGameManager
+    public abstract class BaseGameManager : IGameManager
     {
-            throw new NotImplementedException();
-        }
-
-        public ISystem GetSystemByType<SystemType>()
-        {
-
-        }
-
         public string CurrentChannel
         {
             get
@@ -63,12 +55,12 @@ namespace PhoenixSystem.Engine
         public event EventHandler UpdateComplete;
         public event EventHandler Updating;
 
-        public void AddEntities(IEnumerable<Entity> entities)
+        public void AddEntities(IEnumerable<IEntity> entities)
         {
             throw new NotImplementedException();
         }
 
-        public void AddEntity(Entity e)
+        public void AddEntity(IEntity e)
         {
             throw new NotImplementedException();
         }

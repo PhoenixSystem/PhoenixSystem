@@ -6,14 +6,17 @@ namespace PhoenixSystem.Engine
     public class BasicEntityAspectManager : BaseEntityAspectManager
     {
         Dictionary<string, IEntityAspectMatchingFamily> _aspectFamilies = new Dictionary<string, IEntityAspectMatchingFamily>();
-        public override void ComponentAddedToEntity(Entity e, BaseComponent component)
+        public override void ComponentAddedToEntity(IEntity e, IComponent component)
         {
             throw new NotImplementedException();
         }
 
-        public override void ComponentRemovedFromEntity(Entity e, BaseComponent component)
+        public override void ComponentRemovedFromEntity(IEntity e, IComponent component)
         {
-            throw new NotImplementedException();
+            foreach(var kvp in _aspectFamilies)
+            {
+                kvp.Value.ComponentRemovedFromEntity(e, component.GetType().Name);
+            }
         }
 
         public override IEntityAspectMatchingFamily CreateAspectFamily<AspectType>()
@@ -26,7 +29,7 @@ namespace PhoenixSystem.Engine
             throw new NotImplementedException();
         }
 
-        public override IEnumerable<IAspect> GetNodeList<AspectType>() 
+        public override IEnumerable<IAspect> GetAspectList<AspectType>() 
         {
             var aspectType = typeof(AspectType).Name;
             IEnumerable<IAspect> nodeList;
@@ -53,12 +56,15 @@ namespace PhoenixSystem.Engine
             throw new NotImplementedException();
         }
 
-        public override IEnumerable<IAspect> GetUnfilteredNodeList<AspectType>()
+        public override IEnumerable<IAspect> GetUnfilteredAspectList<AspectType>()
         {
-            throw new NotImplementedException();
+            var type = typeof(AspectType).Name;
+            if (!containsAspectFamily(type))
+                throw new ApplicationException("Unable to retrieve unfiltered aspect list until AspectType is registered using GetNodeList");
+            return _aspectFamilies[type].EntireAspectList;
         }
 
-        public override void RegisterEntity(Entity e)
+        public override void RegisterEntity(IEntity e)
         {
             throw new NotImplementedException();
         }
@@ -68,9 +74,10 @@ namespace PhoenixSystem.Engine
             throw new NotImplementedException();
         }
 
-        public override void UnregisterEntity(Entity e)
+        public override void UnregisterEntity(IEntity e)
         {
             throw new NotImplementedException();
         }
+       
     }
 }
