@@ -48,7 +48,7 @@
     <Compile Include="BaseSystem.cs" />
     <Compile Include="BasicEntityAspectManager.cs" />
     <Compile Include="Entity.cs" />
-    <Compile Include="AspectMatchingFamily.cs" />
+    <Compile Include="BasicEntityAspectMatchingFamily.cs" />
     <Compile Include="EntityAspectMatchingFamily.cs" />
     <Compile Include="IEntity.cs" />
     <Compile Include="IEntityAspectMatchingFamily.cs" />

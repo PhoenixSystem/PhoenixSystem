@@ -6,8 +6,14 @@ namespace PhoenixSystem.Engine
 {
     public class Entity : IEntity
     {
+        public Guid ID { get; private set; }
+
         public string Name { get; set; }
 
+        public Entity()
+        {
+            this.ID = Guid.NewGuid();
+        }
         public bool IsDeleted { get; private set; }
 
         public IList<string> Channels { get; } = new List<string>();

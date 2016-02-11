@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace PhoenixSystem.Engine
 {
+    //TODO: Channel mechanics
     public class AspectManager<AspectType> where AspectType : BaseAspect, new()
     {
         private readonly LinkedList<AspectType> _activeAspects = new LinkedList<AspectType>();
