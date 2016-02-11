@@ -1,6 +1,7 @@
 ﻿namespace PhoenixSystem.Engine
 {
-    internal class BasicEntityAspectManager
+    public class BasicEntityAspectManager
     {
+
     }
 }

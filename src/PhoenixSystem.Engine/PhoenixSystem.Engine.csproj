@@ -51,6 +51,7 @@
     <Compile Include="BasicEntityAspectMatchingFamily.cs" />
     <Compile Include="IAspectManager.cs" />
     <Compile Include="IEntity.cs" />
+    <Compile Include="IEntityAspectManager.cs" />
     <Compile Include="IEntityAspectMatchingFamily.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
