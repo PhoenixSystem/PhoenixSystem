@@ -5,7 +5,10 @@ namespace PhoenixSystem.Engine
 {
     public abstract class BaseGameManager :IGameManager
     {
-        public BaseGameManager()
+            throw new NotImplementedException();
+        }
+
+        public ISystem GetSystemByType<SystemType>()
         {
 
         }
@@ -105,7 +108,7 @@ namespace PhoenixSystem.Engine
             throw new NotImplementedException();
         }
 
-        public void RemoveEntity(Entity e)
+        public void RemoveEntity(IEntity e)
         {
             throw new NotImplementedException();
         }

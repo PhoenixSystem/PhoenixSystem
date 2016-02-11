@@ -4,6 +4,6 @@ namespace PhoenixSystem.Engine.Events
 {
     public class ComponentChangedEventArgs : EventArgs
     {
-        public BaseComponent Component { get; set; }
+        public IComponent Component { get; set; }
     }
 }

@@ -10,10 +10,10 @@ namespace PhoenixSystem.Engine
 
         protected BaseAspect()
         {
-            Components = new Dictionary<string, BaseComponent>();
+            Components = new Dictionary<string, IComponent>();
         }
 
-        public Dictionary<string, BaseComponent> Components { get; }
+        public Dictionary<string, IComponent> Components { get; }
 
         public bool IsDeleted { get; private set; }
 
@@ -34,7 +34,7 @@ namespace PhoenixSystem.Engine
             OnDeleted();
         }
 
-        public void InitComponents(Entity e)
+        public void InitComponents(IEntity e)
         {
             foreach (var componentType in Components.Keys)
             {
@@ -42,14 +42,14 @@ namespace PhoenixSystem.Engine
             }
         }
 
-        public void Init(Entity e, IEnumerable<string> channels = null)
+        public void Init(IEntity e, IEnumerable<string> channels = null)
         {
             InitComponents(e);
             if (channels != null)
                 _channels.AddRange(channels);
         }
 
-        public bool EntityIsMatch(Entity e)
+        public bool EntityIsMatch(IEntity e)
         {
             var componentTypes = e.Components.Select(kvp => kvp.Key);
             return e.HasComponents(componentTypes);
