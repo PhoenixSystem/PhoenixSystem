@@ -57,7 +57,10 @@
     <Compile Include="IEntity.cs" />
     <Compile Include="IEntityAspectManager.cs" />
     <Compile Include="IEntityAspectMatchingFamily.cs" />
+    <Compile Include="IGameManager.cs" />
+    <Compile Include="IManager.cs" />
     <Compile Include="ISystem.cs" />
+    <Compile Include="ITickEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
