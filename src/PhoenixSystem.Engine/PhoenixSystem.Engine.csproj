@@ -42,10 +42,15 @@
   <ItemGroup>
     <Compile Include="AspectManager.cs" />
     <Compile Include="BaseComponent.cs" />
+    <Compile Include="BaseEntityAspectManager.cs" />
     <Compile Include="BaseGameManager.cs" />
     <Compile Include="BaseAspect.cs" />
     <Compile Include="BaseSystem.cs" />
+    <Compile Include="BasicEntityAspectManager.cs" />
     <Compile Include="Entity.cs" />
+    <Compile Include="AspectMatchingFamily.cs" />
+    <Compile Include="EntityAspectMatchingFamily.cs" />
+    <Compile Include="IEntityAspectMatchingFamily.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
