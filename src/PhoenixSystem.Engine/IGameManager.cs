@@ -1,7 +1,8 @@
-﻿namespace PhoenixSystem.Engine
+﻿using System;
+using System.Collections.Generic;
+
+namespace PhoenixSystem.Engine
 {
-    using System;
-    using System.Collections.Generic;
     public interface IGameManager
     {
         IEnumerable<IEntity> Entities { get; }
@@ -15,10 +16,10 @@
         event EventHandler UpdateComplete;
         void Update(ITickEvent tickEvent);
         event EventHandler EntityAdded;
-        void AddEntity(Entity e);
-        void AddEntities(IEnumerable<Entity> entities);
+        void AddEntity(IEntity e);
+        void AddEntities(IEnumerable<IEntity> entities);
         event EventHandler EntityRemoved;
-        void RemoveEntity(Entity e);
+        void RemoveEntity(IEntity e);
         event EventHandler SystemAdded;
         void AddSystem(ISystem system);
         event EventHandler SystemRemoved;
@@ -33,9 +34,5 @@
         IEnumerable<AspectType> ReleaseNodeList<AspectType>();
         ISystem GetSystemByType<SystemType>();
         void RegisterManager(IManager manager);
-
-
-
     }
 }
-

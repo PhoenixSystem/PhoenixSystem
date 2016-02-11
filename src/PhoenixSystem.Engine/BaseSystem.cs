@@ -31,7 +31,7 @@ namespace PhoenixSystem.Engine
 
         public event EventHandler<GameManagerChangedEventArgs> AddedToGameManager;
 
-        protected virtual void OnAddedToGameManager(BaseGameManager gameManager)
+        protected virtual void OnAddedToGameManager(IGameManager gameManager)
         {
             AddedToGameManager?.Invoke(this, new GameManagerChangedEventArgs {GameManager = gameManager});
         }

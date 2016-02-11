@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace PhoenixSystem.Engine
 {
     public interface IEntityAspectManager<AspectMatchingFamily> where AspectMatchingFamily : IEntityAspectMatchingFamily
     {
+        IGameManager GameManager { get; set; }
         IEnumerable<AspectType> GetNodeList<AspectType>();
         IEnumerable<AspectType> GetUnfilteredNodeList<AspectType>();
-        void RegisterEntity(Entity e);
-        void UnregisterEntity(Entity e);
-        void ComponentRemovedFromEntity(Entity e, BaseComponent component);
-        void ComponentAddedToEntity(Entity e, BaseComponent component);
-        void ReleaseAspectList<AspectType>();      
-        
-        BaseGameManager GameManager { get; set; }
+        void RegisterEntity(IEntity e);
+        void UnregisterEntity(IEntity e);
+        void ComponentRemovedFromEntity(IEntity e, IComponent component);
+        void ComponentAddedToEntity(IEntity e, IComponent component);
+        void ReleaseAspectList<AspectType>();
         IEntityAspectMatchingFamily CreateAspectFamily<AspectType>();
-
     }
 }
