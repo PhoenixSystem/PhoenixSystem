@@ -4,6 +4,6 @@ namespace PhoenixSystem.Engine.Events
 {
     public class GameManagerChangedEventArgs : EventArgs
     {
-        public BaseGameManager GameManager { get; set; }
+        public IGameManager GameManager { get; set; }
     }
 }

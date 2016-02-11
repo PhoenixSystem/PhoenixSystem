@@ -17,8 +17,7 @@ namespace PhoenixSystem.Engine
 
         public IEnumerable<AspectType> ChannelAspects => _channelAspects;
                
-
-        public AspectType Get(Entity e)
+        public AspectType Get(IEntity e)
         {
             AspectType aspect;
 

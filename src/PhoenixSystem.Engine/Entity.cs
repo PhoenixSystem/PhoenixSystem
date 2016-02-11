@@ -19,7 +19,7 @@ namespace PhoenixSystem.Engine
 
         public IList<string> Channels { get; } = new List<string>();
 
-        public Dictionary<string, BaseComponent> Components { get; } = new Dictionary<string, BaseComponent>();
+        public Dictionary<string, IComponent> Components { get; } = new Dictionary<string, IComponent>();
 
         public event EventHandler Deleted;
 
@@ -50,12 +50,12 @@ namespace PhoenixSystem.Engine
 
         public event EventHandler<ComponentChangedEventArgs> ComponentAdded;
 
-        protected void OnComponentAdded(BaseComponent c)
+        protected void OnComponentAdded(IComponent c)
         {
-            ComponentAdded?.Invoke(this, new ComponentChangedEventArgs {Component = c});
+            ComponentAdded?.Invoke(this, new ComponentChangedEventArgs { Component = c });
         }
 
-        public Entity AddComponent(BaseComponent c, bool overwriteIfExists = false)
+        public Entity AddComponent(IComponent c, bool overwriteIfExists = false)
         {
             var componentType = c.GetType().Name;
             if (HasComponent(componentType) && !overwriteIfExists)
@@ -74,9 +74,9 @@ namespace PhoenixSystem.Engine
 
         public event EventHandler<ComponentChangedEventArgs> ComponentRemoved;
 
-        protected void OnComponentRemoved(BaseComponent c)
+        protected void OnComponentRemoved(IComponent c)
         {
-            ComponentRemoved?.Invoke(this, new ComponentChangedEventArgs {Component = c});
+            ComponentRemoved?.Invoke(this, new ComponentChangedEventArgs { Component = c });
         }
 
         public bool RemoveComponent(Type componentType)

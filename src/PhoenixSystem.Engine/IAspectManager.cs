@@ -8,6 +8,6 @@ namespace PhoenixSystem.Engine
         IEnumerable<AspectType> ChannelAspects { get; }
         int AvailableAspectCount { get; }
         void ClearCache();
-        AspectType Get(Entity e);
+        AspectType Get(IEntity e);
     }
 }
