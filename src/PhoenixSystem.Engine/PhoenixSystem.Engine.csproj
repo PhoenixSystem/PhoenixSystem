@@ -49,7 +49,7 @@
     <Compile Include="BasicEntityAspectManager.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="BasicEntityAspectMatchingFamily.cs" />
-    <Compile Include="EntityAspectMatchingFamily.cs" />
+    <Compile Include="IAspectManager.cs" />
     <Compile Include="IEntity.cs" />
     <Compile Include="IEntityAspectMatchingFamily.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

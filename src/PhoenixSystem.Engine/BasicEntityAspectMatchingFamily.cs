@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,7 +10,7 @@ namespace PhoenixSystem.Engine
     public class BasicAspectMatchingFamily<AspectType> : IEntityAspectMatchingFamily where AspectType : BaseAspect, new()
     {
         AspectManager<AspectType> _aspectManager = new AspectManager<AspectType>();
-        IEnumerable<string> _componentTypes = null;
+        IList<string> _componentTypes = new List<string>();
         Dictionary<Guid, AspectType> _entities = new Dictionary<Guid, AspectType>();
 
         private void add(Entity entity)
@@ -32,42 +33,66 @@ namespace PhoenixSystem.Engine
 
         public void CleanUp()
         {
-            throw new NotImplementedException();
+            foreach(var kvp in _entities)
+            {
+                kvp.Value.Delete();
+            }
+            _entities.Clear();
         }
 
         public void ComponentAddedToEntity(Entity e, string componentType)
         {
-            throw new NotImplementedException();
+            if(_componentTypes.Contains(componentType) && isMatch(e))
+            {
+                add(e);
+            }
+        }
+
+        private bool isMatch(Entity e)
+        {
+            return e.HasComponents(_componentTypes);
         }
 
         public void ComponentRemovedFromEntity(Entity e, string componentType)
         {
-            throw new NotImplementedException();
+            if(containsEntity(e) && _componentTypes.Contains(componentType))
+            {
+                remove(e);
+            }
         }
 
-        public IEnumerable<BaseAspect> GetAspectList()
+        private bool containsEntity(Entity e)
         {
-            throw new NotImplementedException();
+            return _entities.ContainsKey(e.ID);
         }
 
-        public IEnumerable<BaseAspect> GetEntireAspectList()
-        {
-            throw new NotImplementedException();
-        }
-
+        public IEnumerable<BaseAspect> ActiveAspectList => _aspectManager.ChannelAspects;
+        
+        public IEnumerable<BaseAspect> EntireAspectList => _aspectManager.ActiveAspects;
+        
         public void Init()
         {
-            throw new NotImplementedException();
+            var n = new AspectType();
+            foreach(var c in n.Components)
+            {
+                _componentTypes.Add(c.Key);
+            }
         }
 
         public void NewEntity(Entity e)
         {
-            throw new NotImplementedException();
+            if(!containsEntity(e) && isMatch(e))
+            {
+                add(e);
+            }
         }
 
         public void RemoveEntity(Entity e)
         {
-            throw new NotImplementedException();
+            if(containsEntity(e))
+            {
+                remove(e);
+            }
         }
     }
 }

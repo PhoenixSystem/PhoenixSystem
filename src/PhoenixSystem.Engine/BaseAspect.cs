@@ -6,6 +6,7 @@ namespace PhoenixSystem.Engine
 {
     public abstract class BaseAspect : EqualityComparer<BaseAspect>, ICloneable
     {
+        List<string> _Channels = new List<string>();
         protected BaseAspect()
         {
             Components = new Dictionary<string, BaseComponent>();
@@ -38,9 +39,11 @@ namespace PhoenixSystem.Engine
             }
         }
 
-        public void Init(Entity e)
+        public void Init(Entity e, IEnumerable<string> channels = null)
         {
             InitComponents(e);
+            if (channels != null)
+                _Channels.AddRange(channels);
         }
 
         public bool EntityIsMatch(Entity e)
@@ -54,6 +57,11 @@ namespace PhoenixSystem.Engine
         public override bool Equals(BaseAspect x, BaseAspect y)
         {
             return x.ID == y.ID;
+        }
+
+        public bool IsInChannel(string channelName)
+        {
+            return _Channels.Contains(channelName);
         }
     }
 }
