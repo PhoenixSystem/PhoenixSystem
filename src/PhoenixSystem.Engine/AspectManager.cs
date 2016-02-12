@@ -5,44 +5,21 @@ using System.Linq;
 namespace PhoenixSystem.Engine
 {
     //TODO: Channel mechanics
-    public class AspectManager<AspectType> : IAspectManager<AspectType> where AspectType : BaseAspect, new()
+    public class AspectManager : IAspectManager
     {
-        private readonly LinkedList<AspectType> _activeAspects = new LinkedList<AspectType>();
-        private readonly LinkedList<AspectType> _availableAspects = new LinkedList<AspectType>();
-        private readonly LinkedList<AspectType> _channelAspects = new LinkedList<AspectType>();
+        private readonly LinkedList<IAspect> _activeAspects = new LinkedList<IAspect>();
+        private readonly LinkedList<IAspect> _availableAspects = new LinkedList<IAspect>();
+        private readonly LinkedList<IAspect> _channelAspects = new LinkedList<IAspect>();
 
         public int AvailableAspectCount => _availableAspects.Count;
 
-        public IEnumerable<AspectType> ActiveAspects => _activeAspects;
+        public IEnumerable<IAspect> ActiveAspects => _activeAspects;
 
-        public IEnumerable<AspectType> ChannelAspects => _channelAspects;
-               
-        public AspectType Get(IEntity e)
-        {
-            AspectType aspect;
-
-            if (_availableAspects.Count > 0)
-            {
-                aspect = _availableAspects.First.Value;
-                aspect.Reset();
-                _availableAspects.RemoveFirst();
-            }
-            else
-            {
-                aspect = new AspectType();
-            }
-
-            aspect.Init(e);
-            aspect.Deleted += Aspect_Deleted;
-
-            _activeAspects.AddLast(aspect);
-
-            return aspect;
-        }
+        public IEnumerable<IAspect> ChannelAspects => _channelAspects;              
 
         protected virtual void Aspect_Deleted(object sender, EventArgs e)
         {
-            var aspect = (AspectType) sender;
+            var aspect = (IAspect) sender;
 
             aspect.Deleted -= Aspect_Deleted;
             _availableAspects.AddLast(aspect);
@@ -62,6 +39,29 @@ namespace PhoenixSystem.Engine
         public void ClearCache()
         {
             _availableAspects.Clear();
-        }       
+        }
+
+        public IAspect Get<TAspectType>(IEntity e) where TAspectType : IAspect, new()
+        {
+            IAspect aspect;
+
+            if (_availableAspects.Count <= 0)
+            {
+                aspect = new TAspectType();
+            }
+            else
+            {
+                aspect = _availableAspects.First.Value;
+                aspect.Reset();
+                _availableAspects.RemoveFirst();
+            }
+
+            aspect.Init(e);
+            aspect.Deleted += Aspect_Deleted;
+
+            _activeAspects.AddLast(aspect);
+
+            return aspect;
+        }
     }
 }

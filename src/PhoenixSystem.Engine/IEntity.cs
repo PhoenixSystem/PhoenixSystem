@@ -7,6 +7,7 @@ namespace PhoenixSystem.Engine
     public interface IEntity
     {
         Guid ID { get; }
+        void Delete();
         Dictionary<string, IComponent> Components { get; }
         bool HasComponent(Type componentType);
         bool HasComponent(string componentTypeName);

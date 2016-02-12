@@ -11,11 +11,15 @@ namespace PhoenixSystem.Engine
             Priority = priority;
         }
 
-        public Guid ID { get; private set; }
-
-        public int Priority { get; private set; }
-
         public bool IsActive { get; private set; }
+
+        public Guid ID { get; }
+
+        public int Priority { get; }
+
+        public abstract void AddToGameManager(IGameManager gameManager);
+
+        public abstract void RemoveFromGameManager(IGameManager gameManager);
 
         public void Start()
         {
@@ -33,7 +37,7 @@ namespace PhoenixSystem.Engine
 
         protected virtual void OnAddedToGameManager(IGameManager gameManager)
         {
-            AddedToGameManager?.Invoke(this, new GameManagerChangedEventArgs {GameManager = gameManager});
+            AddedToGameManager?.Invoke(this, new GameManagerChangedEventArgs(gameManager));
         }
 
         public event EventHandler RemovedFromGameManager;
@@ -42,7 +46,5 @@ namespace PhoenixSystem.Engine
         {
             RemovedFromGameManager?.Invoke(this, null);
         }
-
-        public abstract void AddToGameManager(IGameManager gameManager);
     }
 }

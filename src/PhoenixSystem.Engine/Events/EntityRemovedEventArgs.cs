@@ -2,9 +2,9 @@
 
 namespace PhoenixSystem.Engine.Events
 {
-    internal class EntityChangedEventArgs : EventArgs
+    internal class EntityRemovedEventArgs : EventArgs
     {
-        public EntityChangedEventArgs(IEntity entity)
+        public EntityRemovedEventArgs(IEntity entity)
         {
             Entity = entity;
         }
