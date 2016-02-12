@@ -8,7 +8,7 @@ namespace PhoenixSystem.Engine
     {
         IDictionary<Guid, IEntity> Entities { get; }
         IDictionary<int, ISystem> Systems { get; }
-        IEnumerable<IManager> Managers { get; }
+        IList<IManager> Managers { get; }
         bool IsUpdating { get; }
         string CurrentChannel { get; }
         event EventHandler<ChannelChangedEventArgs> ChannelChanged;
@@ -16,9 +16,10 @@ namespace PhoenixSystem.Engine
         event EventHandler Updating;
         event EventHandler UpdateComplete;
         void Update(ITickEvent tickEvent);
-        event EventHandler EntityAdded;
+        event EventHandler EntityAdded;        
         void AddEntity(IEntity e);
         void AddEntities(IEnumerable<IEntity> entities);
+        void RemoveAllEntities();
         event EventHandler EntityRemoved;
         void RemoveEntity(IEntity e);
         event EventHandler SystemAdded;
@@ -30,10 +31,9 @@ namespace PhoenixSystem.Engine
         void SuspendSystem(ISystem system);
         event EventHandler SystemStarted;
         void StartSystem(ISystem system);
-        IEnumerable<AspectType> GetAspectList<AspectType>();
-        IEnumerable<AspectType> GetUnfilteredAspectList<AspectType>();
-        IEnumerable<AspectType> ReleaseAspectList<AspectType>();
-        ISystem GetSystemByType<SystemType>();
+        IEnumerable<IAspect> GetAspectList<AspectType>() where AspectType : IAspect, new();
+        IEnumerable<IAspect> GetUnfilteredAspectList<AspectType>() where AspectType : IAspect, new();
+        void ReleaseAspectList<AspectType>();
         void RegisterManager(IManager manager);
     }
 }

@@ -2,5 +2,6 @@
 {
     public interface IManager
     {
+        void Register(IGameManager gameManager);
     }
 }

@@ -2,9 +2,9 @@
 
 namespace PhoenixSystem.Engine.Events
 {
-    public class SystemChangedEventArgs : EventArgs
+    public class SystemStartedEventArgs : EventArgs
     {
-        public SystemChangedEventArgs(ISystem system)
+        public SystemStartedEventArgs(ISystem system)
         {
             System = system;
         }

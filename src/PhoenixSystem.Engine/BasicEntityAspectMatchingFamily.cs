@@ -3,12 +3,11 @@ using System.Collections.Generic;
 
 namespace PhoenixSystem.Engine
 {
-    public class BasicAspectMatchingFamily<AspectType> : IEntityAspectMatchingFamily
-        where AspectType : BaseAspect, new()
+    public class BasicAspectMatchingFamily<TAspectType> : IEntityAspectMatchingFamily where TAspectType : IAspect, new()
     {
-        private readonly AspectManager<AspectType> _aspectManager = new AspectManager<AspectType>();
+        private readonly AspectManager _aspectManager = new AspectManager();
         private readonly IList<string> _componentTypes = new List<string>();
-        private readonly Dictionary<Guid, AspectType> _entities = new Dictionary<Guid, AspectType>();
+        private readonly Dictionary<Guid, IAspect> _entities = new Dictionary<Guid, IAspect>();
 
         public void CleanUp()
         {
@@ -42,7 +41,7 @@ namespace PhoenixSystem.Engine
 
         public void Init()
         {
-            var n = new AspectType();
+            var n = new TAspectType();
 
             foreach (var c in n.Components)
             {
@@ -78,7 +77,7 @@ namespace PhoenixSystem.Engine
 
         private void Add(IEntity entity)
         {
-            var aspect = _aspectManager.Get(entity);
+            var aspect = _aspectManager.Get<TAspectType>(entity);
             _entities.Add(entity.ID, aspect);
         }
 

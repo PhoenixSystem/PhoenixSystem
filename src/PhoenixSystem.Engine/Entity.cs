@@ -34,7 +34,7 @@ namespace PhoenixSystem.Engine
             OnDeleted();
         }
 
-        public Entity Clone()
+        public IEntity Clone()
         {
             var e = new Entity();
             //TODO: implement this
