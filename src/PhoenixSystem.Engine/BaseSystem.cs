@@ -3,7 +3,7 @@ using PhoenixSystem.Engine.Events;
 
 namespace PhoenixSystem.Engine
 {
-    public abstract class BaseSystem : ISystem
+    public abstract class BaseSystem : ISystem, IComparable<BaseSystem>
     {
         protected BaseSystem(int priority)
         {
@@ -45,6 +45,11 @@ namespace PhoenixSystem.Engine
         protected virtual void OnRemovedFromGameManager()
         {
             RemovedFromGameManager?.Invoke(this, null);
+        }
+
+        public int CompareTo(BaseSystem other)
+        {
+            return this.Priority.CompareTo(other.Priority);   
         }
     }
 }

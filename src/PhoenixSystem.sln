@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhoenixSystem.Engine", "PhoenixSystem.Engine\PhoenixSystem.Engine.csproj", "{47DAB103-0CF2-4BD3-AF18-377660001D83}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhoenixSystem.Engine.Tests", "PhoenixSystem.Engine.Tests\PhoenixSystem.Engine.Tests.csproj", "{7AD7C0C4-645A-4993-A4C6-09B3C7F6AC56}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{47DAB103-0CF2-4BD3-AF18-377660001D83}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47DAB103-0CF2-4BD3-AF18-377660001D83}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47DAB103-0CF2-4BD3-AF18-377660001D83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AD7C0C4-645A-4993-A4C6-09B3C7F6AC56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AD7C0C4-645A-4993-A4C6-09B3C7F6AC56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AD7C0C4-645A-4993-A4C6-09B3C7F6AC56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AD7C0C4-645A-4993-A4C6-09B3C7F6AC56}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
