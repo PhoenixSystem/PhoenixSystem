@@ -21,7 +21,7 @@ namespace PhoenixSystem.Engine
 
         public bool IsUpdating { get; private set; }
 
-        public IList<IManager> Managers { get; } = new List<IManager>();
+        public IDictionary<int, IManager> Managers { get; } = new SortedList<int, IManager>();
 
         public IDictionary<int, ISystem> Systems { get; } = new SortedList<int, ISystem>();
 
@@ -32,8 +32,6 @@ namespace PhoenixSystem.Engine
         public event EventHandler SystemRemoved;
         public event EventHandler SystemStarted;
         public event EventHandler SystemSuspended;
-        public event EventHandler UpdateComplete;
-        public event EventHandler Updating;
 
         public void AddEntities(IEnumerable<IEntity> entities)
         {
@@ -75,7 +73,7 @@ namespace PhoenixSystem.Engine
         public void RegisterManager(IManager manager)
         {
             manager.Register(this);
-            Managers.Add(manager);
+            Managers.Add(manager.Priority,manager);
         }
 
         public void ReleaseAspectList<TAspectType>()
@@ -156,12 +154,26 @@ namespace PhoenixSystem.Engine
             SystemSuspended?.Invoke(this, new SystemSuspendedEventArgs(system));
         }
 
-        public void Update(ITickEvent tickEvent)
+        protected virtual void OnSystemsUpdated(ITickEvent tickEvent) { }
+        protected virtual void OnManagersUpdated(ITickEvent tickEvent) { }
+
+        public virtual void Update(ITickEvent tickEvent)
         {
             IsUpdating = true;
-            Updating?.Invoke(this, new TickEventArgs(tickEvent));
+            var curChan = GameChannelManager.Instance.Channel;
+            foreach(var system in Systems.Values)
+            {
+                if(system.IsInChannel(curChan, "all"))
+                    system.Update(tickEvent);
+            }
+            OnSystemsUpdated(tickEvent);
+            foreach(var manager in Managers.Values)
+            {
+                if (manager.IsInChannel(curChan, "all"))
+                    manager.Update();
+            }
+            OnManagersUpdated(tickEvent);
             IsUpdating = false;
-            UpdateComplete?.Invoke(this, new TickEventArgs(tickEvent));
         }
 
         private bool HasSystem(ISystem system)

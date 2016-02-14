@@ -34,6 +34,9 @@ namespace PhoenixSystem.Engine.Attributes
 
         public static Type[] GetAssociatedComponentTypes(Type aspect)
         {
+            //TODO: optimize this so that we don't have to construct a new attribute everytime referenced.
+            //Should probably reference some sort of in-memory manager that caches the AssociatedComponents for each 
+            //Aspect
             var types = aspect.GetType().GetCustomAttributes(typeof(AssociatedComponentsAttribute), false);
             if (types.Length == 0)
                 throw new ApplicationException("Associated Components missing from Aspect");
