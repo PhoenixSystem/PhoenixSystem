@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PhoenixSystem.Engine
 {
-    public class BasicEntityAspectManager : BaseEntityAspectManager
+    public sealed class BasicEntityAspectManager : BaseEntityAspectManager
     {
         private readonly Dictionary<string, IEntityAspectMatchingFamily> _aspectFamilies = new Dictionary<string, IEntityAspectMatchingFamily>();
 

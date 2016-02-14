@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using PhoenixSystem.Engine.Attributes;
 
 namespace PhoenixSystem.Engine
 {
@@ -41,6 +42,7 @@ namespace PhoenixSystem.Engine
 
         public void Init()
         {
+            
             var n = new TAspectType();
 
             foreach (var c in n.Components)

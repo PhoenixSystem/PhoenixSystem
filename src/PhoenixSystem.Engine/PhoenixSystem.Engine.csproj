@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AspectManager.cs" />
+    <Compile Include="Attributes\AssociatedComponentsAttribute.cs" />
     <Compile Include="BaseComponent.cs" />
     <Compile Include="BaseEntityAspectManager.cs" />
     <Compile Include="BaseGameManager.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="Events\TickEventArgs.cs" />
     <Compile Include="IAspect.cs" />
     <Compile Include="IAspectManager.cs" />
+    <Compile Include="Attributes\IAssociatedComponentsAttribute.cs" />
     <Compile Include="IComponent.cs" />
     <Compile Include="IEntity.cs" />
     <Compile Include="IEntityAspectManager.cs" />

@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using PhoenixSystem.Engine.Attributes;
+
 namespace PhoenixSystem.Engine
 {
-    public abstract class BaseAspect : EqualityComparer<BaseAspect>, ICloneable, IAspect
+    public abstract class BaseAspect : IAspect
     {
         private readonly List<string> _channels = new List<string>();
 
@@ -18,8 +20,6 @@ namespace PhoenixSystem.Engine
         public bool IsDeleted { get; private set; }
 
         public Guid ID { get; } = Guid.NewGuid();
-
-        public abstract object Clone();
 
         public event EventHandler Deleted;
 
@@ -36,9 +36,13 @@ namespace PhoenixSystem.Engine
 
         public void InitComponents(IEntity e)
         {
-            foreach (var componentType in Components.Keys)
+            foreach (var componentType in this.GetAssociatedComponentTypes())
             {
-                Components[componentType] = e.Components[componentType];
+                var componentTypeName = componentType.Name;
+                if (Components.ContainsKey(componentTypeName))
+                    Components[componentTypeName] = e.Components[componentTypeName];
+                else
+                    Components.Add(componentTypeName, e.Components[componentTypeName]);
             }
         }
 
@@ -57,10 +61,7 @@ namespace PhoenixSystem.Engine
 
         public abstract void Reset();
 
-        public override bool Equals(BaseAspect x, BaseAspect y)
-        {
-            return x.ID == y.ID;
-        }
+        public abstract IAspect Clone();
 
         public bool IsInChannel(string channelName)
         {

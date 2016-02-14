@@ -7,15 +7,11 @@ namespace PhoenixSystem.Engine
 {
     public class Entity : IEntity
     {
-        public Guid ID { get; private set; }
-
-        public string Name { get; set; }
+        public Guid ID { get; private set; } = Guid.NewGuid();
 
         public Entity()
-        {
-            ID = Guid.NewGuid();
-        }
-        public bool IsDeleted { get; private set; }
+        { }
+        public bool IsDeleted { get; private set; } = false;
 
         public IList<string> Channels { get; } = new List<string>();
 
@@ -37,7 +33,14 @@ namespace PhoenixSystem.Engine
         public IEntity Clone()
         {
             var e = new Entity();
-            //TODO: implement this
+            foreach (var c in Components.Values)
+            {
+                e.Components.Add(c.GetType().Name, c.Clone());
+            }
+            foreach (var channel in Channels)
+            {
+                e.Channels.Add(channel);
+            }
             return e;
         }
 
