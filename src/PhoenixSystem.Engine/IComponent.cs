@@ -6,5 +6,6 @@ namespace PhoenixSystem.Engine
     {
         Guid ID { get; }
         IComponent Clone();
+        void Reset();
     }
 }
