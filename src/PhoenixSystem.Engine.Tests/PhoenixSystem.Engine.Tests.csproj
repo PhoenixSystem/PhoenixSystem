@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Classes\LabelAspect.cs" />
     <Compile Include="Classes\StringComponent.cs" />
+    <Compile Include="Classes\TestGameManager.cs" />
     <Compile Include="Classes\XYComponent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
