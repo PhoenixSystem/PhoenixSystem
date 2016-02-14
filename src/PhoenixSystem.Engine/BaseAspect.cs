@@ -55,14 +55,16 @@ namespace PhoenixSystem.Engine
 
         public bool EntityIsMatch(IEntity e)
         {
-            var componentTypes = e.Components.Select(kvp => kvp.Key);
+            var componentTypes = this.GetAssociatedComponentTypes();
             return e.HasComponents(componentTypes);
         }
 
-        public abstract void Reset();
-
-        public abstract IAspect Clone();
-
+        public virtual void Reset()
+        {
+            this.Components.Clear();
+            this._channels.Clear();
+        }
+        
         public bool IsInChannel(string channelName)
         {
             return _channels.Contains(channelName);
