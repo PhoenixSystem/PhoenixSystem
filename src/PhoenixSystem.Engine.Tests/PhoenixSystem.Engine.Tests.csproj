@@ -50,7 +50,16 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Classes\LabelAspect.cs" />
+    <Compile Include="Classes\StringComponent.cs" />
+    <Compile Include="Classes\XYComponent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PhoenixSystem.Engine\PhoenixSystem.Engine.csproj">
+      <Project>{47dab103-0cf2-4bd3-af18-377660001d83}</Project>
+      <Name>PhoenixSystem.Engine</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
