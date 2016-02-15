@@ -19,7 +19,7 @@ namespace PhoenixSystem.Engine
                 }
             }
             else
-                Channels.Add(GameChannelManager.Instance.Channel);
+                Channels.Add(BasicChannelManager.Instance.Channel);
         }
 
         public bool IsActive { get; private set; }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PhoenixSystem.Engine
 {
-    public interface IGameChannelManager
+    public interface IChannelManager
     {
         string Channel { get; set; }
         event EventHandler<ChannelChangedEventArgs> ChannelChanged;

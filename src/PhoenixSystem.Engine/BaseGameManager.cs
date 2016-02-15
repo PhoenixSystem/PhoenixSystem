@@ -160,7 +160,7 @@ namespace PhoenixSystem.Engine
         public virtual void Update(ITickEvent tickEvent)
         {
             IsUpdating = true;
-            var curChan = GameChannelManager.Instance.Channel;
+            var curChan = BasicChannelManager.Instance.Channel;
             foreach(var system in Systems.Values)
             {
                 if(system.IsInChannel(curChan, "all"))

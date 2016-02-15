@@ -60,7 +60,7 @@
     <Compile Include="Events\SystemSuspendedEventArgs.cs" />
     <Compile Include="Events\SystemRemovedEventArgs.cs" />
     <Compile Include="Events\TickEventArgs.cs" />
-    <Compile Include="GameChannelManager.cs" />
+    <Compile Include="BasicChannelManager.cs" />
     <Compile Include="IAspect.cs" />
     <Compile Include="IAspectManager.cs" />
     <Compile Include="Attributes\IAssociatedComponentsAttribute.cs" />
@@ -68,7 +68,7 @@
     <Compile Include="IEntity.cs" />
     <Compile Include="IEntityAspectManager.cs" />
     <Compile Include="IEntityAspectMatchingFamily.cs" />
-    <Compile Include="IGameChannelManager.cs" />
+    <Compile Include="IChannelManager.cs" />
     <Compile Include="IGameManager.cs" />
     <Compile Include="IManager.cs" />
     <Compile Include="ISystem.cs" />

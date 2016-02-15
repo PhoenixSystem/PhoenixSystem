@@ -7,7 +7,7 @@ using PhoenixSystem.Engine.Events;
 
 namespace PhoenixSystem.Engine
 {
-    public class GameChannelManager : IGameChannelManager
+    public class BasicChannelManager : IChannelManager
     {
         string _channel = "default";
         public string Channel
@@ -22,17 +22,17 @@ namespace PhoenixSystem.Engine
 
         public event EventHandler<ChannelChangedEventArgs> ChannelChanged;
 
-        private GameChannelManager() { }
+        private BasicChannelManager() { }
 
 
         //TODO: replace this singleton with some IOC/DI framework goodness
-        private static GameChannelManager _Instance;
-        public static GameChannelManager Instance
+        private static BasicChannelManager _Instance;
+        public static BasicChannelManager Instance
         {
             get
             {
                 if (_Instance == null)
-                    _Instance = new GameChannelManager();
+                    _Instance = new BasicChannelManager();
                 return _Instance;
             }
         }

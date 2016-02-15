@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using PhoenixSystem.Engine.Attributes;
-namespace PhoenixSystem.Engine.Tests.Classes
+namespace PhoenixSystem.Engine.Tests.Objects
 {
     [AssociatedComponents(new Type[] { typeof(StringComponent), typeof(XYComponent) })]
     class LabelAspect : BaseAspect
