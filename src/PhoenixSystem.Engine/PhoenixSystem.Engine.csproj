@@ -48,6 +48,7 @@
     <Compile Include="BaseAspect.cs" />
     <Compile Include="BaseSystem.cs" />
     <Compile Include="BasicEntityAspectManager.cs" />
+    <Compile Include="EntityManager.cs" />
     <Compile Include="Events\EntityRemovedEventArgs.cs" />
     <Compile Include="Events\EntityChangedEventArgs.cs" />
     <Compile Include="Events\ChannelChangedEventArgs.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="IEntityAspectManager.cs" />
     <Compile Include="IEntityAspectMatchingFamily.cs" />
     <Compile Include="IChannelManager.cs" />
+    <Compile Include="IEntityManager.cs" />
     <Compile Include="IGameManager.cs" />
     <Compile Include="IManager.cs" />
     <Compile Include="ISystem.cs" />
