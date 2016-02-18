@@ -75,7 +75,7 @@ namespace PhoenixSystem.Engine
             if (!_aspectFamilies.ContainsKey(type))
                 throw new ApplicationException("Aspect Family does not exist for type: " + type);
 
-            var aspectFamily = _aspectFamilies[typeof (AspectType).Name];
+            var aspectFamily = _aspectFamilies[type];
             aspectFamily.CleanUp();
             _aspectFamilies.Remove(type);
         }
