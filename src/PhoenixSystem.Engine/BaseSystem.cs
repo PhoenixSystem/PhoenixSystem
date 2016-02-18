@@ -7,8 +7,10 @@ namespace PhoenixSystem.Engine
 {
     public abstract class BaseSystem : ISystem, IComparable<BaseSystem>
     {
-        protected BaseSystem(int priority, IEnumerable<string> channels = null)
+        private IChannelManager _channelManager;
+        protected BaseSystem(IChannelManager channelManager, int priority, IEnumerable<string> channels = null)
         {
+            _channelManager = channelManager;
             ID = Guid.NewGuid();
             Priority = priority;
             if (channels != null)
@@ -19,7 +21,7 @@ namespace PhoenixSystem.Engine
                 }
             }
             else
-                Channels.Add(BasicChannelManager.Instance.Channel);
+                Channels.Add(_channelManager.Channel);
         }
 
         public bool IsActive { get; private set; }
