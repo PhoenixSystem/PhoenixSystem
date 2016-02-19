@@ -41,12 +41,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AspectManager.cs" />
+    <Compile Include="Attributes\AssociatedComponentsAttribute.cs" />
     <Compile Include="BaseComponent.cs" />
     <Compile Include="BaseEntityAspectManager.cs" />
     <Compile Include="BaseGameManager.cs" />
     <Compile Include="BaseAspect.cs" />
     <Compile Include="BaseSystem.cs" />
     <Compile Include="BasicEntityAspectManager.cs" />
+    <Compile Include="Collections\IObjectPool.cs" />
+    <Compile Include="Collections\ObjectPool.cs" />
+    <Compile Include="EntityManager.cs" />
     <Compile Include="Events\EntityRemovedEventArgs.cs" />
     <Compile Include="Events\EntityChangedEventArgs.cs" />
     <Compile Include="Events\ChannelChangedEventArgs.cs" />
@@ -59,12 +63,16 @@
     <Compile Include="Events\SystemSuspendedEventArgs.cs" />
     <Compile Include="Events\SystemRemovedEventArgs.cs" />
     <Compile Include="Events\TickEventArgs.cs" />
+    <Compile Include="BasicChannelManager.cs" />
     <Compile Include="IAspect.cs" />
     <Compile Include="IAspectManager.cs" />
+    <Compile Include="Attributes\IAssociatedComponentsAttribute.cs" />
     <Compile Include="IComponent.cs" />
     <Compile Include="IEntity.cs" />
     <Compile Include="IEntityAspectManager.cs" />
     <Compile Include="IEntityAspectMatchingFamily.cs" />
+    <Compile Include="IChannelManager.cs" />
+    <Compile Include="IEntityManager.cs" />
     <Compile Include="IGameManager.cs" />
     <Compile Include="IManager.cs" />
     <Compile Include="ISystem.cs" />

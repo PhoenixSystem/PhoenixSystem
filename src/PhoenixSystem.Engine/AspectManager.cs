@@ -2,11 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using PhoenixSystem.Engine.Collections;
+
 namespace PhoenixSystem.Engine
 {
-    //TODO: Channel mechanics
-    public class AspectManager : IAspectManager
+    public class AspectManager<AspectType> : IAspectManager<AspectType> where AspectType : IAspect, new()
     {
+        private ObjectPool<IAspect> _aspectPool;
+        private IChannelManager _channelManager;
+
+        public AspectManager(IChannelManager channelManager)
+        {
+            _aspectPool = new ObjectPool<IAspect>(() => new AspectType(), (a) => a.Reset());
+            _channelManager = channelManager;
+        }
+
         private readonly LinkedList<IAspect> _activeAspects = new LinkedList<IAspect>();
         private readonly LinkedList<IAspect> _availableAspects = new LinkedList<IAspect>();
         private readonly LinkedList<IAspect> _channelAspects = new LinkedList<IAspect>();
@@ -15,16 +25,18 @@ namespace PhoenixSystem.Engine
 
         public IEnumerable<IAspect> ActiveAspects => _activeAspects;
 
-        public IEnumerable<IAspect> ChannelAspects => _channelAspects;              
+        public IEnumerable<IAspect> ChannelAspects => _channelAspects;
 
         protected virtual void Aspect_Deleted(object sender, EventArgs e)
         {
-            var aspect = (IAspect) sender;
+            var aspect = (IAspect)sender;
 
             aspect.Deleted -= Aspect_Deleted;
-            _availableAspects.AddLast(aspect);
 
+            _aspectPool.Put(aspect);
             _activeAspects.Remove(aspect);
+            if (aspect.IsInChannel(_channelManager.Channel) || aspect.IsInChannel("all"))
+                _channelAspects.Remove(aspect);
         }
 
         private void ApplyChannelFilter(string channel)
@@ -41,24 +53,14 @@ namespace PhoenixSystem.Engine
             _availableAspects.Clear();
         }
 
-        public IAspect Get<TAspectType>(IEntity e) where TAspectType : IAspect, new()
+        public IAspect Get(IEntity e)
         {
-            IAspect aspect;
-
-            if (_availableAspects.Count <= 0)
-            {
-                aspect = new TAspectType();
-            }
-            else
-            {
-                aspect = _availableAspects.First.Value;
-                aspect.Reset();
-                _availableAspects.RemoveFirst();
-            }
+            IAspect aspect = _aspectPool.Get();
 
             aspect.Init(e);
             aspect.Deleted += Aspect_Deleted;
-
+            if (aspect.IsInChannel(_channelManager.Channel) || aspect.IsInChannel("all"))
+                _channelAspects.AddLast(aspect);
             _activeAspects.AddLast(aspect);
 
             return aspect;

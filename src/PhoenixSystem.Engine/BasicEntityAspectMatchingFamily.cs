@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using PhoenixSystem.Engine.Attributes;
 
 namespace PhoenixSystem.Engine
 {
     public class BasicAspectMatchingFamily<TAspectType> : IEntityAspectMatchingFamily where TAspectType : IAspect, new()
     {
-        private readonly AspectManager _aspectManager = new AspectManager();
+        private readonly AspectManager<TAspectType> _aspectManager;
         private readonly IList<string> _componentTypes = new List<string>();
         private readonly Dictionary<Guid, IAspect> _entities = new Dictionary<Guid, IAspect>();
 
+        public BasicAspectMatchingFamily(IChannelManager channelManager)
+        {
+            _aspectManager = new AspectManager<TAspectType>(channelManager);
+        }
         public void CleanUp()
         {
             foreach (var kvp in _entities)
@@ -41,6 +46,7 @@ namespace PhoenixSystem.Engine
 
         public void Init()
         {
+            
             var n = new TAspectType();
 
             foreach (var c in n.Components)
@@ -77,7 +83,7 @@ namespace PhoenixSystem.Engine
 
         private void Add(IEntity entity)
         {
-            var aspect = _aspectManager.Get<TAspectType>(entity);
+            var aspect = _aspectManager.Get(entity);
             _entities.Add(entity.ID, aspect);
         }
 

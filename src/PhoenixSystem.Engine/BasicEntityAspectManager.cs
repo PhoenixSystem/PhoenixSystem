@@ -3,10 +3,15 @@ using System.Collections.Generic;
 
 namespace PhoenixSystem.Engine
 {
-    public class BasicEntityAspectManager : BaseEntityAspectManager
+    public sealed class BasicEntityAspectManager : BaseEntityAspectManager
     {
         private readonly Dictionary<string, IEntityAspectMatchingFamily> _aspectFamilies = new Dictionary<string, IEntityAspectMatchingFamily>();
 
+        private IChannelManager _channelManager;
+        public BasicEntityAspectManager(IChannelManager channelManager)
+        {
+            _channelManager = channelManager;
+        }
         public override void ComponentAddedToEntity(IEntity e, IComponent component)
         {
             foreach (var kvp in _aspectFamilies)
@@ -22,12 +27,7 @@ namespace PhoenixSystem.Engine
                 kvp.Value.ComponentRemovedFromEntity(e, component.GetType().Name);
             }
         }
-
-        public override IEntityAspectMatchingFamily CreateAspectMatchingFamily<AspectType>()
-        {
-            return new BasicAspectMatchingFamily<AspectType>();
-        }
-
+        
         public override IEnumerable<IAspect> GetAspectList<AspectType>()
         {
             var aspectType = typeof (AspectType).Name;
@@ -37,12 +37,12 @@ namespace PhoenixSystem.Engine
                 return _aspectFamilies[aspectType].ActiveAspectList;
             }
 
-            var aspectFamily = CreateAspectMatchingFamily<AspectType>();
+            var aspectFamily = new BasicAspectMatchingFamily<AspectType>(_channelManager);
 
             aspectFamily.Init();
             _aspectFamilies[aspectType] = aspectFamily;
 
-            foreach (var kvp in GameManager.Entities)
+            foreach (var kvp in GameManager.EntityManager.Entities)
             {
                 aspectFamily.NewEntity(kvp.Value);
             }
@@ -75,7 +75,7 @@ namespace PhoenixSystem.Engine
             if (!_aspectFamilies.ContainsKey(type))
                 throw new ApplicationException("Aspect Family does not exist for type: " + type);
 
-            var aspectFamily = _aspectFamilies[typeof (AspectType).Name];
+            var aspectFamily = _aspectFamilies[type];
             aspectFamily.CleanUp();
             _aspectFamilies.Remove(type);
         }

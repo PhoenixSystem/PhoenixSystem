@@ -9,19 +9,22 @@ namespace PhoenixSystem.Engine
     {
         private readonly IEntityAspectManager _entityAspectManager;
 
-        protected BaseGameManager(IEntityAspectManager entityAspectManager)
+        private IChannelManager _channelManager;
+        protected BaseGameManager(IEntityAspectManager entityAspectManager, IEntityManager entityManager, IChannelManager channelManager)
         {
             _entityAspectManager = entityAspectManager;
             _entityAspectManager.GameManager = this;
+            EntityManager = entityManager;
+            _channelManager = channelManager;
         }
 
         public string CurrentChannel { get; private set; }
 
-        public IDictionary<Guid, IEntity> Entities { get; } = new Dictionary<Guid, IEntity>();
+        public IEntityManager EntityManager { get; private set; }
 
         public bool IsUpdating { get; private set; }
 
-        public IList<IManager> Managers { get; } = new List<IManager>();
+        public IDictionary<int, IManager> Managers { get; } = new SortedList<int, IManager>();
 
         public IDictionary<int, ISystem> Systems { get; } = new SortedList<int, ISystem>();
 
@@ -32,8 +35,6 @@ namespace PhoenixSystem.Engine
         public event EventHandler SystemRemoved;
         public event EventHandler SystemStarted;
         public event EventHandler SystemSuspended;
-        public event EventHandler UpdateComplete;
-        public event EventHandler Updating;
 
         public void AddEntities(IEnumerable<IEntity> entities)
         {
@@ -45,7 +46,7 @@ namespace PhoenixSystem.Engine
 
         public void AddEntity(IEntity entity)
         {
-            Entities[entity.ID] = entity;
+            EntityManager.Entities[entity.ID] = entity;
             entity.ComponentAdded += EntityOnComponentAdded;
             entity.ComponentRemoved += EntityOnComponentRemoved;
             _entityAspectManager.RegisterEntity(entity);
@@ -75,7 +76,7 @@ namespace PhoenixSystem.Engine
         public void RegisterManager(IManager manager)
         {
             manager.Register(this);
-            Managers.Add(manager);
+            Managers.Add(manager.Priority,manager);
         }
 
         public void ReleaseAspectList<TAspectType>()
@@ -93,23 +94,23 @@ namespace PhoenixSystem.Engine
 
         public void RemoveAllEntities()
         {
-            foreach (var entity in Entities)
+            foreach (var entity in EntityManager.Entities)
             {
                 entity.Value.Delete();
             }
 
-            Entities.Clear();
+            EntityManager.Entities.Clear();
         }
 
         public void RemoveEntity(IEntity entity)
         {
-            if (!Entities.ContainsKey(entity.ID)) return;
+            if (!EntityManager.Entities.ContainsKey(entity.ID)) return;
 
-            entity = Entities[entity.ID];
+            entity = EntityManager.Entities[entity.ID];
             entity.ComponentAdded -= EntityOnComponentAdded;
             entity.ComponentRemoved -= EntityOnComponentRemoved;
             _entityAspectManager.UnregisterEntity(entity);
-            Entities.Remove(entity.ID);
+            EntityManager.Entities.Remove(entity.ID);
             EntityRemoved?.Invoke(this, new EntityRemovedEventArgs(entity));
         }
 
@@ -156,12 +157,26 @@ namespace PhoenixSystem.Engine
             SystemSuspended?.Invoke(this, new SystemSuspendedEventArgs(system));
         }
 
-        public void Update(ITickEvent tickEvent)
+        protected virtual void OnSystemsUpdated(ITickEvent tickEvent) { }
+        protected virtual void OnManagersUpdated(ITickEvent tickEvent) { }
+
+        public virtual void Update(ITickEvent tickEvent)
         {
             IsUpdating = true;
-            Updating?.Invoke(this, new TickEventArgs(tickEvent));
+            var curChan = _channelManager.Channel;
+            foreach(var system in Systems.Values)
+            {
+                if(system.IsInChannel(curChan, "all"))
+                    system.Update(tickEvent);
+            }
+            OnSystemsUpdated(tickEvent);
+            foreach(var manager in Managers.Values)
+            {
+                if (manager.IsInChannel(curChan, "all"))
+                    manager.Update();
+            }
+            OnManagersUpdated(tickEvent);
             IsUpdating = false;
-            UpdateComplete?.Invoke(this, new TickEventArgs(tickEvent));
         }
 
         private bool HasSystem(ISystem system)

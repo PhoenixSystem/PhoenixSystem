@@ -6,16 +6,16 @@ namespace PhoenixSystem.Engine
 {
     public interface IGameManager
     {
-        IDictionary<Guid, IEntity> Entities { get; }
+        IEntityManager EntityManager { get; }
+        
         IDictionary<int, ISystem> Systems { get; }
-        IList<IManager> Managers { get; }
+        IDictionary<int, IManager> Managers { get; }
         bool IsUpdating { get; }
         string CurrentChannel { get; }
         event EventHandler<ChannelChangedEventArgs> ChannelChanged;
         void SetChannel(string newChannel);
-        event EventHandler Updating;
-        event EventHandler UpdateComplete;
         void Update(ITickEvent tickEvent);
+        
         event EventHandler EntityAdded;        
         void AddEntity(IEntity e);
         void AddEntities(IEnumerable<IEntity> entities);

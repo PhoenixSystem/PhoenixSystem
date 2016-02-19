@@ -9,7 +9,7 @@ namespace PhoenixSystem.Engine
         Dictionary<string, IComponent> Components { get; }
         void Delete();
         void Reset();
-        object Clone();
+        
         void Init(IEntity e, IEnumerable<string> channels = null);
         event EventHandler Deleted;
         bool IsInChannel(string channelName);

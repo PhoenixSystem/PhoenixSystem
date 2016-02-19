@@ -7,15 +7,24 @@ namespace PhoenixSystem.Engine
 {
     public class Entity : IEntity
     {
-        public Guid ID { get; private set; }
-
+        public Guid ID { get; private set; } = Guid.NewGuid();
         public string Name { get; set; }
 
-        public Entity()
+        public Entity(string name = "", string[] channels = null)
         {
-            ID = Guid.NewGuid();
+            Name = name;
+
+            if (channels!=null)
+            {
+                foreach (string s in channels)
+                {
+                    if (String.IsNullOrEmpty(s))
+                        throw new ArgumentException("channel cannot be empty string or null");
+                    Channels.Add(s);
+                } 
+            }
         }
-        public bool IsDeleted { get; private set; }
+        public bool IsDeleted { get; set; } = false;
 
         public IList<string> Channels { get; } = new List<string>();
 
@@ -36,8 +45,11 @@ namespace PhoenixSystem.Engine
 
         public IEntity Clone()
         {
-            var e = new Entity();
-            //TODO: implement this
+            var e = new Entity(this.Name, this.Channels.ToArray());
+            foreach (var c in Components.Values)
+            {
+                e.Components.Add(c.GetType().Name, c.Clone());
+            }
             return e;
         }
 
@@ -55,7 +67,7 @@ namespace PhoenixSystem.Engine
             ComponentAdded?.Invoke(this, new ComponentChangedEventArgs { Component = c });
         }
 
-        public Entity AddComponent(IComponent c, bool overwriteIfExists = false)
+        public IEntity AddComponent(IComponent c, bool overwriteIfExists = false)
         {
             var componentType = c.GetType().Name;
             if (HasComponent(componentType) && !overwriteIfExists)

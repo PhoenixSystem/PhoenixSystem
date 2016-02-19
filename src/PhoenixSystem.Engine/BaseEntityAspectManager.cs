@@ -10,8 +10,7 @@ namespace PhoenixSystem.Engine
         public abstract IEnumerable<IAspect> GetAspectList<AspectType>() where AspectType : IAspect, new();
         public abstract IEnumerable<IAspect> GetUnfilteredAspectList<AspectType>() where AspectType : IAspect, new();
         public abstract void RegisterEntity(IEntity e);
-        public abstract void ReleaseAspectList<AspectType>();
-        public abstract IEntityAspectMatchingFamily CreateAspectMatchingFamily<AspectType>() where AspectType : IAspect, new();
+        public abstract void ReleaseAspectList<AspectType>();        
         public abstract void UnregisterEntity(IEntity e);
     }
 }
