@@ -5,7 +5,7 @@ namespace PhoenixSystem.Engine
 {
     public sealed class BasicEntityAspectManager : BaseEntityAspectManager
     {
-        private readonly Dictionary<string, IEntityAspectMatchingFamily> _aspectFamilies = new Dictionary<string, IEntityAspectMatchingFamily>();
+        private readonly Dictionary<string, IAspectMatchingFamily> _aspectFamilies = new Dictionary<string, IAspectMatchingFamily>();
         private readonly IChannelManager _channelManager;
 
         public BasicEntityAspectManager(IChannelManager channelManager)

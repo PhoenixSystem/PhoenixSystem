@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PhoenixSystem.Engine
 {
-    public class BasicAspectMatchingFamily<TAspectType> : IEntityAspectMatchingFamily where TAspectType : IAspect, new()
+    public class BasicAspectMatchingFamily<TAspectType> : IAspectMatchingFamily where TAspectType : IAspect, new()
     {
         private readonly AspectManager<TAspectType> _aspectManager;
         private readonly IList<string> _componentTypes = new List<string>();
