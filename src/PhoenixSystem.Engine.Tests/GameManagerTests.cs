@@ -14,7 +14,7 @@ namespace PhoenixSystem.Engine.Tests
         public GameManagerTests()
         {
             BasicChannelManager channelManager = new BasicChannelManager();
-            _gm = new TestGameManager(new BasicEntityAspectManager(), new EntityManager(channelManager), channelManager);
+            _gm = new TestGameManager(new BasicEntityAspectManager(channelManager), new EntityManager(channelManager), channelManager);
         }
     
         [Fact]
