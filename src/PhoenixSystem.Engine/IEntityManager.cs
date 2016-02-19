@@ -10,5 +10,11 @@ namespace PhoenixSystem.Engine
     {
         void Register(IGameManager gameManager);
         IEntity Get(string name, string[] channels);
+        IDictionary<Guid, IEntity> Entities { get; }
+
+       
+
     }
 }
+
+

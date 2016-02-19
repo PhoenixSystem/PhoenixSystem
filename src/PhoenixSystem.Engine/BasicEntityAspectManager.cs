@@ -42,7 +42,7 @@ namespace PhoenixSystem.Engine
             aspectFamily.Init();
             _aspectFamilies[aspectType] = aspectFamily;
 
-            foreach (var kvp in GameManager.Entities)
+            foreach (var kvp in GameManager.EntityManager.Entities)
             {
                 aspectFamily.NewEntity(kvp.Value);
             }

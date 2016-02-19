@@ -6,7 +6,8 @@ namespace PhoenixSystem.Engine
 {
     public interface IGameManager
     {
-        IDictionary<Guid, IEntity> Entities { get; }
+        IEntityManager EntityManager { get; }
+        
         IDictionary<int, ISystem> Systems { get; }
         IDictionary<int, IManager> Managers { get; }
         bool IsUpdating { get; }

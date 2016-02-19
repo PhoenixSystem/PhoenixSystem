@@ -9,15 +9,16 @@ namespace PhoenixSystem.Engine
     {
         private readonly IEntityAspectManager _entityAspectManager;
 
-        protected BaseGameManager(IEntityAspectManager entityAspectManager)
+        protected BaseGameManager(IEntityAspectManager entityAspectManager, IEntityManager entityManager)
         {
             _entityAspectManager = entityAspectManager;
             _entityAspectManager.GameManager = this;
+            EntityManager = entityManager;
         }
 
         public string CurrentChannel { get; private set; }
 
-        public IDictionary<Guid, IEntity> Entities { get; } = new Dictionary<Guid, IEntity>();
+        public IEntityManager EntityManager { get; private set; }
 
         public bool IsUpdating { get; private set; }
 
@@ -43,7 +44,7 @@ namespace PhoenixSystem.Engine
 
         public void AddEntity(IEntity entity)
         {
-            Entities[entity.ID] = entity;
+            EntityManager.Entities[entity.ID] = entity;
             entity.ComponentAdded += EntityOnComponentAdded;
             entity.ComponentRemoved += EntityOnComponentRemoved;
             _entityAspectManager.RegisterEntity(entity);
@@ -91,23 +92,23 @@ namespace PhoenixSystem.Engine
 
         public void RemoveAllEntities()
         {
-            foreach (var entity in Entities)
+            foreach (var entity in EntityManager.Entities)
             {
                 entity.Value.Delete();
             }
 
-            Entities.Clear();
+            EntityManager.Entities.Clear();
         }
 
         public void RemoveEntity(IEntity entity)
         {
-            if (!Entities.ContainsKey(entity.ID)) return;
+            if (!EntityManager.Entities.ContainsKey(entity.ID)) return;
 
-            entity = Entities[entity.ID];
+            entity = EntityManager.Entities[entity.ID];
             entity.ComponentAdded -= EntityOnComponentAdded;
             entity.ComponentRemoved -= EntityOnComponentRemoved;
             _entityAspectManager.UnregisterEntity(entity);
-            Entities.Remove(entity.ID);
+            EntityManager.Entities.Remove(entity.ID);
             EntityRemoved?.Invoke(this, new EntityRemovedEventArgs(entity));
         }
 

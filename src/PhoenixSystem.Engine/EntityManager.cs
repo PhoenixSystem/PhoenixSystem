@@ -17,6 +17,7 @@ namespace PhoenixSystem.Engine
         IGameManager _gameManager;
         private readonly IChannelManager _channelManager;
 
+        public IDictionary<Guid, IEntity> Entities { get { return _activeEntities; } }
         public IEntity Get(string name = "", string[] channels = null)
         {
 
@@ -63,5 +64,7 @@ namespace PhoenixSystem.Engine
         {
             _gameManager = gameManager;
         }
+
+        
     }
 }
