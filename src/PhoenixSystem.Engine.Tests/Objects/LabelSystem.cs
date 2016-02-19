@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 
-
 namespace PhoenixSystem.Engine.Tests.Objects
 {
     public class LabelSystem : BaseSystem
     {
+        private IEnumerable<LabelAspect> _labelAspects;
 
-        public LabelSystem(IChannelManager channelManager, int priority, IEnumerable<string> channels = null) : base(channelManager, priority, channels)
+        public LabelSystem(IChannelManager channelManager, int priority, IEnumerable<string> channels = null)
+            : base(channelManager, priority, channels)
         {
         }
 
-        private IEnumerable<LabelAspect> _labelAspects;
         public override void AddToGameManager(IGameManager gameManager)
         {
             _labelAspects = gameManager.GetAspectList<LabelAspect>();
@@ -26,10 +26,7 @@ namespace PhoenixSystem.Engine.Tests.Objects
 
         public override void Update(ITickEvent tickEvent)
         {
-            Console.WriteLine("LabelSystem Update Executed");           
+            Console.WriteLine("LabelSystem Update Executed");
         }
-
-
     }
-
 }

@@ -40,7 +40,7 @@ namespace PhoenixSystem.Engine
 
         public IEnumerable<IAspect> ActiveAspectList => _aspectManager.ChannelAspects;
 
-        public IEnumerable<IAspect> EntireAspectList => _aspectManager.ActiveAspects;
+        public IEnumerable<IAspect> EntireAspectList => _aspectManager.Aspects;
 
         public void Init()
         {
