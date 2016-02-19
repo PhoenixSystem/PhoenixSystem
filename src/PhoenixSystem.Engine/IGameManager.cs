@@ -11,9 +11,7 @@ namespace PhoenixSystem.Engine
         IDictionary<int, ISystem> Systems { get; }
         IDictionary<int, IManager> Managers { get; }
         bool IsUpdating { get; }
-        string CurrentChannel { get; }
-        event EventHandler<ChannelChangedEventArgs> ChannelChanged;
-        void SetChannel(string newChannel);
+        
         void Update(ITickEvent tickEvent);
         
         event EventHandler EntityAdded;        

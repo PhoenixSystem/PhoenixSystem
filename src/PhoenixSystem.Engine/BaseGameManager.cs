@@ -18,7 +18,7 @@ namespace PhoenixSystem.Engine
             _channelManager = channelManager;
         }
 
-        public string CurrentChannel { get; private set; }
+        
 
         public IEntityManager EntityManager { get; private set; }
 
@@ -27,8 +27,7 @@ namespace PhoenixSystem.Engine
         public IDictionary<int, IManager> Managers { get; } = new SortedList<int, IManager>();
 
         public IDictionary<int, ISystem> Systems { get; } = new SortedList<int, ISystem>();
-
-        public event EventHandler<ChannelChangedEventArgs> ChannelChanged;
+        
         public event EventHandler EntityAdded;
         public event EventHandler EntityRemoved;
         public event EventHandler SystemAdded;
@@ -127,13 +126,7 @@ namespace PhoenixSystem.Engine
             if (!shouldNotify) return;
 
             SystemRemoved?.Invoke(this, new SystemRemovedEventArgs(system));
-        }
-
-        public void SetChannel(string newChannel)
-        {
-            CurrentChannel = newChannel;
-            ChannelChanged?.Invoke(this, new ChannelChangedEventArgs(CurrentChannel));
-        }
+        }        
 
         public void StartSystem(ISystem system)
         {
