@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using PhoenixSystem.Engine.Events;
+using PhoenixSystem.Engine.Extensions;
 
 namespace PhoenixSystem.Engine
 {
@@ -9,18 +10,22 @@ namespace PhoenixSystem.Engine
     {
         private readonly IEntityAspectManager _entityAspectManager;
 
-        private IChannelManager _channelManager;
-        protected BaseGameManager(IEntityAspectManager entityAspectManager, IEntityManager entityManager, IChannelManager channelManager)
+        private readonly IChannelManager _channelManager;
+
+        protected BaseGameManager(
+            IEntityAspectManager entityAspectManager, 
+            IEntityManager entityManager,
+            IChannelManager channelManager)
         {
-            _entityAspectManager = entityAspectManager;
-            _entityAspectManager.GameManager = this;
-            EntityManager = entityManager;
+            EntityManager = entityManager;            
             _channelManager = channelManager;
+            _entityAspectManager = entityAspectManager;
+            _entityAspectManager.GameManager = this;            
         }
 
         public string CurrentChannel { get; private set; }
 
-        public IEntityManager EntityManager { get; private set; }
+        public IEntityManager EntityManager { get; }
 
         public bool IsUpdating { get; private set; }
 
@@ -47,19 +52,26 @@ namespace PhoenixSystem.Engine
         public void AddEntity(IEntity entity)
         {
             EntityManager.Entities[entity.ID] = entity;
+
             entity.ComponentAdded += EntityOnComponentAdded;
             entity.ComponentRemoved += EntityOnComponentRemoved;
+
             _entityAspectManager.RegisterEntity(entity);
+
             EntityAdded?.Invoke(this, new EntityChangedEventArgs(entity));
         }
 
         public void AddSystem(ISystem system)
         {
             if (HasSystem(system))
+            {
                 throw new ApplicationException($"System {system.GetType().Name} already added to game manager.");
+            }
 
             Systems.Add(system.Priority, system);
+
             system.AddToGameManager(this);
+
             SystemAdded?.Invoke(this, new SystemChangedEventArgs(system));
         }
 
@@ -76,7 +88,8 @@ namespace PhoenixSystem.Engine
         public void RegisterManager(IManager manager)
         {
             manager.Register(this);
-            Managers.Add(manager.Priority,manager);
+
+            Managers.Add(manager.Priority, manager);
         }
 
         public void ReleaseAspectList<TAspectType>()
@@ -109,8 +122,11 @@ namespace PhoenixSystem.Engine
             entity = EntityManager.Entities[entity.ID];
             entity.ComponentAdded -= EntityOnComponentAdded;
             entity.ComponentRemoved -= EntityOnComponentRemoved;
+
             _entityAspectManager.UnregisterEntity(entity);
+
             EntityManager.Entities.Remove(entity.ID);
+
             EntityRemoved?.Invoke(this, new EntityRemovedEventArgs(entity));
         }
 
@@ -132,6 +148,7 @@ namespace PhoenixSystem.Engine
         public void SetChannel(string newChannel)
         {
             CurrentChannel = newChannel;
+
             ChannelChanged?.Invoke(this, new ChannelChangedEventArgs(CurrentChannel));
         }
 
@@ -154,29 +171,39 @@ namespace PhoenixSystem.Engine
 
             system = Systems[key.Value];
             system.Stop();
+
             SystemSuspended?.Invoke(this, new SystemSuspendedEventArgs(system));
         }
-
-        protected virtual void OnSystemsUpdated(ITickEvent tickEvent) { }
-        protected virtual void OnManagersUpdated(ITickEvent tickEvent) { }
 
         public virtual void Update(ITickEvent tickEvent)
         {
             IsUpdating = true;
+
             var curChan = _channelManager.Channel;
-            foreach(var system in Systems.Values)
+
+            foreach (var system in Systems.Values.Where(system => system.IsInChannel(curChan, "all")))
             {
-                if(system.IsInChannel(curChan, "all"))
-                    system.Update(tickEvent);
+                system.Update(tickEvent);
             }
+
             OnSystemsUpdated(tickEvent);
-            foreach(var manager in Managers.Values)
+
+            foreach (var manager in Managers.Values.Where(manager => manager.IsInChannel(curChan, "all")))
             {
-                if (manager.IsInChannel(curChan, "all"))
-                    manager.Update();
+                manager.Update();
             }
+
             OnManagersUpdated(tickEvent);
+
             IsUpdating = false;
+        }
+
+        protected virtual void OnSystemsUpdated(ITickEvent tickEvent)
+        {
+        }
+
+        protected virtual void OnManagersUpdated(ITickEvent tickEvent)
+        {
         }
 
         private bool HasSystem(ISystem system)
@@ -192,19 +219,6 @@ namespace PhoenixSystem.Engine
         private void EntityOnComponentAdded(object sender, ComponentChangedEventArgs e)
         {
             _entityAspectManager.ComponentAddedToEntity(sender as IEntity, e.Component);
-        }
-    }
-
-    public static class SystemHelper
-    {
-        public static int? GetKeyBySystemId(this IDictionary<int, ISystem> systems, Guid systemId)
-        {
-            foreach (var system in systems.Where(system => system.Value.ID == systemId))
-            {
-                return system.Key;
-            }
-
-            return null;
         }
     }
 }

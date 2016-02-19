@@ -1,21 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PhoenixSystem.Engine.Tests.Objects
+﻿namespace PhoenixSystem.Engine.Tests.Objects
 {
     public class XYComponent : BaseComponent
     {
-        public int X { get; set; } = 0;
-        public int Y { get; set; } = 0;
+        public int X { get; set; }
+        public int Y { get; set; }
+
         public override IComponent Clone()
         {
-            return new XYComponent()
+            return new XYComponent
             {
-                X = this.X,
-                Y = this.Y
+                X = X,
+                Y = Y
             };
         }
 

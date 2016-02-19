@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using PhoenixSystem.Engine.Attributes;
 
 namespace PhoenixSystem.Engine
@@ -15,35 +14,18 @@ namespace PhoenixSystem.Engine
             Components = new Dictionary<string, IComponent>();
         }
 
-        public Dictionary<string, IComponent> Components { get; }
-
         public bool IsDeleted { get; private set; }
+
+        public Dictionary<string, IComponent> Components { get; }
 
         public Guid ID { get; } = Guid.NewGuid();
 
         public event EventHandler Deleted;
 
-        protected virtual void OnDeleted()
-        {
-            Deleted?.Invoke(this, null);
-        }
-
         public void Delete()
         {
             IsDeleted = true;
             OnDeleted();
-        }
-
-        public void InitComponents(IEntity e)
-        {
-            foreach (var componentType in this.GetAssociatedComponentTypes())
-            {
-                var componentTypeName = componentType.Name;
-                if (Components.ContainsKey(componentTypeName))
-                    Components[componentTypeName] = e.Components[componentTypeName];
-                else
-                    Components.Add(componentTypeName, e.Components[componentTypeName]);
-            }
         }
 
         public void Init(IEntity e, IEnumerable<string> channels = null)
@@ -53,21 +35,40 @@ namespace PhoenixSystem.Engine
                 _channels.AddRange(channels);
         }
 
+        public virtual void Reset()
+        {
+            Components.Clear();
+            _channels.Clear();
+        }
+
+        public bool IsInChannel(string channelName)
+        {
+            return _channels.Contains(channelName);
+        }
+
+        protected virtual void OnDeleted()
+        {
+            Deleted?.Invoke(this, null);
+        }
+
+        public void InitComponents(IEntity e)
+        {
+            foreach (var componentTypeName in this.GetAssociatedComponentTypes().Select(componentType => componentType.Name))
+            {
+                if (Components.ContainsKey(componentTypeName))
+                {
+                    Components[componentTypeName] = e.Components[componentTypeName];
+                    return;
+                }
+
+                Components.Add(componentTypeName, e.Components[componentTypeName]);
+            }
+        }
+
         public bool EntityIsMatch(IEntity e)
         {
             var componentTypes = this.GetAssociatedComponentTypes();
             return e.HasComponents(componentTypes);
-        }
-
-        public virtual void Reset()
-        {
-            this.Components.Clear();
-            this._channels.Clear();
-        }
-        
-        public bool IsInChannel(string channelName)
-        {
-            return _channels.Contains(channelName);
         }
     }
 }

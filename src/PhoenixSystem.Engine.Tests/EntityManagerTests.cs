@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
+﻿using Xunit;
 
 namespace PhoenixSystem.Engine.Tests
 {
     public class EntityManagerTests
     {
-        IEntityManager _em;
+        private readonly IEntityManager _em;
+
         public EntityManagerTests()
         {
-            BasicChannelManager cm = new BasicChannelManager();
+            var cm = new BasicChannelManager();
             _em = new EntityManager(cm);
         }
 
@@ -33,16 +29,12 @@ namespace PhoenixSystem.Engine.Tests
         [Fact]
         public void Entity_Should_Have_Correct_Name_And_Channels()
         {
-            string name = "Test Name";
-            string[] channels = new string[] { "chOne", "chTwo" };
+            var name = "Test Name";
+            string[] channels = {"chOne", "chTwo"};
             var e = _em.Get(name, channels);
             Assert.Equal(name, e.Name);
-            Assert.Contains(channels[0],e.Channels);
+            Assert.Contains(channels[0], e.Channels);
             Assert.Contains(channels[1], e.Channels);
-            
         }
-
-        
-        
     }
 }

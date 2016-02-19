@@ -1,13 +1,13 @@
-﻿using PhoenixSystem.Engine.Events;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using PhoenixSystem.Engine.Events;
 
 namespace PhoenixSystem.Engine
 {
     public interface IGameManager
     {
         IEntityManager EntityManager { get; }
-        
+
         IDictionary<int, ISystem> Systems { get; }
         IDictionary<int, IManager> Managers { get; }
         bool IsUpdating { get; }
@@ -15,8 +15,8 @@ namespace PhoenixSystem.Engine
         event EventHandler<ChannelChangedEventArgs> ChannelChanged;
         void SetChannel(string newChannel);
         void Update(ITickEvent tickEvent);
-        
-        event EventHandler EntityAdded;        
+
+        event EventHandler EntityAdded;
         void AddEntity(IEntity e);
         void AddEntities(IEnumerable<IEntity> entities);
         void RemoveAllEntities();

@@ -1,25 +1,17 @@
-﻿using PhoenixSystem.Engine.Collections;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using PhoenixSystem.Engine.Collections;
 using Xunit;
 
 namespace PhoenixSystem.Engine.Tests
 {
     public class ObjectPoolTests
     {
-        class TestData
-        {
-            public TestData(string data = "") { Data = data;}
-            public string Data { get; set; }
-        }
+        private readonly ObjectPool<TestData> _items;
 
-        ObjectPool<TestData> _items;
         public ObjectPoolTests()
         {
-            _items = new ObjectPool<TestData>(() => new TestData(), (td) => td.Data = "Reset at "+ DateTime.Now.ToShortDateString());
+            _items = new ObjectPool<TestData>(() => new TestData(),
+                td => td.Data = "Reset at " + DateTime.Now.ToShortDateString());
         }
 
         [Fact]
@@ -28,8 +20,7 @@ namespace PhoenixSystem.Engine.Tests
             Assert.Equal(0, _items.Count);
             var item = _items.Get();
             Assert.IsType<TestData>(item);
-            Assert.True(String.IsNullOrEmpty(item.Data));
-
+            Assert.True(string.IsNullOrEmpty(item.Data));
         }
 
         [Fact]
@@ -49,6 +40,16 @@ namespace PhoenixSystem.Engine.Tests
             Assert.Equal(0, _items.Count);
             _items.Put(item);
             Assert.Equal(1, _items.Count);
+        }
+
+        private class TestData
+        {
+            public TestData(string data = "")
+            {
+                Data = data;
+            }
+
+            public string Data { get; set; }
         }
     }
 }

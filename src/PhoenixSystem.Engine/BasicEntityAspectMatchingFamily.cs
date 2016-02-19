@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using PhoenixSystem.Engine.Attributes;
 
 namespace PhoenixSystem.Engine
 {
@@ -14,6 +13,7 @@ namespace PhoenixSystem.Engine
         {
             _aspectManager = new AspectManager<TAspectType>(channelManager);
         }
+
         public void CleanUp()
         {
             foreach (var kvp in _entities)
@@ -26,18 +26,16 @@ namespace PhoenixSystem.Engine
 
         public void ComponentAddedToEntity(IEntity e, string componentType)
         {
-            if (_componentTypes.Contains(componentType) && IsMatch(e))
-            {
-                Add(e);
-            }
+            if (!_componentTypes.Contains(componentType) || !IsMatch(e)) return;
+
+            Add(e);
         }
 
         public void ComponentRemovedFromEntity(IEntity e, string componentType)
         {
-            if (ContainsEntity(e) && _componentTypes.Contains(componentType))
-            {
-                Remove(e);
-            }
+            if (!ContainsEntity(e) || !_componentTypes.Contains(componentType)) return;
+
+            Remove(e);
         }
 
         public IEnumerable<IAspect> ActiveAspectList => _aspectManager.ChannelAspects;
@@ -46,7 +44,6 @@ namespace PhoenixSystem.Engine
 
         public void Init()
         {
-            
             var n = new TAspectType();
 
             foreach (var c in n.Components)
@@ -57,18 +54,16 @@ namespace PhoenixSystem.Engine
 
         public void NewEntity(IEntity e)
         {
-            if (!ContainsEntity(e) && IsMatch(e))
-            {
-                Add(e);
-            }
+            if (ContainsEntity(e) || !IsMatch(e)) return;
+
+            Add(e);
         }
 
         public void RemoveEntity(IEntity e)
         {
-            if (ContainsEntity(e))
-            {
-                Remove(e);
-            }
+            if (!ContainsEntity(e)) return;
+
+            Remove(e);
         }
 
         private bool IsMatch(IEntity e)
@@ -84,13 +79,16 @@ namespace PhoenixSystem.Engine
         private void Add(IEntity entity)
         {
             var aspect = _aspectManager.Get(entity);
+
             _entities.Add(entity.ID, aspect);
         }
 
         private void Remove(IEntity entity)
         {
             var aspect = _entities[entity.ID];
+
             aspect.Delete();
+
             _entities.Remove(entity.ID);
         }
     }

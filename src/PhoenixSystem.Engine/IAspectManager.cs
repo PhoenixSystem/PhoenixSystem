@@ -2,7 +2,7 @@
 
 namespace PhoenixSystem.Engine
 {
-    public interface IAspectManager<AspectType> where AspectType : IAspect, new()
+    public interface IAspectManager<TAspectType> where TAspectType : IAspect, new()
     {
         IEnumerable<IAspect> ActiveAspects { get; }
         IEnumerable<IAspect> ChannelAspects { get; }

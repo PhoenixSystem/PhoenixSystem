@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PhoenixSystem.Engine.Collections
+﻿namespace PhoenixSystem.Engine.Collections
 {
     public interface IObjectPool<T>
     {
+        int Count { get; }
         T Get();
         void Put(T item);
-
-        int Count { get; }
     }
 }

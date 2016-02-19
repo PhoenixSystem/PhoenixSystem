@@ -7,21 +7,21 @@ namespace PhoenixSystem.Engine
 {
     public abstract class BaseSystem : ISystem, IComparable<BaseSystem>
     {
-        private IChannelManager _channelManager;
         protected BaseSystem(IChannelManager channelManager, int priority, IEnumerable<string> channels = null)
         {
-            _channelManager = channelManager;
             ID = Guid.NewGuid();
             Priority = priority;
-            if (channels != null)
+
+            if (channels == null)
             {
-                foreach (var c in channels)
-                {
-                    Channels.Add(c);
-                }
+                Channels.Add(channelManager.Channel);
+                return;
             }
-            else
-                Channels.Add(_channelManager.Channel);
+
+            foreach (var c in channels)
+            {
+                Channels.Add(c);
+            }
         }
 
         public bool IsActive { get; private set; }
@@ -30,7 +30,8 @@ namespace PhoenixSystem.Engine
 
         public int Priority { get; }
 
-        public IList<string> Channels { get; private set; }
+        public IList<string> Channels { get; } = new List<string>();
+
         public abstract void AddToGameManager(IGameManager gameManager);
 
         public abstract void RemoveFromGameManager(IGameManager gameManager);
@@ -70,12 +71,7 @@ namespace PhoenixSystem.Engine
 
         public bool IsInChannel(params string[] channels)
         {
-            foreach(var c in channels)
-            {
-                if (Channels.Contains(c))
-                    return true;
-            }
-            return false;
+            return channels.Any(c => Channels.Contains(c));
         }
     }
 }
