@@ -1,6 +1,6 @@
-﻿using PhoenixSystem.Engine.Events;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using PhoenixSystem.Engine.Events;
 
 namespace PhoenixSystem.Engine
 {

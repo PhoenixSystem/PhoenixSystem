@@ -7,35 +7,27 @@ namespace PhoenixSystem.Engine
 {
     public class Entity : IEntity
     {
-        public Guid ID { get; private set; } = Guid.NewGuid();
-        public string Name { get; set; }
-
         public Entity(string name = "", string[] channels = null)
         {
             Name = name;
 
-            if (channels!=null)
+            if (channels == null) return;
+
+            foreach (var s in channels)
             {
-                foreach (string s in channels)
-                {
-                    if (String.IsNullOrEmpty(s))
-                        throw new ArgumentException("channel cannot be empty string or null");
-                    Channels.Add(s);
-                } 
+                if (string.IsNullOrEmpty(s))
+                    throw new ArgumentException("channel cannot be empty string or null");
+
+                Channels.Add(s);
             }
         }
-        public bool IsDeleted { get; set; } = false;
 
+        public Guid ID { get; } = Guid.NewGuid();
+        public string Name { get; set; }
+        public bool IsDeleted { get; set; }
         public IList<string> Channels { get; } = new List<string>();
-
         public Dictionary<string, IComponent> Components { get; } = new Dictionary<string, IComponent>();
-
         public event EventHandler Deleted;
-
-        public virtual void OnDeleted()
-        {
-            Deleted?.Invoke(this, null);
-        }
 
         public void Delete()
         {
@@ -45,7 +37,7 @@ namespace PhoenixSystem.Engine
 
         public IEntity Clone()
         {
-            var e = new Entity(this.Name, this.Channels.ToArray());
+            var e = new Entity(Name, Channels.ToArray());
             foreach (var c in Components.Values)
             {
                 e.Components.Add(c.GetType().Name, c.Clone());
@@ -58,18 +50,24 @@ namespace PhoenixSystem.Engine
             return Channels.Contains(channel);
         }
 
+        public virtual void OnDeleted()
+        {
+            Deleted?.Invoke(this, null);
+        }
+
         #region -- Add Component --
 
         public event EventHandler<ComponentChangedEventArgs> ComponentAdded;
 
         protected void OnComponentAdded(IComponent c)
         {
-            ComponentAdded?.Invoke(this, new ComponentChangedEventArgs { Component = c });
+            ComponentAdded?.Invoke(this, new ComponentChangedEventArgs {Component = c});
         }
 
         public IEntity AddComponent(IComponent c, bool overwriteIfExists = false)
         {
             var componentType = c.GetType().Name;
+
             if (HasComponent(componentType) && !overwriteIfExists)
             {
                 throw new ApplicationException("Component already exists on this entity");
@@ -88,7 +86,7 @@ namespace PhoenixSystem.Engine
 
         protected void OnComponentRemoved(IComponent c)
         {
-            ComponentRemoved?.Invoke(this, new ComponentChangedEventArgs { Component = c });
+            ComponentRemoved?.Invoke(this, new ComponentChangedEventArgs {Component = c});
         }
 
         public bool RemoveComponent(Type componentType)

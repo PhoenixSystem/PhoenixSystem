@@ -1,22 +1,20 @@
-﻿using PhoenixSystem.Engine.Tests.Objects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using PhoenixSystem.Engine.Tests.Objects;
 using Xunit;
 
 namespace PhoenixSystem.Engine.Tests
 {
     public class GameManagerTests
     {
-        TestGameManager _gm;
+        private readonly TestGameManager _gm;
+
         public GameManagerTests()
         {
-            BasicChannelManager channelManager = new BasicChannelManager();
-            _gm = new TestGameManager(new BasicEntityAspectManager(channelManager), new EntityManager(channelManager), channelManager);
+            var channelManager = new BasicChannelManager();
+            _gm = new TestGameManager(new BasicEntityAspectManager(channelManager), new EntityManager(channelManager),
+                channelManager);
         }
-    
+
         [Fact]
         public void Entity_Count_Should_Be_Zero()
         {
@@ -100,9 +98,6 @@ namespace PhoenixSystem.Engine.Tests
          InlineData(false)]
         public void SystemRemoved_Should_Notify_Only_If_Flag_Is_Set(bool shouldNotify)
         {
-            
         }
-        
-
     }
 }

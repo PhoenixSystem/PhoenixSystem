@@ -1,12 +1,12 @@
-﻿using PhoenixSystem.Engine.Tests.Objects;
-using System;
+﻿using System;
+using PhoenixSystem.Engine.Tests.Objects;
 using Xunit;
 
 namespace PhoenixSystem.Engine.Tests
 {
     public class SystemTests
     {
-        IChannelManager cm;
+        private readonly IChannelManager cm;
 
         public SystemTests()
         {
@@ -16,7 +16,7 @@ namespace PhoenixSystem.Engine.Tests
         [Fact]
         public void Should_Be_Active_On_Start()
         {
-            LabelSystem system = new LabelSystem(cm, 10, new string[] { "default" });
+            var system = new LabelSystem(cm, 10, new[] {"default"});
             Assert.False(system.IsActive);
             system.Start();
             Assert.True(system.IsActive);
@@ -25,7 +25,7 @@ namespace PhoenixSystem.Engine.Tests
         [Fact]
         public void Should_Be_Not_Active_On_Stop()
         {
-            LabelSystem system = new LabelSystem(cm, 10, new string[] { "default" });
+            var system = new LabelSystem(cm, 10, new[] {"default"});
             Assert.False(system.IsActive);
             system.Start();
             Assert.True(system.IsActive);
@@ -36,11 +36,11 @@ namespace PhoenixSystem.Engine.Tests
         [Fact]
         public void Should_Notify_AddedToGameManager_When_Added_To_GameManager()
         {
-            bool raised = false;
-            bool expected = true;
-            TestGameManager tgm = new TestGameManager(new BasicEntityAspectManager(cm), new EntityManager(cm), cm);
-            LabelSystem system = new LabelSystem(cm, 10, new string[] { "default" });
-            system.AddedToGameManager += (s,e) => raised = true;
+            var raised = false;
+            var expected = true;
+            var tgm = new TestGameManager(new BasicEntityAspectManager(cm), new EntityManager(cm), cm);
+            var system = new LabelSystem(cm, 10, new[] {"default"});
+            system.AddedToGameManager += (s, e) => raised = true;
             system.AddToGameManager(tgm);
             Assert.Equal(expected, raised);
         }
@@ -48,11 +48,11 @@ namespace PhoenixSystem.Engine.Tests
         [Fact]
         public void Should_Notify_RemovedFromGameManager_When_Removed_From_GameManager()
         {
-            bool raised = false;
-            bool expected = true;
-            TestGameManager tgm = new TestGameManager(new BasicEntityAspectManager(cm), new EntityManager(cm), cm);
-            LabelSystem system = new LabelSystem(cm, 10, new string[] { "default" });
-            
+            var raised = false;
+            var expected = true;
+            var tgm = new TestGameManager(new BasicEntityAspectManager(cm), new EntityManager(cm), cm);
+            var system = new LabelSystem(cm, 10, new[] {"default"});
+
             system.AddToGameManager(tgm);
             system.RemovedFromGameManager += (s, e) => raised = true;
             system.RemoveFromGameManager(tgm);

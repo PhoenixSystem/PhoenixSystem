@@ -50,6 +50,7 @@
     <Compile Include="BasicEntityAspectManager.cs" />
     <Compile Include="Collections\IObjectPool.cs" />
     <Compile Include="Collections\ObjectPool.cs" />
+    <Compile Include="Extensions\EntityExtension.cs" />
     <Compile Include="EntityManager.cs" />
     <Compile Include="Events\EntityRemovedEventArgs.cs" />
     <Compile Include="Events\EntityChangedEventArgs.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="ITickEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Events\SystemChangedEventArgs.cs" />
+    <Compile Include="Extensions\SystemExtension.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
