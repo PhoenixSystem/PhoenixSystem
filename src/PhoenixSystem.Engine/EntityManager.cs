@@ -43,7 +43,7 @@ namespace PhoenixSystem.Engine
             _gameManager = gameManager;
         }
 
-        private void ResetEntity(IEntity e)
+        private static void ResetEntity(IEntity e)
         {
             e.Channels.Clear();
             e.IsDeleted = false;

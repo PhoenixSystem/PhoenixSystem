@@ -28,17 +28,17 @@ namespace PhoenixSystem.Engine
                 kvp.Value.ComponentRemovedFromEntity(e, component.GetType().Name);
             }
         }
-
-        public override IEnumerable<IAspect> GetAspectList<AspectType>()
+        
+        public override IEnumerable<TAspectType> GetAspectList<TAspectType>()
         {
-            var aspectType = typeof (AspectType).Name;
+            var aspectType = typeof (TAspectType).Name;
 
             if (_aspectFamilies.ContainsKey(aspectType))
             {
-                return _aspectFamilies[aspectType].ActiveAspectList;
+                return (IEnumerable<TAspectType>)_aspectFamilies[aspectType].ActiveAspectList;
             }
 
-            var aspectFamily = new BasicAspectMatchingFamily<AspectType>(_channelManager);
+            var aspectFamily = new BasicAspectMatchingFamily<TAspectType>(_channelManager);
 
             aspectFamily.Init();
 
@@ -49,10 +49,10 @@ namespace PhoenixSystem.Engine
                 aspectFamily.NewEntity(kvp.Value);
             }
 
-            return aspectFamily.ActiveAspectList;
+            return (IEnumerable<TAspectType>)aspectFamily.ActiveAspectList;
         }
 
-        public override IEnumerable<IAspect> GetUnfilteredAspectList<TAspectType>()
+        public override IEnumerable<TAspectType> GetUnfilteredAspectList<TAspectType>()
         {
             var type = typeof (TAspectType).Name;
 
@@ -61,7 +61,7 @@ namespace PhoenixSystem.Engine
                 throw new ApplicationException("Unable to retrieve unfiltered aspect list until AspectType is registered using GetNodeList");
             }
 
-            return _aspectFamilies[type].EntireAspectList;
+            return (IEnumerable<TAspectType>)_aspectFamilies[type].EntireAspectList;
         }
 
         public override void RegisterEntity(IEntity e)
@@ -72,9 +72,9 @@ namespace PhoenixSystem.Engine
             }
         }
 
-        public override void ReleaseAspectList<AspectType>()
+        public override void ReleaseAspectList<TAspectType>()
         {
-            var type = typeof (AspectType).Name;
+            var type = typeof (TAspectType).Name;
 
             if (!_aspectFamilies.ContainsKey(type))
             {

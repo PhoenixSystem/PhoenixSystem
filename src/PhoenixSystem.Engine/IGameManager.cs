@@ -7,16 +7,14 @@ namespace PhoenixSystem.Engine
     public interface IGameManager
     {
         IEntityManager EntityManager { get; }
-
-        IDictionary<int, ISystem> Systems { get; }
-        IDictionary<int, IManager> Managers { get; }
+        
+        IEnumerable<ISystem> Systems { get; }
+        IEnumerable<IManager> Managers { get; }
         bool IsUpdating { get; }
-        string CurrentChannel { get; }
-        event EventHandler<ChannelChangedEventArgs> ChannelChanged;
-        void SetChannel(string newChannel);
+        
         void Update(ITickEvent tickEvent);
-
-        event EventHandler EntityAdded;
+        
+        event EventHandler EntityAdded;        
         void AddEntity(IEntity e);
         void AddEntities(IEnumerable<IEntity> entities);
         void RemoveAllEntities();
@@ -31,8 +29,8 @@ namespace PhoenixSystem.Engine
         void SuspendSystem(ISystem system);
         event EventHandler SystemStarted;
         void StartSystem(ISystem system);
-        IEnumerable<IAspect> GetAspectList<AspectType>() where AspectType : IAspect, new();
-        IEnumerable<IAspect> GetUnfilteredAspectList<AspectType>() where AspectType : IAspect, new();
+        IEnumerable<AspectType> GetAspectList<AspectType>() where AspectType : IAspect, new();
+        IEnumerable<AspectType> GetUnfilteredAspectList<AspectType>() where AspectType : IAspect, new();
         void ReleaseAspectList<AspectType>();
         void RegisterManager(IManager manager);
     }

@@ -17,23 +17,35 @@ namespace PhoenixSystem.Engine
             IEntityManager entityManager,
             IChannelManager channelManager)
         {
-            EntityManager = entityManager;            
+            EntityManager = entityManager;
             _channelManager = channelManager;
             _entityAspectManager = entityAspectManager;
             _entityAspectManager.GameManager = this;            
         }
 
-        public string CurrentChannel { get; private set; }
 
         public IEntityManager EntityManager { get; }
 
         public bool IsUpdating { get; private set; }
 
-        public IDictionary<int, IManager> Managers { get; } = new SortedList<int, IManager>();
+        private SortedList<int, IManager> _managers = new SortedList<int, IManager>();
+        public IEnumerable<IManager> Managers
+        {
+            get
+            {
+                return _managers.Values;
+            }
+        }
 
-        public IDictionary<int, ISystem> Systems { get; } = new SortedList<int, ISystem>();
+        private SortedList<int, ISystem> _systems = new SortedList<int, ISystem>();
+        public IEnumerable<ISystem> Systems
+        {
+            get
+            {
+                return _systems.Values;
+            }
+        }
 
-        public event EventHandler<ChannelChangedEventArgs> ChannelChanged;
         public event EventHandler EntityAdded;
         public event EventHandler EntityRemoved;
         public event EventHandler SystemAdded;
@@ -68,19 +80,18 @@ namespace PhoenixSystem.Engine
                 throw new ApplicationException($"System {system.GetType().Name} already added to game manager.");
             }
 
-            Systems.Add(system.Priority, system);
-
+            _systems.Add(system.Priority, system);
             system.AddToGameManager(this);
 
             SystemAdded?.Invoke(this, new SystemChangedEventArgs(system));
         }
 
-        public IEnumerable<IAspect> GetAspectList<TAspectType>() where TAspectType : IAspect, new()
+        public IEnumerable<TAspectType> GetAspectList<TAspectType>() where TAspectType : IAspect, new()
         {
             return _entityAspectManager.GetAspectList<TAspectType>();
         }
 
-        public IEnumerable<IAspect> GetUnfilteredAspectList<TAspectType>() where TAspectType : IAspect, new()
+        public IEnumerable<TAspectType> GetUnfilteredAspectList<TAspectType>() where TAspectType : IAspect, new()
         {
             return _entityAspectManager.GetUnfilteredAspectList<TAspectType>();
         }
@@ -88,8 +99,7 @@ namespace PhoenixSystem.Engine
         public void RegisterManager(IManager manager)
         {
             manager.Register(this);
-
-            Managers.Add(manager.Priority, manager);
+            _managers.Add(manager.Priority, manager);
         }
 
         public void ReleaseAspectList<TAspectType>()
@@ -99,9 +109,9 @@ namespace PhoenixSystem.Engine
 
         public void RemoveAllSystems(bool shouldNotify)
         {
-            while (Systems.Count > 0)
+            while (_systems.Count > 0)
             {
-                RemoveSytem(Systems[0], shouldNotify);
+                RemoveSytem(_systems.First().Value, shouldNotify);
             }
         }
 
@@ -132,44 +142,37 @@ namespace PhoenixSystem.Engine
 
         public void RemoveSytem(ISystem system, bool shouldNotify)
         {
-            var key = Systems.GetKeyBySystemId(system.ID);
+            var key = _systems.GetKeyBySystemId(system.ID);
 
             if (!key.HasValue) return;
 
-            system = Systems[key.Value];
+            system = _systems[key.Value];
             system.RemoveFromGameManager(this);
-            Systems.Remove(key.Value);
+            _systems.Remove(key.Value);
 
             if (!shouldNotify) return;
 
             SystemRemoved?.Invoke(this, new SystemRemovedEventArgs(system));
         }
 
-        public void SetChannel(string newChannel)
-        {
-            CurrentChannel = newChannel;
-
-            ChannelChanged?.Invoke(this, new ChannelChangedEventArgs(CurrentChannel));
-        }
-
         public void StartSystem(ISystem system)
         {
-            var key = Systems.GetKeyBySystemId(system.ID);
+            var key = _systems.GetKeyBySystemId(system.ID);
 
             if (!key.HasValue) return;
 
-            system = Systems[key.Value];
+            system = _systems[key.Value];
             system.Start();
             SystemStarted?.Invoke(this, new SystemStartedEventArgs(system));
         }
 
         public void SuspendSystem(ISystem system)
         {
-            var key = Systems.GetKeyBySystemId(system.ID);
+            var key = _systems.GetKeyBySystemId(system.ID);
 
             if (!key.HasValue) return;
 
-            system = Systems[key.Value];
+            system = _systems[key.Value];
             system.Stop();
 
             SystemSuspended?.Invoke(this, new SystemSuspendedEventArgs(system));
@@ -180,17 +183,16 @@ namespace PhoenixSystem.Engine
             IsUpdating = true;
 
             var curChan = _channelManager.Channel;
-
-            foreach (var system in Systems.Values.Where(system => system.IsInChannel(curChan, "all")))
+            foreach (var system in _systems.Values)
             {
-                system.Update(tickEvent);
+                if (system.IsInChannel(curChan, "all"))
+                    system.Update(tickEvent);
             }
 
             OnSystemsUpdated(tickEvent);
-
-            foreach (var manager in Managers.Values.Where(manager => manager.IsInChannel(curChan, "all")))
+            foreach (var manager in _managers.Values)
             {
-                manager.Update();
+                    manager.Update();
             }
 
             OnManagersUpdated(tickEvent);
@@ -208,7 +210,7 @@ namespace PhoenixSystem.Engine
 
         private bool HasSystem(ISystem system)
         {
-            return Systems.Any(s => s.Value.ID == system.ID);
+            return _systems.Any(s => s.Value.ID == system.ID);
         }
 
         private void EntityOnComponentRemoved(object sender, ComponentChangedEventArgs e)

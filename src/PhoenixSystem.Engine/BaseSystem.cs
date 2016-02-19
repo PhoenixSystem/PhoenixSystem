@@ -46,9 +46,7 @@ namespace PhoenixSystem.Engine
         public void Stop()
         {
             IsActive = false;
-        }
-
-        protected abstract void Update();
+        }        
 
         public event EventHandler<GameManagerChangedEventArgs> AddedToGameManager;
 
