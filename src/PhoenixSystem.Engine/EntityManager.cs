@@ -26,19 +26,18 @@ namespace PhoenixSystem.Engine
                 var e = _inactiveEntities.Pop();
                 e.Channels.Clear();
                 e.IsDeleted = false;
-                if (channels != null && channels.Length > 0)
+                if (channels == null || channels.Length == 0)
+                    e.Channels.Add(_channelManager.Channel);
+                else
                 {
                     foreach (var c in channels)
                     {
                         e.Channels.Add(c);
                     }
                 }
-                else
-                {
-                    e.Channels.Add(_channelManager.Channel);
-                }
                 return e;
             }
+
             var newEnt = newEntity(name, channels);
             _activeEntities[newEnt.ID] = newEnt;
             return newEnt;
@@ -46,7 +45,11 @@ namespace PhoenixSystem.Engine
 
         private IEntity newEntity(string name, string[] channels)
         {
-            var e = new Entity(name,channels);
+            IEntity e;
+            if (channels == null || channels.Length == 0)
+                e = new Entity(name, new string[] { _channelManager.Channel });
+            else
+                e = new Entity(name, channels);
             e.Deleted += cleanupDeleted;
             return e;
         }
@@ -65,6 +68,6 @@ namespace PhoenixSystem.Engine
             _gameManager = gameManager;
         }
 
-        
+
     }
 }

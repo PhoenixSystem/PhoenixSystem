@@ -8,7 +8,7 @@ namespace PhoenixSystem.Engine.Tests.Objects
 {
     class TestGameManager : BaseGameManager
     {
-        protected TestGameManager(IEntityAspectManager entityAspectManager, IEntityManager entityManager) : base(entityAspectManager,entityManager)
+        public TestGameManager(IEntityAspectManager entityAspectManager, IEntityManager entityManager, IChannelManager channelManager) : base(entityAspectManager,entityManager, channelManager)
         {
 
         }

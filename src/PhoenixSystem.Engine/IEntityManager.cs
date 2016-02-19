@@ -9,7 +9,7 @@ namespace PhoenixSystem.Engine
     public interface IEntityManager
     {
         void Register(IGameManager gameManager);
-        IEntity Get(string name, string[] channels);
+        IEntity Get(string name = "", string[] channels = null);
         IDictionary<Guid, IEntity> Entities { get; }
 
        

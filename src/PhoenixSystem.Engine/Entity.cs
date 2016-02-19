@@ -12,10 +12,14 @@ namespace PhoenixSystem.Engine
 
         public Entity(string name, string[] channels)
         {
+            if(channels == null || channels.Length == 0)
+            {
+                throw new ArgumentException("string[] channels is null or empty; Entity must be initialized to one or more channels");
+            }
             Name = name;
             foreach (string s in channels)
             {
-
+                Channels.Add(s);
             }
         }
         public bool IsDeleted { get; set; } = false;
@@ -61,7 +65,7 @@ namespace PhoenixSystem.Engine
             ComponentAdded?.Invoke(this, new ComponentChangedEventArgs { Component = c });
         }
 
-        public Entity AddComponent(IComponent c, bool overwriteIfExists = false)
+        public IEntity AddComponent(IComponent c, bool overwriteIfExists = false)
         {
             var componentType = c.GetType().Name;
             if (HasComponent(componentType) && !overwriteIfExists)

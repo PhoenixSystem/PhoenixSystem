@@ -9,11 +9,13 @@ namespace PhoenixSystem.Engine
     {
         private readonly IEntityAspectManager _entityAspectManager;
 
-        protected BaseGameManager(IEntityAspectManager entityAspectManager, IEntityManager entityManager)
+        private IChannelManager _channelManager;
+        protected BaseGameManager(IEntityAspectManager entityAspectManager, IEntityManager entityManager, IChannelManager channelManager)
         {
             _entityAspectManager = entityAspectManager;
             _entityAspectManager.GameManager = this;
             EntityManager = entityManager;
+            _channelManager = channelManager;
         }
 
         public string CurrentChannel { get; private set; }
@@ -161,7 +163,7 @@ namespace PhoenixSystem.Engine
         public virtual void Update(ITickEvent tickEvent)
         {
             IsUpdating = true;
-            var curChan = BasicChannelManager.Instance.Channel;
+            var curChan = _channelManager.Channel;
             foreach(var system in Systems.Values)
             {
                 if(system.IsInChannel(curChan, "all"))

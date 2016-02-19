@@ -22,19 +22,9 @@ namespace PhoenixSystem.Engine
 
         public event EventHandler<ChannelChangedEventArgs> ChannelChanged;
 
-        private BasicChannelManager() { }
+        
 
 
-        //TODO: replace this singleton with some IOC/DI framework goodness
-        private static BasicChannelManager _Instance;
-        public static BasicChannelManager Instance
-        {
-            get
-            {
-                if (_Instance == null)
-                    _Instance = new BasicChannelManager();
-                return _Instance;
-            }
-        }
+        
     }
 }

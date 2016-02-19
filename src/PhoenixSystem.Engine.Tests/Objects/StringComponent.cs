@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PhoenixSystem.Engine.Tests.Objects
 {
-    class StringComponent : BaseComponent
+    public class StringComponent : BaseComponent
     {
         public string Value { get; set; } = string.Empty;
         public override IComponent Clone()

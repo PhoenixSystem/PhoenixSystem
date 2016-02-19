@@ -10,6 +10,8 @@ namespace PhoenixSystem.Engine
         bool IsDeleted { get; set; }
         void Delete();
         Dictionary<string, IComponent> Components { get; }
+        event EventHandler Deleted;
+
         bool HasComponent(Type componentType);
         bool HasComponent(string componentTypeName);
         bool HasComponents(IEnumerable<Type> types);
@@ -17,6 +19,7 @@ namespace PhoenixSystem.Engine
         string Name { get; set; }
         IList<string> Channels { get; }
 
+        IEntity AddComponent(IComponent component, bool shouldOverwrite = false);
         event EventHandler<ComponentChangedEventArgs> ComponentAdded;
         event EventHandler<ComponentChangedEventArgs> ComponentRemoved;
     }
