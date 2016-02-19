@@ -23,14 +23,6 @@ namespace PhoenixSystem.Engine.Tests
             Assert.Equal(true, e.IsDeleted);
         }
 
-        [Fact]
-        public void Entity_Should_Throw_Exception_If_Channels_Array_Is_Null()
-        {
-            Assert.Throws<ArgumentException>(() =>
-            {
-                var e = new Entity("Test", null);
-            });
-        }
 
         [Fact]
         public void Entity_Should_Throw_Exception_If_Channel_Is_Null_Or_Empty()
@@ -150,6 +142,57 @@ namespace PhoenixSystem.Engine.Tests
             };
             e.Delete();
             Assert.True(called);
+        }
+
+        [Fact]
+        public void Should_Remove_A_Component_By_Type()
+        {
+            var e = new Entity("name", new string[] { "channel" });
+            e.AddComponent(new StringComponent());
+            Assert.True(e.HasComponent<StringComponent>());
+            Assert.True(e.RemoveComponent<StringComponent>());
+            Assert.False(e.HasComponent<StringComponent>());
+        }
+
+        [Fact]
+        public void Should_Remove_A_Component_By_String()
+        {
+            var e = new Entity("name", new string[] { "channel" });
+            e.AddComponent(new StringComponent());
+            Assert.True(e.HasComponent<StringComponent>());
+            Assert.True(e.RemoveComponent(typeof(StringComponent).Name));
+            Assert.False(e.HasComponent<StringComponent>());
+        }
+
+        [Fact]
+        public void Should_Raise_Component_Removed_Event()
+        {
+            var raised = false;
+            var e = new Entity("name", new string[] { "channel" });
+            e.AddComponent(new StringComponent());
+            Assert.True(e.HasComponent<StringComponent>());
+            e.ComponentRemoved += (s, ea) => {
+                raised = true;
+                Assert.IsType<StringComponent>(ea.Component);
+                Assert.Same(e, s);
+            };
+            Assert.True(e.RemoveComponent<StringComponent>());
+            Assert.True(raised);
+        }
+
+        [Fact]
+        public void Clone_Should_Create_a_Copy()
+        {
+            string name = "name";
+            string[] channels = new string[] { "channel1", "channel2" };
+            var e = new Entity(name, channels);
+            e.AddComponent(new StringComponent()).AddComponent(new XYComponent());
+            var clone = e.Clone();
+            Assert.NotSame(clone, e);
+            Assert.NotSame(e.GetComponent<StringComponent>(), clone.GetComponent<StringComponent>());
+            Assert.NotSame(e.GetComponent<XYComponent>(), clone.GetComponent<XYComponent>());
+            Assert.NotSame(e.Channels, clone.Channels);
+            
         }
     }
 }

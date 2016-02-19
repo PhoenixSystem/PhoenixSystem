@@ -10,18 +10,18 @@ namespace PhoenixSystem.Engine
         public Guid ID { get; private set; } = Guid.NewGuid();
         public string Name { get; set; }
 
-        public Entity(string name, string[] channels)
+        public Entity(string name = "", string[] channels = null)
         {
-            if(channels == null || channels.Length == 0)
-            {
-                throw new ArgumentException("string[] channels is null or empty; Entity must be initialized to one or more channels");
-            }
             Name = name;
-            foreach (string s in channels)
+
+            if (channels!=null)
             {
-                if (String.IsNullOrEmpty(s))
-                    throw new ArgumentException("channel cannot be empty string or null");
-                Channels.Add(s);
+                foreach (string s in channels)
+                {
+                    if (String.IsNullOrEmpty(s))
+                        throw new ArgumentException("channel cannot be empty string or null");
+                    Channels.Add(s);
+                } 
             }
         }
         public bool IsDeleted { get; set; } = false;

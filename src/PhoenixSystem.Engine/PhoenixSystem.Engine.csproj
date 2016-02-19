@@ -48,6 +48,8 @@
     <Compile Include="BaseAspect.cs" />
     <Compile Include="BaseSystem.cs" />
     <Compile Include="BasicEntityAspectManager.cs" />
+    <Compile Include="Collections\IObjectPool.cs" />
+    <Compile Include="Collections\ObjectPool.cs" />
     <Compile Include="EntityManager.cs" />
     <Compile Include="Events\EntityRemovedEventArgs.cs" />
     <Compile Include="Events\EntityChangedEventArgs.cs" />

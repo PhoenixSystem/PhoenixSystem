@@ -11,7 +11,7 @@ namespace PhoenixSystem.Engine
         void Delete();
         Dictionary<string, IComponent> Components { get; }
         event EventHandler Deleted;
-
+        IEntity Clone();
         bool HasComponent(Type componentType);
         bool HasComponent(string componentTypeName);
         bool HasComponents(IEnumerable<Type> types);
@@ -37,6 +37,16 @@ namespace PhoenixSystem.Engine
             if (!entity.HasComponent(componentTypeName))
                 throw new ArgumentException("entity does not have component of type " + componentTypeName);
             return entity.Components[componentTypeName];
+        }
+
+        public static bool HasComponent<ComponentType>(this IEntity entity)
+        {
+            return entity.HasComponent(typeof(ComponentType));
+        }
+
+        public static bool RemoveComponent<ComponentType>(this IEntity entity)
+        {
+            return entity.RemoveComponent(typeof(ComponentType));
         }
     }
 }
