@@ -20,10 +20,11 @@ namespace PhoenixSystem.Engine
         public IDictionary<Guid, IEntity> Entities { get { return _activeEntities; } }
         public IEntity Get(string name = "", string[] channels = null)
         {
+            IEntity e;
 
             if (_inactiveEntities.Count > 0)
             {
-                var e = _inactiveEntities.Pop();
+                e = _inactiveEntities.Pop();
                 e.Channels.Clear();
                 e.IsDeleted = false;
                 if (channels == null || channels.Length == 0)
@@ -35,23 +36,18 @@ namespace PhoenixSystem.Engine
                         e.Channels.Add(c);
                     }
                 }
-                return e;
+
             }
-
-            var newEnt = newEntity(name, channels);
-            _activeEntities[newEnt.ID] = newEnt;
-            return newEnt;
-        }
-
-        private IEntity newEntity(string name, string[] channels)
-        {
-            IEntity e;
-            if (channels == null || channels.Length == 0)
-                e = new Entity(name, new string[] { _channelManager.Channel });
-            else
-                e = new Entity(name, channels);
-            e.Deleted += cleanupDeleted;
+            else {
+                if (channels == null || channels.Length == 0)
+                    e = new Entity(name, new string[] { _channelManager.Channel });
+                else
+                    e = new Entity(name, channels);
+                e.Deleted += cleanupDeleted;
+                _activeEntities[e.ID] = e;
+            }
             return e;
+            
         }
 
         private void cleanupDeleted(object sender, EventArgs eargs)

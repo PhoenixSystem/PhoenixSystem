@@ -18,9 +18,25 @@ namespace PhoenixSystem.Engine
         bool HasComponents(IEnumerable<string> types);
         string Name { get; set; }
         IList<string> Channels { get; }
+        bool IsInChannel(string channelname);
 
         IEntity AddComponent(IComponent component, bool shouldOverwrite = false);
         event EventHandler<ComponentChangedEventArgs> ComponentAdded;
         event EventHandler<ComponentChangedEventArgs> ComponentRemoved;
+        bool RemoveComponent(Type componentType);
+
+        bool RemoveComponent(string componentType);
+        
+    }
+
+    public static class IEntityHelpers
+    {
+        public static IComponent GetComponent<ComponentType>(this IEntity entity)
+        {
+            var componentTypeName = typeof(ComponentType).Name;
+            if (!entity.HasComponent(componentTypeName))
+                throw new ArgumentException("entity does not have component of type " + componentTypeName);
+            return entity.Components[componentTypeName];
+        }
     }
 }

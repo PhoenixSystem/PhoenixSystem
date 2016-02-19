@@ -19,6 +19,8 @@ namespace PhoenixSystem.Engine
             Name = name;
             foreach (string s in channels)
             {
+                if (String.IsNullOrEmpty(s))
+                    throw new ArgumentException("channel cannot be empty string or null");
                 Channels.Add(s);
             }
         }
