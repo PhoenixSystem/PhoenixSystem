@@ -14,7 +14,6 @@ namespace PhoenixSystem.Engine
         {
             _channelManager = channelManager;
             _entityPool = new ObjectPool<IEntity>(() => new Entity(), resetEntity);
-
         }
 
         IObjectPool<IEntity> _entityPool; 

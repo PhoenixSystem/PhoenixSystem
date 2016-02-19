@@ -28,13 +28,13 @@ namespace PhoenixSystem.Engine
             }
         }
         
-        public override IEnumerable<IAspect> GetAspectList<AspectType>()
+        public override IEnumerable<AspectType> GetAspectList<AspectType>()
         {
             var aspectType = typeof (AspectType).Name;
 
             if (_aspectFamilies.ContainsKey(aspectType))
             {
-                return _aspectFamilies[aspectType].ActiveAspectList;
+                return (IEnumerable<AspectType>)_aspectFamilies[aspectType].ActiveAspectList;
             }
 
             var aspectFamily = new BasicAspectMatchingFamily<AspectType>(_channelManager);
@@ -47,17 +47,17 @@ namespace PhoenixSystem.Engine
                 aspectFamily.NewEntity(kvp.Value);
             }
 
-            return aspectFamily.ActiveAspectList;
+            return (IEnumerable<AspectType>)aspectFamily.ActiveAspectList;
         }
 
-        public override IEnumerable<IAspect> GetUnfilteredAspectList<AspectType>()
+        public override IEnumerable<AspectType> GetUnfilteredAspectList<AspectType>()
         {
             var type = typeof (AspectType).Name;
 
             if (!_aspectFamilies.ContainsKey(type))
                 throw new ApplicationException("Unable to retrieve unfiltered aspect list until AspectType is registered using GetNodeList");
 
-            return _aspectFamilies[type].EntireAspectList;
+            return (IEnumerable<AspectType>)_aspectFamilies[type].EntireAspectList;
         }
 
         public override void RegisterEntity(IEntity e)

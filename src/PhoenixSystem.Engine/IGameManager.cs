@@ -8,8 +8,8 @@ namespace PhoenixSystem.Engine
     {
         IEntityManager EntityManager { get; }
         
-        IDictionary<int, ISystem> Systems { get; }
-        IDictionary<int, IManager> Managers { get; }
+        IEnumerable<ISystem> Systems { get; }
+        IEnumerable<IManager> Managers { get; }
         bool IsUpdating { get; }
         
         void Update(ITickEvent tickEvent);
@@ -29,8 +29,8 @@ namespace PhoenixSystem.Engine
         void SuspendSystem(ISystem system);
         event EventHandler SystemStarted;
         void StartSystem(ISystem system);
-        IEnumerable<IAspect> GetAspectList<AspectType>() where AspectType : IAspect, new();
-        IEnumerable<IAspect> GetUnfilteredAspectList<AspectType>() where AspectType : IAspect, new();
+        IEnumerable<AspectType> GetAspectList<AspectType>() where AspectType : IAspect, new();
+        IEnumerable<AspectType> GetUnfilteredAspectList<AspectType>() where AspectType : IAspect, new();
         void ReleaseAspectList<AspectType>();
         void RegisterManager(IManager manager);
     }
