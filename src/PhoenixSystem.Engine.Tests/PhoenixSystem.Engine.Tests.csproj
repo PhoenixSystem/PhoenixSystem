@@ -59,11 +59,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChannelManagerTests.cs" />
     <Compile Include="EntityManagerTests.cs" />
     <Compile Include="EntityTests.cs" />
     <Compile Include="GameManagerTests.cs" />
     <Compile Include="ObjectPoolTests.cs" />
     <Compile Include="Objects\LabelAspect.cs" />
+    <Compile Include="Objects\LabelSystem.cs" />
     <Compile Include="Objects\StringComponent.cs" />
     <Compile Include="Objects\TestGameManager.cs" />
     <Compile Include="Objects\XYComponent.cs" />
