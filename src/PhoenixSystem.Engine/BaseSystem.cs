@@ -18,10 +18,10 @@ namespace PhoenixSystem.Engine
                 return;
             }
 
-            foreach (var c in channels)
-            {
-                Channels.Add(c);
-            }
+                foreach (var c in channels)
+                {
+                    Channels.Add(c);
+                }
         }
 
         public bool IsActive { get; private set; }
