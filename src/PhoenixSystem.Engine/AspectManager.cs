@@ -6,7 +6,7 @@ using PhoenixSystem.Engine.Collections;
 
 namespace PhoenixSystem.Engine
 {
-    public class AspectManager<AspectType> : IAspectManager<AspectType> where AspectType: IAspect, new()
+    public class AspectManager<AspectType> : IAspectManager<AspectType> where AspectType : IAspect, new()
     {
         private ObjectPool<IAspect> _aspectPool;
         private IChannelManager _channelManager;
@@ -25,16 +25,18 @@ namespace PhoenixSystem.Engine
 
         public IEnumerable<IAspect> ActiveAspects => _activeAspects;
 
-        public IEnumerable<IAspect> ChannelAspects => _channelAspects;              
+        public IEnumerable<IAspect> ChannelAspects => _channelAspects;
 
         protected virtual void Aspect_Deleted(object sender, EventArgs e)
         {
-            var aspect = (IAspect) sender;
+            var aspect = (IAspect)sender;
 
             aspect.Deleted -= Aspect_Deleted;
-            
+
             _aspectPool.Put(aspect);
             _activeAspects.Remove(aspect);
+            if (aspect.IsInChannel(_channelManager.Channel) || aspect.IsInChannel("all"))
+                _channelAspects.Remove(aspect);
         }
 
         private void ApplyChannelFilter(string channel)
@@ -54,10 +56,11 @@ namespace PhoenixSystem.Engine
         public IAspect Get(IEntity e)
         {
             IAspect aspect = _aspectPool.Get();
-            
+
             aspect.Init(e);
             aspect.Deleted += Aspect_Deleted;
-
+            if (aspect.IsInChannel(_channelManager.Channel) || aspect.IsInChannel("all"))
+                _channelAspects.AddLast(aspect);
             _activeAspects.AddLast(aspect);
 
             return aspect;
