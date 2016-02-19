@@ -30,7 +30,7 @@ namespace PhoenixSystem.Engine
 
         public int Priority { get; }
 
-        public IList<string> Channels { get; private set; }
+        public IList<string> Channels { get; private set; } = new List<string>();
         public abstract void AddToGameManager(IGameManager gameManager);
 
         public abstract void RemoveFromGameManager(IGameManager gameManager);

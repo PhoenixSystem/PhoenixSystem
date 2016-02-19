@@ -15,16 +15,18 @@ namespace PhoenixSystem.Engine.Tests.Objects
         public override void AddToGameManager(IGameManager gameManager)
         {
             _labelAspects = gameManager.GetAspectList<LabelAspect>();
+            OnAddedToGameManager(gameManager);
         }
 
         public override void RemoveFromGameManager(IGameManager gameManager)
         {
-            throw new NotImplementedException();
+            gameManager.ReleaseAspectList<LabelAspect>();
+            OnRemovedFromGameManager();
         }
 
         public override void Update(ITickEvent tickEvent)
         {
-            throw new NotImplementedException();
+            Console.WriteLine("LabelSystem Update Executed");           
         }
 
 

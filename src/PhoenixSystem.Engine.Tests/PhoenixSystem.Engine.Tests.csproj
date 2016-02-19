@@ -70,6 +70,7 @@
     <Compile Include="Objects\TestGameManager.cs" />
     <Compile Include="Objects\XYComponent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SystemTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PhoenixSystem.Engine\PhoenixSystem.Engine.csproj">
