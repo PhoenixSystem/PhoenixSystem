@@ -23,12 +23,12 @@ namespace PhoenixSystem.Engine
         event EventHandler SystemAdded;
         void AddSystem(ISystem system);
         event EventHandler SystemRemoved;
-        void RemoveSytem(ISystem system, bool shouldNotify);
+        void RemoveSystem<SystemType>(bool shouldNotify) where SystemType : ISystem;
         void RemoveAllSystems(bool shouldNotify);
         event EventHandler SystemSuspended;
-        void SuspendSystem(ISystem system);
+        void SuspendSystem<SystemType>() where SystemType : ISystem;
         event EventHandler SystemStarted;
-        void StartSystem(ISystem system);
+        void StartSystem<SystemType>() where SystemType : ISystem;
         IEnumerable<AspectType> GetAspectList<AspectType>() where AspectType : IAspect, new();
         IEnumerable<AspectType> GetUnfilteredAspectList<AspectType>() where AspectType : IAspect, new();
         void ReleaseAspectList<AspectType>();

@@ -1,6 +1,7 @@
 ﻿using System;
 using PhoenixSystem.Engine.Tests.Objects;
 using Xunit;
+using System.Collections.Generic;
 
 namespace PhoenixSystem.Engine.Tests
 {
@@ -59,10 +60,26 @@ namespace PhoenixSystem.Engine.Tests
             Assert.Equal(expected, raised);
         }
 
-        [Theory]
+        [Fact]
         public void System_CompareTo_Should_Sort_Correctly()
         {
-            throw new NotImplementedException();
+            List<BaseSystem> systems = new List<BaseSystem>();
+
+            var sys1 = new LabelSystem(cm, 30);
+            var sys2 = new LabelSystem(cm, 10);
+            var sys3 = new LabelSystem(cm, 40);
+
+            systems.Add(sys1);
+            systems.Add(sys2);
+            systems.Add(sys3);
+
+            systems.Sort();
+
+            Assert.Equal(sys2.Priority, systems[0].Priority);
+            Assert.Equal(sys1.Priority, systems[1].Priority);
+            Assert.Equal(sys3.Priority, systems[2].Priority);
         }
+
+        
     }
 }

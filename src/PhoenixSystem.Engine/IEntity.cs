@@ -4,13 +4,13 @@ using PhoenixSystem.Engine.Events;
 
 namespace PhoenixSystem.Engine
 {
-    public interface IEntity
+    public interface IEntity : IChannelFilterable
     {
         Guid ID { get; }
         bool IsDeleted { get; set; }
         Dictionary<string, IComponent> Components { get; }
         string Name { get; set; }
-        IList<string> Channels { get; }
+        
         void Delete();
         event EventHandler Deleted;
         IEntity Clone();
@@ -18,7 +18,6 @@ namespace PhoenixSystem.Engine
         bool HasComponent(string componentTypeName);
         bool HasComponents(IEnumerable<Type> types);
         bool HasComponents(IEnumerable<string> types);
-        bool IsInChannel(string channelname);
         IEntity AddComponent(IComponent component, bool shouldOverwrite = false);
         event EventHandler<ComponentChangedEventArgs> ComponentAdded;
         event EventHandler<ComponentChangedEventArgs> ComponentRemoved;

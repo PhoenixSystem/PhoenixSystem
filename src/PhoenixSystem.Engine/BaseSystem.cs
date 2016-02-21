@@ -67,9 +67,21 @@ namespace PhoenixSystem.Engine
             return this.Priority.CompareTo(other.Priority);   
         }
 
-        public bool IsInChannel(params string[] channels)
+        
+
+        public override bool Equals(object obj)
         {
-            return channels.Any(c => Channels.Contains(c));
+            if(obj is BaseSystem)
+            {
+                var other = obj as BaseSystem;
+                return this.ID == other.ID;
+            }
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return ID.GetHashCode();
         }
     }
 }

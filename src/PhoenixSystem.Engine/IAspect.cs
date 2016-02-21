@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PhoenixSystem.Engine
 {
-    public interface IAspect
+    public interface IAspect :IChannelFilterable
     {
         Guid ID { get; }
         Dictionary<string, IComponent> Components { get; }
@@ -11,6 +11,5 @@ namespace PhoenixSystem.Engine
         void Reset();
         void Init(IEntity e, IEnumerable<string> channels = null);
         event EventHandler Deleted;
-        bool IsInChannel(string channelName);
     }
 }

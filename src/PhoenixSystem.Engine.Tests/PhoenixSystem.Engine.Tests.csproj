@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChannelManagerTests.cs" />
+    <Compile Include="EntityAspectManagerTests.cs" />
     <Compile Include="EntityManagerTests.cs" />
     <Compile Include="EntityTests.cs" />
     <Compile Include="GameManagerTests.cs" />

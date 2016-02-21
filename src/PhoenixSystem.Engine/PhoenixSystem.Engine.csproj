@@ -65,9 +65,12 @@
     <Compile Include="Events\SystemRemovedEventArgs.cs" />
     <Compile Include="Events\TickEventArgs.cs" />
     <Compile Include="BasicChannelManager.cs" />
+    <Compile Include="Extensions\IChannelFilterableExtensions.cs" />
     <Compile Include="IAspect.cs" />
+    <Compile Include="IAspectMatchingFamilyCache.cs" />
     <Compile Include="IAspectManager.cs" />
     <Compile Include="Attributes\IAssociatedComponentsAttribute.cs" />
+    <Compile Include="IChannelFilterable.cs" />
     <Compile Include="IComponent.cs" />
     <Compile Include="IEntity.cs" />
     <Compile Include="IEntityAspectManager.cs" />

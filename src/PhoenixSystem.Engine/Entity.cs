@@ -44,11 +44,7 @@ namespace PhoenixSystem.Engine
             }
             return e;
         }
-
-        public bool IsInChannel(string channel)
-        {
-            return Channels.Contains(channel);
-        }
+        
 
         public virtual void OnDeleted()
         {

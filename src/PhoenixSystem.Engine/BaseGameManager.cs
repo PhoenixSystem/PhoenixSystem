@@ -37,12 +37,12 @@ namespace PhoenixSystem.Engine
             }
         }
 
-        private SortedList<int, ISystem> _systems = new SortedList<int, ISystem>();
+        private List<ISystem> _systems = new List<ISystem>();
         public IEnumerable<ISystem> Systems
         {
             get
             {
-                return _systems.Values;
+                return _systems;
             }
         }
 
@@ -80,7 +80,8 @@ namespace PhoenixSystem.Engine
                 throw new ApplicationException($"System {system.GetType().Name} already added to game manager.");
             }
 
-            _systems.Add(system.Priority, system);
+            _systems.Add(system);
+            _systems.Sort();
             system.AddToGameManager(this);
 
             SystemAdded?.Invoke(this, new SystemChangedEventArgs(system));
@@ -111,7 +112,7 @@ namespace PhoenixSystem.Engine
         {
             while (_systems.Count > 0)
             {
-                RemoveSytem(_systems.First().Value, shouldNotify);
+                RemoveSystem(_systems.First().GetType(), shouldNotify);
             }
         }
 
@@ -140,39 +141,36 @@ namespace PhoenixSystem.Engine
             EntityRemoved?.Invoke(this, new EntityRemovedEventArgs(entity));
         }
 
-        public void RemoveSytem(ISystem system, bool shouldNotify)
+        public void RemoveSystem(Type systemType, bool shouldNotify)
         {
-            var key = _systems.GetKeyBySystemId(system.ID);
+            var system = _systems.FirstOrDefault(s => s.GetType() == systemType);
+            if (system == null) return;
 
-            if (!key.HasValue) return;
-
-            system = _systems[key.Value];
             system.RemoveFromGameManager(this);
-            _systems.Remove(key.Value);
-
+            _systems.Remove(system);
+            _systems.Sort();
             if (!shouldNotify) return;
 
             SystemRemoved?.Invoke(this, new SystemRemovedEventArgs(system));
         }
 
-        public void StartSystem(ISystem system)
+        public void RemoveSystem<SystemType>(bool shouldNotify) where SystemType : ISystem
         {
-            var key = _systems.GetKeyBySystemId(system.ID);
+            RemoveSystem(typeof(SystemType), shouldNotify);
+        }
 
-            if (!key.HasValue) return;
-
-            system = _systems[key.Value];
+        public void StartSystem<SystemType>() where SystemType: ISystem
+        {
+            var system = _systems.SingleOrDefault(s => s.GetType() == typeof(SystemType));
+            if (system == null) return;
             system.Start();
             SystemStarted?.Invoke(this, new SystemStartedEventArgs(system));
         }
 
-        public void SuspendSystem(ISystem system)
+        public void SuspendSystem<SystemType>() where SystemType : ISystem
         {
-            var key = _systems.GetKeyBySystemId(system.ID);
-
-            if (!key.HasValue) return;
-
-            system = _systems[key.Value];
+            var system = _systems.SingleOrDefault(s => s.GetType() == typeof(SystemType));
+            if (system == null) return;
             system.Stop();
 
             SystemSuspended?.Invoke(this, new SystemSuspendedEventArgs(system));
@@ -183,7 +181,7 @@ namespace PhoenixSystem.Engine
             IsUpdating = true;
 
             var curChan = _channelManager.Channel;
-            foreach (var system in _systems.Values)
+            foreach (var system in _systems)
             {
                 if (system.IsInChannel(curChan, "all"))
                     system.Update(tickEvent);
@@ -210,7 +208,7 @@ namespace PhoenixSystem.Engine
 
         private bool HasSystem(ISystem system)
         {
-            return _systems.Any(s => s.Value.ID == system.ID);
+            return _systems.Any(s => s.ID == system.ID);
         }
 
         private void EntityOnComponentRemoved(object sender, ComponentChangedEventArgs e)

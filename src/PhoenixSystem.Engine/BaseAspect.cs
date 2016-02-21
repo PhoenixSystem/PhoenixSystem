@@ -7,7 +7,7 @@ namespace PhoenixSystem.Engine
 {
     public abstract class BaseAspect : IAspect
     {
-        private readonly List<string> _channels = new List<string>();
+        public IList<string> Channels { get; } = new List<string>();
 
         protected BaseAspect()
         {
@@ -32,19 +32,19 @@ namespace PhoenixSystem.Engine
         {
             InitComponents(e);
             if (channels != null)
-                _channels.AddRange(channels);
+            {
+                foreach (string s in channels)
+                    Channels.Add(s);
+            }
+                
         }
 
         public virtual void Reset()
         {
             Components.Clear();
-            _channels.Clear();
+            Channels.Clear();
         }
-
-        public bool IsInChannel(string channelName)
-        {
-            return _channels.Contains(channelName);
-        }
+        
 
         protected virtual void OnDeleted()
         {
