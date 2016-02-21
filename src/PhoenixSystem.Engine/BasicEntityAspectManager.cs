@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PhoenixSystem.Engine
 {
@@ -36,7 +37,7 @@ namespace PhoenixSystem.Engine
 
             if (_aspectFamilies.ContainsKey(aspectType))
             {
-                return (IEnumerable<TAspectType>)_aspectFamilies[aspectType].ActiveAspectList;
+                return _aspectFamilies[aspectType].ActiveAspectList.Cast<TAspectType>();
             }
 
             var aspectFamily = new BasicAspectMatchingFamily<TAspectType>(_channelManager);
@@ -50,7 +51,7 @@ namespace PhoenixSystem.Engine
                 aspectFamily.NewEntity(kvp.Value);
             }
 
-            return (IEnumerable<TAspectType>)aspectFamily.ActiveAspectList;
+            return aspectFamily.ActiveAspectList.Cast<TAspectType>();
         }
 
         public override IEnumerable<TAspectType> GetUnfilteredAspectList<TAspectType>()
@@ -62,7 +63,7 @@ namespace PhoenixSystem.Engine
                 throw new ApplicationException("Unable to retrieve unfiltered aspect list until AspectType is registered using GetNodeList");
             }
 
-            return (IEnumerable<TAspectType>)_aspectFamilies[type].EntireAspectList;
+            return _aspectFamilies[type].EntireAspectList.Cast<TAspectType>();
         }
 
         public override void RegisterEntity(IEntity e)
