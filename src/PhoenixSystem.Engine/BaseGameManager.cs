@@ -20,7 +20,7 @@ namespace PhoenixSystem.Engine
             EntityManager = entityManager;
             _channelManager = channelManager;
             _entityAspectManager = entityAspectManager;
-            _entityAspectManager.GameManager = this;            
+            //_entityAspectManager.GameManager = this;            
         }
 
 

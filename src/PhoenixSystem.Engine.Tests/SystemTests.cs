@@ -39,7 +39,8 @@ namespace PhoenixSystem.Engine.Tests
         {
             var raised = false;
             var expected = true;
-            var tgm = new TestGameManager(new BasicEntityAspectManager(cm), new EntityManager(cm), cm);
+            var em = new EntityManager(cm);
+            var tgm = new TestGameManager(new BasicEntityAspectManager(cm, em), em, cm);
             var system = new LabelSystem(cm, 10, new[] {"default"});
             system.AddedToGameManager += (s, e) => raised = true;
             system.AddToGameManager(tgm);
@@ -51,7 +52,8 @@ namespace PhoenixSystem.Engine.Tests
         {
             var raised = false;
             var expected = true;
-            var tgm = new TestGameManager(new BasicEntityAspectManager(cm), new EntityManager(cm), cm);
+            var em = new EntityManager(cm);
+            var tgm = new TestGameManager(new BasicEntityAspectManager(cm,em), em, cm);
             var system = new LabelSystem(cm, 10, new[] {"default"});
 
             system.AddToGameManager(tgm);

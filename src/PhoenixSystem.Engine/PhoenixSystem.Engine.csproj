@@ -67,7 +67,6 @@
     <Compile Include="BasicChannelManager.cs" />
     <Compile Include="Extensions\IChannelFilterableExtensions.cs" />
     <Compile Include="IAspect.cs" />
-    <Compile Include="IAspectMatchingFamilyCache.cs" />
     <Compile Include="IAspectManager.cs" />
     <Compile Include="Attributes\IAssociatedComponentsAttribute.cs" />
     <Compile Include="IChannelFilterable.cs" />

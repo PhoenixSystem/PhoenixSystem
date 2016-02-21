@@ -7,10 +7,11 @@ namespace PhoenixSystem.Engine
     {
         private readonly Dictionary<string, IAspectMatchingFamily> _aspectFamilies = new Dictionary<string, IAspectMatchingFamily>();
         private readonly IChannelManager _channelManager;
-
-        public BasicEntityAspectManager(IChannelManager channelManager)
+        private readonly IEntityManager _entityManager;
+        public BasicEntityAspectManager(IChannelManager channelManager, IEntityManager entityManager)
         {
             _channelManager = channelManager;
+            _entityManager = entityManager;
         }
 
         public override void ComponentAddedToEntity(IEntity e, IComponent component)
@@ -44,7 +45,7 @@ namespace PhoenixSystem.Engine
 
             _aspectFamilies[aspectType] = aspectFamily;
 
-            foreach (var kvp in GameManager.EntityManager.Entities)
+            foreach (var kvp in _entityManager.Entities)
             {
                 aspectFamily.NewEntity(kvp.Value);
             }
