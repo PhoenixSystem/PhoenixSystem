@@ -28,15 +28,13 @@ namespace PhoenixSystem.Engine
             OnDeleted();
         }
 
-        public void Init(IEntity e, IEnumerable<string> channels = null)
+        public void Init(IEntity e)
         {
             InitComponents(e);
-            if (channels != null)
-            {
-                foreach (string s in channels)
-                    Channels.Add(s);
-            }
-                
+            foreach (string s in e.Channels)
+                Channels.Add(s);
+
+
         }
 
         public virtual void Reset()
@@ -44,7 +42,7 @@ namespace PhoenixSystem.Engine
             Components.Clear();
             Channels.Clear();
         }
-        
+
 
         protected virtual void OnDeleted()
         {

@@ -7,7 +7,7 @@ namespace PhoenixSystem.Engine
 {
     public class Entity : IEntity
     {
-        public Entity(string name = "", string[] channels = null)
+        public Entity(string name = "", params string[] channels)
         {
             Name = name;
 

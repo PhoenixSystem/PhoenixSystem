@@ -2,7 +2,7 @@
 
 namespace PhoenixSystem.Engine.Attributes
 {
-    [AttributeUsage(AttributeTargets.Class, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Class, Inherited = true)]
     public sealed class AssociatedComponentsAttribute : Attribute, IAssociatedComponentsAttribute
     {
         // This is a positional argument
@@ -26,7 +26,7 @@ namespace PhoenixSystem.Engine.Attributes
             //TODO: optimize this so that we don't have to construct a new attribute everytime referenced.
             //Should probably reference some sort of in-memory manager that caches the AssociatedComponents for each 
             //Aspect
-            var types = aspect.GetType().GetCustomAttributes(typeof (AssociatedComponentsAttribute), false);
+            var types = aspect.GetCustomAttributes(typeof (AssociatedComponentsAttribute), true);
 
             if (types.Length == 0)
             {

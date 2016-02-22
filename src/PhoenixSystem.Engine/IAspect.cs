@@ -9,7 +9,7 @@ namespace PhoenixSystem.Engine
         Dictionary<string, IComponent> Components { get; }
         void Delete();
         void Reset();
-        void Init(IEntity e, IEnumerable<string> channels = null);
+        void Init(IEntity e);
         event EventHandler Deleted;
     }
 }

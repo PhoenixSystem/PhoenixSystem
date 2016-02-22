@@ -10,18 +10,25 @@ namespace PhoenixSystem.Engine.Tests
 {
     public class EntityAspectManagerTests
     {
+        IEntityManager em;
         BasicEntityAspectManager _eam;
         public EntityAspectManagerTests()
         {
             var cm = new BasicChannelManager();
-            var em = new EntityManager(cm);
+            em = new EntityManager(cm);
             _eam = new BasicEntityAspectManager(cm, em);
         }
 
         [Fact]
         public void GetAspectList_Should_Return_Collection_Of_Appropriate_Type_Of_Aspect()
         {
-            
+            var expected = typeof(LabelAspect);
+            var entity = new Entity("TestEntity", "all");
+            entity.CreateLabelAspect("Test", 0, 0);
+            em.Entities.Add(entity.ID,entity);
+            _eam.RegisterEntity(entity);
+            var aspectList = _eam.GetAspectList<LabelAspect>();
+            Assert.Equal(expected, aspectList.First().GetType());
         }
         
     }
