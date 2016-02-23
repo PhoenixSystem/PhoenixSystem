@@ -30,6 +30,7 @@ namespace PhoenixSystem.Engine.Tests
             var aspectList = _eam.GetAspectList<LabelAspect>();
             Assert.Equal(expected, aspectList.First().GetType());
         }
+
         
     }
 }

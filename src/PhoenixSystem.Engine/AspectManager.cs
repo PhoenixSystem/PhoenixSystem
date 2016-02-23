@@ -29,7 +29,7 @@ namespace PhoenixSystem.Engine
             aspect.Init(e);
             aspect.Deleted += Aspect_Deleted;
 
-            if (aspect.IsInChannel(_channelManager.Channel) || aspect.IsInChannel("all"))
+            if (aspect.IsInChannel(_channelManager.Channel, "all"))
             {
                 _channelAspects.AddLast(aspect);
             }
@@ -48,7 +48,7 @@ namespace PhoenixSystem.Engine
             _aspectPool.Put(aspect);
             _aspects.Remove(aspect);
 
-            if (aspect.IsInChannel(_channelManager.Channel) || aspect.IsInChannel("all"))
+            if (aspect.IsInChannel(_channelManager.Channel, "all"))
             {
                 _channelAspects.Remove(aspect);
             }

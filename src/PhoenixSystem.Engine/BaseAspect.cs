@@ -56,10 +56,10 @@ namespace PhoenixSystem.Engine
                 if (Components.ContainsKey(componentTypeName))
                 {
                     Components[componentTypeName] = e.Components[componentTypeName];
-                    return;
                 }
-
-                Components.Add(componentTypeName, e.Components[componentTypeName]);
+                else {
+                    Components.Add(componentTypeName, e.Components[componentTypeName]);
+                }
             }
         }
 
