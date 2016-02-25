@@ -18,7 +18,7 @@ namespace PhoenixSystem.Engine.Aspect
 
         public IList<string> Channels { get; } = new List<string>();
 
-        public Dictionary<string, IComponent> Components { get; }
+        public IDictionary<string, IComponent> Components { get; }
 
         public Guid ID { get; } = Guid.NewGuid();
 

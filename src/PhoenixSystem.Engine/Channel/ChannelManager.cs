@@ -3,7 +3,7 @@ using PhoenixSystem.Engine.Events;
 
 namespace PhoenixSystem.Engine.Channel
 {
-    public class DefaultChannelManager : IChannelManager
+    public class ChannelManager : IChannelManager
     {
         private string _channel = "default";
 

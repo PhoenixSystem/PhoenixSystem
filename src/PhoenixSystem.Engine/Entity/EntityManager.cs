@@ -9,38 +9,40 @@ namespace PhoenixSystem.Engine.Entity
     public class EntityManager : IEntityManager
     {
         private readonly IChannelManager _channelManager;
-        private readonly IObjectPool<IEntity> _entityPool;
+        private readonly IObjectPool _entityPool;
         private IGameManager _gameManager;
 
         public EntityManager(IChannelManager channelManager)
         {
             _channelManager = channelManager;
-            _entityPool = new ObjectPool<IEntity>(() => new DefaultEntity(), ResetEntity);
+            _entityPool = new ObjectPool(() => new DefaultEntity(), entity => ResetEntity((IEntity)entity));
         }
 
         public IDictionary<Guid, IEntity> Entities { get; } = new Dictionary<Guid, IEntity>();
 
         public IEntity Get(string name = "", string[] channels = null)
         {
-            var e = _entityPool.Get();
-            e.Name = name;
+            var entity = _entityPool.Get<IEntity>();
+
+            entity.Name = name;
 
             if (channels == null || channels.Length == 0)
             {
-                e.Channels.Add(_channelManager.Channel);
+                entity.Channels.Add(_channelManager.Channel);
             }
             else
             {
                 foreach (var c in channels)
                 {
-                    e.Channels.Add(c);
+                    entity.Channels.Add(c);
                 }
             }
 
-            e.Deleted += CleanupDeleted;
-            Entities[e.ID] = e;
+            entity.Deleted += CleanupDeleted;
 
-            return e;
+            Entities[entity.ID] = entity;
+
+            return entity;
         }
 
         public void Register(IGameManager gameManager)

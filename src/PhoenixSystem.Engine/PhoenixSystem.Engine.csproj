@@ -64,7 +64,7 @@
     <Compile Include="Events\SystemSuspendedEventArgs.cs" />
     <Compile Include="Events\SystemRemovedEventArgs.cs" />
     <Compile Include="Events\TickEventArgs.cs" />
-    <Compile Include="Channel\DefaultChannelManager.cs" />
+    <Compile Include="Channel\ChannelManager.cs" />
     <Compile Include="Extensions\IChannelFilterableExtensions.cs" />
     <Compile Include="Aspect\IAspect.cs" />
     <Compile Include="Aspect\IAspectManager.cs" />
@@ -82,7 +82,6 @@
     <Compile Include="ITickEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Events\SystemChangedEventArgs.cs" />
-    <Compile Include="Extensions\SystemExtension.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

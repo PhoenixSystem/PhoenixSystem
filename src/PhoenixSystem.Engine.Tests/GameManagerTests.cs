@@ -9,7 +9,7 @@ namespace PhoenixSystem.Engine.Tests
     public class GameManagerTests
     {
         private readonly TestGameManager _gameManager;
-        private readonly IChannelManager _channelManager = new DefaultChannelManager();
+        private readonly IChannelManager _channelManager = new ChannelManager();
 
         public GameManagerTests()
         {
