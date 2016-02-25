@@ -1,7 +1,7 @@
 ﻿using System;
 using PhoenixSystem.Engine.Events;
 
-namespace PhoenixSystem.Engine
+namespace PhoenixSystem.Engine.Channel
 {
     public interface IChannelManager
     {

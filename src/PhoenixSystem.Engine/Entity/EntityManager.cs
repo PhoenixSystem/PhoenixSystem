@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using PhoenixSystem.Engine.Channel;
 using PhoenixSystem.Engine.Collections;
+using PhoenixSystem.Engine.Game;
 
-namespace PhoenixSystem.Engine
+namespace PhoenixSystem.Engine.Entity
 {
     public class EntityManager : IEntityManager
     {
@@ -13,7 +15,7 @@ namespace PhoenixSystem.Engine
         public EntityManager(IChannelManager channelManager)
         {
             _channelManager = channelManager;
-            _entityPool = new ObjectPool<IEntity>(() => new Entity(), ResetEntity);
+            _entityPool = new ObjectPool<IEntity>(() => new Engine.Entity.Entity(), ResetEntity);
         }
 
         public IDictionary<Guid, IEntity> Entities { get; } = new Dictionary<Guid, IEntity>();
@@ -22,8 +24,11 @@ namespace PhoenixSystem.Engine
         {
             var e = _entityPool.Get();
             e.Name = name;
+
             if (channels == null || channels.Length == 0)
+            {
                 e.Channels.Add(_channelManager.Channel);
+            }
             else
             {
                 foreach (var c in channels)
@@ -31,6 +36,7 @@ namespace PhoenixSystem.Engine
                     e.Channels.Add(c);
                 }
             }
+
             e.Deleted += CleanupDeleted;
             Entities[e.ID] = e;
 

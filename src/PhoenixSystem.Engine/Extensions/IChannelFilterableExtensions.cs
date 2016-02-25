@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using PhoenixSystem.Engine.Channel;
 
 namespace PhoenixSystem.Engine.Extensions
 {

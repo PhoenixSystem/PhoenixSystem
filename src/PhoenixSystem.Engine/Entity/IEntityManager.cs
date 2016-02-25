@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using PhoenixSystem.Engine.Game;
 
-namespace PhoenixSystem.Engine
+namespace PhoenixSystem.Engine.Entity
 {
     public interface IEntityManager
     {

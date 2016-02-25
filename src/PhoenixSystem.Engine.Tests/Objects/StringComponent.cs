@@ -1,4 +1,6 @@
-﻿namespace PhoenixSystem.Engine.Tests.Objects
+﻿using PhoenixSystem.Engine.Component;
+
+namespace PhoenixSystem.Engine.Tests.Objects
 {
     public class StringComponent : BaseComponent
     {

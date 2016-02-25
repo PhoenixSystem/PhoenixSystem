@@ -1,4 +1,7 @@
-﻿namespace PhoenixSystem.Engine
+﻿using PhoenixSystem.Engine.Channel;
+using PhoenixSystem.Engine.Game;
+
+namespace PhoenixSystem.Engine
 {
     public interface IManager : IChannelFilterable
     {

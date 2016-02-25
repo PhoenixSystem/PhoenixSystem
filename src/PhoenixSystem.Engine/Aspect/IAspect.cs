@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using PhoenixSystem.Engine.Channel;
+using PhoenixSystem.Engine.Component;
+using PhoenixSystem.Engine.Entity;
 
-namespace PhoenixSystem.Engine
+namespace PhoenixSystem.Engine.Aspect
 {
     public interface IAspect : IChannelFilterable
     {

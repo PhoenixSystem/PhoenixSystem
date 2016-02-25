@@ -10,8 +10,7 @@ namespace PhoenixSystem.Engine.Tests
 
         public ObjectPoolTests()
         {
-            _items = new ObjectPool<TestData>(() => new TestData(),
-                td => td.Data = "Reset at " + DateTime.Now.ToShortDateString());
+            _items = new ObjectPool<TestData>(() => new TestData(), td => td.Data = "Reset at " + DateTime.Now.ToShortDateString());
         }
 
         [Fact]

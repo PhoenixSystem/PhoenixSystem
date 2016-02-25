@@ -1,4 +1,6 @@
 ﻿using System;
+using PhoenixSystem.Engine.Component;
+using PhoenixSystem.Engine.Entity;
 
 namespace PhoenixSystem.Engine.Extensions
 {

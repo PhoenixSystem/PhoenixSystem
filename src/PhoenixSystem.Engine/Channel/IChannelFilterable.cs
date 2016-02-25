@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PhoenixSystem.Engine
+namespace PhoenixSystem.Engine.Channel
 {
     public interface IChannelFilterable
     {

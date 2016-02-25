@@ -1,7 +1,9 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using PhoenixSystem.Engine.Channel;
+using PhoenixSystem.Engine.Entity;
+using PhoenixSystem.Engine.System;
 using PhoenixSystem.Engine.Tests.Objects;
 using Xunit;
-using System.Collections.Generic;
 
 namespace PhoenixSystem.Engine.Tests
 {
@@ -11,7 +13,7 @@ namespace PhoenixSystem.Engine.Tests
 
         public SystemTests()
         {
-            cm = new BasicChannelManager();
+            cm = new DefaultChannelManager();
         }
 
         [Fact]
@@ -40,7 +42,7 @@ namespace PhoenixSystem.Engine.Tests
             var raised = false;
             var expected = true;
             var em = new EntityManager(cm);
-            var tgm = new TestGameManager(new BasicEntityAspectManager(cm, em), em, cm);
+            var tgm = new TestGameManager(new DefaultEntityAspectManager(cm, em), em, cm);
             var system = new LabelSystem(cm, 10, new[] {"default"});
             system.AddedToGameManager += (s, e) => raised = true;
             system.AddToGameManager(tgm);
@@ -53,7 +55,7 @@ namespace PhoenixSystem.Engine.Tests
             var raised = false;
             var expected = true;
             var em = new EntityManager(cm);
-            var tgm = new TestGameManager(new BasicEntityAspectManager(cm,em), em, cm);
+            var tgm = new TestGameManager(new DefaultEntityAspectManager(cm, em), em, cm);
             var system = new LabelSystem(cm, 10, new[] {"default"});
 
             system.AddToGameManager(tgm);
@@ -65,7 +67,7 @@ namespace PhoenixSystem.Engine.Tests
         [Fact]
         public void System_CompareTo_Should_Sort_Correctly()
         {
-            List<BaseSystem> systems = new List<BaseSystem>();
+            var systems = new List<BaseSystem>();
 
             var sys1 = new LabelSystem(cm, 30);
             var sys2 = new LabelSystem(cm, 10);
@@ -81,7 +83,5 @@ namespace PhoenixSystem.Engine.Tests
             Assert.Equal(sys1.Priority, systems[1].Priority);
             Assert.Equal(sys3.Priority, systems[2].Priority);
         }
-
-        
     }
 }
