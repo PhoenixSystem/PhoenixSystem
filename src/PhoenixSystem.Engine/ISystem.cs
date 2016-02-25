@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace PhoenixSystem.Engine
 {
@@ -7,7 +6,7 @@ namespace PhoenixSystem.Engine
     {
         Guid ID { get; }
         int Priority { get; }
-        
+
         void Start();
         void Stop();
         void AddToGameManager(IGameManager gameManager);

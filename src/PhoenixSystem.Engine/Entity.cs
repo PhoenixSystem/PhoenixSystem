@@ -59,7 +59,7 @@ namespace PhoenixSystem.Engine
 
         protected void OnComponentAdded(IComponent c)
         {
-            ComponentAdded?.Invoke(this, new ComponentChangedEventArgs {Component = c});
+            ComponentAdded?.Invoke(this, new ComponentChangedEventArgs(c));
         }
 
         public IEntity AddComponent(IComponent c, bool overwriteIfExists = false)
@@ -84,7 +84,7 @@ namespace PhoenixSystem.Engine
 
         protected void OnComponentRemoved(IComponent c)
         {
-            ComponentRemoved?.Invoke(this, new ComponentChangedEventArgs {Component = c});
+            ComponentRemoved?.Invoke(this, new ComponentChangedEventArgs(c));
         }
 
         public bool RemoveComponent(Type componentType)
