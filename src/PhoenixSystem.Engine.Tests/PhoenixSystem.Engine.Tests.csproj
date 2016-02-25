@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="AspectManagerTests.cs" />
     <Compile Include="AspectMatchingFamilyTests.cs" />
+    <Compile Include="AspectTests.cs" />
     <Compile Include="ChannelManagerTests.cs" />
     <Compile Include="EntityAspectManagerTests.cs" />
     <Compile Include="EntityManagerTests.cs" />
