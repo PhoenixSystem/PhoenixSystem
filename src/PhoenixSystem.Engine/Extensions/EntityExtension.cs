@@ -8,7 +8,7 @@ namespace PhoenixSystem.Engine.Extensions
     {
         public static IComponent GetComponent<TComponentType>(this IEntity entity)
         {
-            var componentTypeName = typeof (TComponentType).Name;
+            var componentTypeName = typeof (TComponentType);
 
             if (!entity.HasComponent(componentTypeName))
             {

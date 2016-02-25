@@ -9,10 +9,10 @@ namespace PhoenixSystem.Engine.Aspect
     public interface IAspect : IChannelFilterable
     {
         Guid ID { get; }
-        IDictionary<string, IComponent> Components { get; }
+        IDictionary<Type, IComponent> Components { get; }
         event EventHandler Deleted;
         void Delete();
         void Reset();
-        void Init(IEntity e);        
+        void Init(IEntity e);
     }
 }

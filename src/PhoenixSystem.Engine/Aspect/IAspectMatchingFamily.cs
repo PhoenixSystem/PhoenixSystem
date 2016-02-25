@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using PhoenixSystem.Engine.Entity;
 
 namespace PhoenixSystem.Engine.Aspect
@@ -10,8 +11,8 @@ namespace PhoenixSystem.Engine.Aspect
         
         void NewEntity(IEntity entity);
         void RemoveEntity(IEntity entity);
-        void ComponentAddedToEntity(IEntity entity, string componentType);
-        void ComponentRemovedFromEntity(IEntity entity, string componentType);
+        void ComponentAddedToEntity(IEntity entity, Type componentType);
+        void ComponentRemovedFromEntity(IEntity entity, Type componentType);
         void CleanUp();
     }
 }

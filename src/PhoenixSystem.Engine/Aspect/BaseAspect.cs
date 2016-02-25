@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using PhoenixSystem.Engine.Attributes;
 using PhoenixSystem.Engine.Component;
 using PhoenixSystem.Engine.Entity;
@@ -11,14 +10,14 @@ namespace PhoenixSystem.Engine.Aspect
     {
         protected BaseAspect()
         {
-            Components = new Dictionary<string, IComponent>();
+            Components = new Dictionary<Type, IComponent>();
         }
 
         public bool IsDeleted { get; private set; }
 
-        public IList<string> Channels { get; } = new List<string>();
+        public IDictionary<Type, IComponent> Components { get; }
 
-        public IDictionary<string, IComponent> Components { get; }
+        public IList<string> Channels { get; } = new List<string>();
 
         public Guid ID { get; } = Guid.NewGuid();
 
@@ -62,17 +61,16 @@ namespace PhoenixSystem.Engine.Aspect
 
         private void InitComponents(IEntity entity)
         {
-            foreach (var name in this.GetAssociatedComponentTypes().Select(componentType => componentType.Name))
+            foreach (var type in this.GetAssociatedComponentTypes())
             {
-                if (Components.ContainsKey(name))
+                if (Components.ContainsKey(type))
                 {
-                    Components[name] = entity.Components[name];
+                    Components[type] = entity.Components[type];
                 }
                 else
                 {
-                    Components.Add(name, entity.Components[name]);
+                    Components.Add(type, entity.Components[type]);
                 }
-
             }
         }
     }

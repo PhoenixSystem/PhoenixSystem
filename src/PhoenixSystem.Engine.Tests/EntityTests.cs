@@ -47,11 +47,11 @@ namespace PhoenixSystem.Engine.Tests
             var e = new DefaultEntity("test", "test");
             e.AddComponent(new StringComponent {Value = labelOne});
 
-            Assert.Equal(labelOne, ((StringComponent) e.Components[typeof (StringComponent).Name]).Value);
+            Assert.Equal(labelOne, ((StringComponent) e.Components[typeof (StringComponent)]).Value);
 
             e.AddComponent(new StringComponent {Value = labelTwo}, true);
 
-            Assert.Equal(labelTwo, ((StringComponent) e.Components[typeof (StringComponent).Name]).Value);
+            Assert.Equal(labelTwo, ((StringComponent) e.Components[typeof (StringComponent)]).Value);
         }
 
         [Fact]
@@ -94,7 +94,7 @@ namespace PhoenixSystem.Engine.Tests
         {
             var e = new DefaultEntity("name", "channel");
             e.AddComponent(new StringComponent());
-            Assert.True(e.HasComponent(typeof (StringComponent).Name));
+            Assert.True(e.HasComponent(typeof (StringComponent)));
         }
 
         [Fact]
@@ -112,7 +112,7 @@ namespace PhoenixSystem.Engine.Tests
             var e = new DefaultEntity("name", "channel");
             e.AddComponent(new StringComponent());
             e.AddComponent(new XYComponent());
-            Assert.True(e.HasComponents(new[] {typeof (StringComponent).Name, typeof (XYComponent).Name}));
+            Assert.True(e.HasComponents(new[] {typeof (StringComponent), typeof (XYComponent)}));
         }
 
         [Fact]
@@ -141,7 +141,7 @@ namespace PhoenixSystem.Engine.Tests
             var e = new DefaultEntity("name", "channel");
             e.AddComponent(new StringComponent());
             Assert.True(e.HasComponent<StringComponent>());
-            Assert.True(e.RemoveComponent(typeof (StringComponent).Name));
+            Assert.True(e.RemoveComponent(typeof (StringComponent)));
             Assert.False(e.HasComponent<StringComponent>());
         }
 

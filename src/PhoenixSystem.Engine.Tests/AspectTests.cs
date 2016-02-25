@@ -46,7 +46,7 @@ namespace PhoenixSystem.Engine.Tests
             aspect.Init(e);
             foreach (var component in e.Components.Values)
             {
-                Assert.Equal(component, aspect.Components[component.GetType().Name]);
+                Assert.Equal(component, aspect.Components[component.GetType()]);
             }
         }
 

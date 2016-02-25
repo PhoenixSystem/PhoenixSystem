@@ -29,7 +29,7 @@ namespace PhoenixSystem.Engine.Entity
         public string Name { get; set; }
         public bool IsDeleted { get; set; }
         public IList<string> Channels { get; } = new List<string>();
-        public IDictionary<string, IComponent> Components { get; } = new Dictionary<string, IComponent>();
+        public IDictionary<Type, IComponent> Components { get; } = new Dictionary<Type, IComponent>();
 
         public void Reset()
         {
@@ -50,7 +50,7 @@ namespace PhoenixSystem.Engine.Entity
             var e = new DefaultEntity(Name, Channels.ToArray());
             foreach (var c in Components.Values)
             {
-                e.Components.Add(c.GetType().Name, c.Clone());
+                e.Components.Add(c.GetType(), c.Clone());
             }
             return e;
         }
@@ -59,7 +59,7 @@ namespace PhoenixSystem.Engine.Entity
 
         public IEntity AddComponent(IComponent c, bool overwriteIfExists = false)
         {
-            var componentType = c.GetType().Name;
+            var componentType = c.GetType();
 
             if (HasComponent(componentType) && !overwriteIfExists)
             {
@@ -75,12 +75,6 @@ namespace PhoenixSystem.Engine.Entity
 
         public bool RemoveComponent(Type componentType)
         {
-            var componentTypeName = componentType.Name;
-            return RemoveComponent(componentTypeName);
-        }
-
-        public bool RemoveComponent(string componentType)
-        {
             if (!HasComponent(componentType)) return false;
             var component = Components[componentType];
             Components.Remove(componentType);
@@ -89,19 +83,9 @@ namespace PhoenixSystem.Engine.Entity
             return true;
         }
 
-        public bool HasComponent(string componentTypeName)
-        {
-            return Components.ContainsKey(componentTypeName);
-        }
-
         public bool HasComponent(Type componentType)
         {
-            return HasComponent(componentType.Name);
-        }
-
-        public bool HasComponents(IEnumerable<string> types)
-        {
-            return types.All(HasComponent);
+            return Components.ContainsKey(componentType);
         }
 
         public bool HasComponents(IEnumerable<Type> types)

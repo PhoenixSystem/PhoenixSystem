@@ -11,14 +11,14 @@ namespace PhoenixSystem.Engine.Aspect
     public class DefaultAspectMatchingFamily<TAspectType> : IAspectMatchingFamily where TAspectType : IAspect, new()
     {
         private readonly IAspectManager _aspectManager;
-        private readonly List<string> _componentTypes = new List<string>();
+        private readonly List<Type> _componentTypes = new List<Type>();
         private readonly IDictionary<Guid, IAspect> _entities = new Dictionary<Guid, IAspect>();
 
         public DefaultAspectMatchingFamily(IChannelManager channelManager)
         {
             _aspectManager = new AspectManager(channelManager, new AspectPool<TAspectType>());
             var componentTypes = AssociatedComponentsAttributeHelper.GetAssociatedComponentTypes(typeof(TAspectType));
-            _componentTypes.AddRange(componentTypes.Select(s => s.Name));
+            _componentTypes.AddRange(componentTypes);
         }
 
         public void CleanUp()
@@ -31,14 +31,14 @@ namespace PhoenixSystem.Engine.Aspect
             _entities.Clear();
         }
 
-        public void ComponentAddedToEntity(IEntity e, string componentType)
+        public void ComponentAddedToEntity(IEntity e, Type componentType)
         {
             if (!_componentTypes.Contains(componentType) || !IsMatch(e)) return;
 
             Add(e);
         }
 
-        public void ComponentRemovedFromEntity(IEntity e, string componentType)
+        public void ComponentRemovedFromEntity(IEntity e, Type componentType)
         {
             if (!ContainsEntity(e) || !_componentTypes.Contains(componentType)) return;
 
