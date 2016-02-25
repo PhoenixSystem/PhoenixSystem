@@ -1,10 +1,9 @@
 ﻿namespace PhoenixSystem.Engine.Collections
 {
-    public interface IObjectPool
+    public interface IObjectPool<T>
     {
         int Count { get; }
-        object Get();
-        T Get<T>();
-        void Put(object item);
+        T Get();
+        void Put(T item);
     }
 }

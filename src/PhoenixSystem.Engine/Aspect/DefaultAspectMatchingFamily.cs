@@ -16,7 +16,7 @@ namespace PhoenixSystem.Engine.Aspect
 
         public DefaultAspectMatchingFamily(IChannelManager channelManager)
         {
-            _aspectManager = new AspectManager(channelManager, new ObjectPool(() => new TAspectType(), aspect => ((IAspect)aspect).Reset()));
+            _aspectManager = new AspectManager(channelManager, new AspectPool<TAspectType>());
             var componentTypes = AssociatedComponentsAttributeHelper.GetAssociatedComponentTypes(typeof(TAspectType));
             _componentTypes.AddRange(componentTypes.Select(s => s.Name));
         }

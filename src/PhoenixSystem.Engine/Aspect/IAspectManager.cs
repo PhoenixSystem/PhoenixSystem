@@ -7,6 +7,6 @@ namespace PhoenixSystem.Engine.Aspect
     {
         IEnumerable<IAspect> Aspects { get; }
         IEnumerable<IAspect> ChannelAspects { get; }
-        IAspect Get(IEntity e);
+        IAspect Get(IEntity entity);
     }
 }

@@ -15,6 +15,7 @@ namespace PhoenixSystem.Engine.Entity
         event EventHandler Deleted;
         void Delete();        
         IEntity Clone();
+        void Reset();
         bool HasComponent(Type componentType);
         bool HasComponent(string componentTypeName);
         bool HasComponents(IEnumerable<Type> types);

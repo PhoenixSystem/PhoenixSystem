@@ -11,10 +11,10 @@ namespace PhoenixSystem.Engine.Aspect
     {
         private readonly LinkedList<IAspect> _aspects = new LinkedList<IAspect>();
         private readonly LinkedList<IAspect> _channelAspects = new LinkedList<IAspect>();
-        private readonly IObjectPool _aspectPool;
+        private readonly IObjectPool<IAspect> _aspectPool;
         private readonly IChannelManager _channelManager;
 
-        public AspectManager(IChannelManager channelManager, IObjectPool aspectPool)
+        public AspectManager(IChannelManager channelManager, IObjectPool<IAspect> aspectPool)
         {
             _aspectPool = aspectPool;
             _channelManager = channelManager;
@@ -24,11 +24,11 @@ namespace PhoenixSystem.Engine.Aspect
 
         public IEnumerable<IAspect> ChannelAspects => _channelAspects;
 
-        public IAspect Get(IEntity e)
+        public IAspect Get(IEntity entity)
         {
-            var aspect = _aspectPool.Get<IAspect>();
+            var aspect = _aspectPool.Get();
 
-            aspect.Init(e);
+            aspect.Init(entity);
             aspect.Deleted += AspectDeleted;
 
             if (aspect.IsInChannel(_channelManager.Channel, "all"))

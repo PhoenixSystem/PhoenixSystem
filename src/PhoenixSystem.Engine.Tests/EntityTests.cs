@@ -1,4 +1,5 @@
 ﻿using System;
+using PhoenixSystem.Engine.Entity;
 using PhoenixSystem.Engine.Extensions;
 using PhoenixSystem.Engine.Tests.Objects;
 using Xunit;
@@ -10,7 +11,7 @@ namespace PhoenixSystem.Engine.Tests
         [Fact]
         public void Is_Deleted_Should_Be_False_After_Delete()
         {
-            var e = new Entity.DefaultEntity("Test", "test");
+            var e = new DefaultEntity("Test", "test");
             e.Delete();
             Assert.Equal(true, e.IsDeleted);
         }
@@ -18,13 +19,13 @@ namespace PhoenixSystem.Engine.Tests
         [Fact]
         public void Entity_Should_Throw_Exception_If_Channel_Is_Null_Or_Empty()
         {
-            Assert.Throws<ArgumentException>(() => { var e = new Entity.DefaultEntity("Test", new string[1]); });
+            Assert.Throws<ArgumentException>(() => { var e = new DefaultEntity("Test", new string[1]); });
         }
 
         [Fact]
         public void AddComponent_Should_Increase_Component_Count()
         {
-            var e = new Entity.DefaultEntity("Test", "teset");
+            var e = new DefaultEntity("Test", "teset");
             Assert.Equal(0, e.Components.Count);
             e.AddComponent(new StringComponent {Value = "test"});
             Assert.Equal(1, e.Components.Count);
@@ -33,7 +34,7 @@ namespace PhoenixSystem.Engine.Tests
         [Fact]
         public void AddComponent_Should_Throw_Exception_If_Component_Exists_Already()
         {
-            var e = new Entity.DefaultEntity("test", "tests");
+            var e = new DefaultEntity("test", "tests");
             e.AddComponent(new StringComponent {Value = "label"});
             Assert.Throws<ApplicationException>(() => e.AddComponent(new StringComponent {Value = "who cares"}));
         }
@@ -43,7 +44,7 @@ namespace PhoenixSystem.Engine.Tests
         {
             var labelOne = "label one";
             var labelTwo = "label two";
-            var e = new Entity.DefaultEntity("test", "test");
+            var e = new DefaultEntity("test", "test");
             e.AddComponent(new StringComponent {Value = labelOne});
 
             Assert.Equal(labelOne, ((StringComponent) e.Components[typeof (StringComponent).Name]).Value);
@@ -57,7 +58,7 @@ namespace PhoenixSystem.Engine.Tests
         public void AddComponent_Should_Raise_OnComponentAdded()
         {
             var called = false;
-            var e = new Entity.DefaultEntity("name", "test");
+            var e = new DefaultEntity("name", "test");
             e.ComponentAdded += (s, arg) => { called = true; };
             e.AddComponent(new StringComponent {Value = "test"});
             Assert.True(called);
@@ -67,7 +68,7 @@ namespace PhoenixSystem.Engine.Tests
         public void IsInChannel_Should_Validate_Entity_Channel()
         {
             var channelName = "channelName";
-            var e = new Entity.DefaultEntity("test", channelName);
+            var e = new DefaultEntity("test", channelName);
             Assert.True(e.IsInChannel(channelName));
         }
 
@@ -76,14 +77,14 @@ namespace PhoenixSystem.Engine.Tests
         {
             var channelName = "channelName";
             var notChannelName = "notChannelname";
-            var e = new Entity.DefaultEntity("test", channelName);
+            var e = new DefaultEntity("test", channelName);
             Assert.False(e.IsInChannel(notChannelName));
         }
 
         [Fact]
         public void Can_Find_Component_By_Type()
         {
-            var e = new Entity.DefaultEntity("name", "channel");
+            var e = new DefaultEntity("name", "channel");
             e.AddComponent(new StringComponent());
             Assert.True(e.HasComponent(typeof (StringComponent)));
         }
@@ -91,7 +92,7 @@ namespace PhoenixSystem.Engine.Tests
         [Fact]
         public void Can_Find_Component_By_String()
         {
-            var e = new Entity.DefaultEntity("name", "channel");
+            var e = new DefaultEntity("name", "channel");
             e.AddComponent(new StringComponent());
             Assert.True(e.HasComponent(typeof (StringComponent).Name));
         }
@@ -99,7 +100,7 @@ namespace PhoenixSystem.Engine.Tests
         [Fact]
         public void Can_Find_Multiple_Components_By_Type()
         {
-            var e = new Entity.DefaultEntity("name", "channel");
+            var e = new DefaultEntity("name", "channel");
             e.AddComponent(new StringComponent());
             e.AddComponent(new XYComponent());
             Assert.True(e.HasComponents(new[] {typeof (StringComponent), typeof (XYComponent)}));
@@ -108,7 +109,7 @@ namespace PhoenixSystem.Engine.Tests
         [Fact]
         public void Can_Find_Multiple_Components_By_String()
         {
-            var e = new Entity.DefaultEntity("name", "channel");
+            var e = new DefaultEntity("name", "channel");
             e.AddComponent(new StringComponent());
             e.AddComponent(new XYComponent());
             Assert.True(e.HasComponents(new[] {typeof (StringComponent).Name, typeof (XYComponent).Name}));
@@ -117,7 +118,7 @@ namespace PhoenixSystem.Engine.Tests
         [Fact]
         public void Should_Raise_Deleted_Event_When_Deletedd()
         {
-            var e = new Entity.DefaultEntity("name", "channel");
+            var e = new DefaultEntity("name", "channel");
             var called = false;
             e.Deleted += (s, ea) => { called = true; };
             e.Delete();
@@ -127,7 +128,7 @@ namespace PhoenixSystem.Engine.Tests
         [Fact]
         public void Should_Remove_A_Component_By_Type()
         {
-            var e = new Entity.DefaultEntity("name", "channel");
+            var e = new DefaultEntity("name", "channel");
             e.AddComponent(new StringComponent());
             Assert.True(e.HasComponent<StringComponent>());
             Assert.True(e.RemoveComponent<StringComponent>());
@@ -137,7 +138,7 @@ namespace PhoenixSystem.Engine.Tests
         [Fact]
         public void Should_Remove_A_Component_By_String()
         {
-            var e = new Entity.DefaultEntity("name", "channel");
+            var e = new DefaultEntity("name", "channel");
             e.AddComponent(new StringComponent());
             Assert.True(e.HasComponent<StringComponent>());
             Assert.True(e.RemoveComponent(typeof (StringComponent).Name));
@@ -148,7 +149,7 @@ namespace PhoenixSystem.Engine.Tests
         public void Should_Raise_Component_Removed_Event()
         {
             var raised = false;
-            var e = new Entity.DefaultEntity("name", "channel");
+            var e = new DefaultEntity("name", "channel");
             e.AddComponent(new StringComponent());
             Assert.True(e.HasComponent<StringComponent>());
             e.ComponentRemoved += (s, ea) =>
@@ -166,7 +167,7 @@ namespace PhoenixSystem.Engine.Tests
         {
             var name = "name";
             string[] channels = {"channel1", "channel2"};
-            var e = new Entity.DefaultEntity(name, channels);
+            var e = new DefaultEntity(name, channels);
             e.AddComponent(new StringComponent()).AddComponent(new XYComponent());
             var clone = e.Clone();
             Assert.NotSame(clone, e);
