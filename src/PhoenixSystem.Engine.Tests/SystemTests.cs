@@ -13,7 +13,7 @@ namespace PhoenixSystem.Engine.Tests
 
         public SystemTests()
         {
-            cm = new DefaultChannelManager();
+            cm = new ChannelManager();
         }
 
         [Fact]

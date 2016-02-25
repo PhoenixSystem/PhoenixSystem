@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using PhoenixSystem.Engine.Aspect;
 using PhoenixSystem.Engine.Channel;
+using PhoenixSystem.Engine.Collections;
 using PhoenixSystem.Engine.Entity;
 using PhoenixSystem.Engine.Tests.Objects;
 using Xunit;
@@ -13,8 +14,9 @@ namespace PhoenixSystem.Engine.Tests
 
         public AspectManagerTests()
         {
-            var channelManager = new DefaultChannelManager();
-            _aspectManager = new AspectManager<LabelAspect>(channelManager);
+            var channelManager = new ChannelManager();
+            var labelAspectPool = new ObjectPool(() => new LabelAspect(), a => ((IAspect)a).Reset());
+            _aspectManager = new AspectManager(channelManager, labelAspectPool);
         }
 
         [Fact]

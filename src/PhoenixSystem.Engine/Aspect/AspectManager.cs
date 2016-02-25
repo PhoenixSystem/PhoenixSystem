@@ -7,16 +7,16 @@ using PhoenixSystem.Engine.Extensions;
 
 namespace PhoenixSystem.Engine.Aspect
 {
-    public class AspectManager<TAspectType> : IAspectManager where TAspectType : IAspect, new()
+    public class AspectManager : IAspectManager
     {
         private readonly LinkedList<IAspect> _aspects = new LinkedList<IAspect>();
-        private readonly ObjectPool<IAspect> _aspectPool;
         private readonly LinkedList<IAspect> _channelAspects = new LinkedList<IAspect>();
+        private readonly IObjectPool _aspectPool;
         private readonly IChannelManager _channelManager;
 
-        public AspectManager(IChannelManager channelManager)
+        public AspectManager(IChannelManager channelManager, IObjectPool aspectPool)
         {
-            _aspectPool = new ObjectPool<IAspect>(() => new TAspectType(), a => a.Reset());
+            _aspectPool = aspectPool;
             _channelManager = channelManager;
         }
 
@@ -26,10 +26,10 @@ namespace PhoenixSystem.Engine.Aspect
 
         public IAspect Get(IEntity e)
         {
-            var aspect = _aspectPool.Get();
+            var aspect = _aspectPool.Get<IAspect>();
 
             aspect.Init(e);
-            aspect.Deleted += Aspect_Deleted;
+            aspect.Deleted += AspectDeleted;
 
             if (aspect.IsInChannel(_channelManager.Channel, "all"))
             {
@@ -41,11 +41,13 @@ namespace PhoenixSystem.Engine.Aspect
             return aspect;
         }
 
-        protected virtual void Aspect_Deleted(object sender, EventArgs e)
+        protected virtual void AspectDeleted(object sender, EventArgs e)
         {
-            var aspect = (IAspect) sender;
+            var aspect = sender as IAspect;
 
-            aspect.Deleted -= Aspect_Deleted;
+            if (aspect == null) return;
+
+            aspect.Deleted -= AspectDeleted;
 
             if (aspect.IsInChannel(_channelManager.Channel, "all"))
             {
@@ -54,8 +56,6 @@ namespace PhoenixSystem.Engine.Aspect
 
             _aspects.Remove(aspect);
             _aspectPool.Put(aspect);
-            
-            
         }
     }
 }

@@ -13,7 +13,7 @@ namespace PhoenixSystem.Engine.Tests
 
         public EntityAspectManagerTests()
         {
-            var cm = new DefaultChannelManager();
+            var cm = new ChannelManager();
             _entityManager = new EntityManager(cm);
             _eam = new DefaultEntityAspectManager(cm, _entityManager);
         }

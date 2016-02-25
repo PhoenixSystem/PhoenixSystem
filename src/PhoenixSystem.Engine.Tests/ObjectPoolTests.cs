@@ -6,18 +6,18 @@ namespace PhoenixSystem.Engine.Tests
 {
     public class ObjectPoolTests
     {
-        private readonly ObjectPool<TestData> _items;
+        private readonly ObjectPool _items;
 
         public ObjectPoolTests()
         {
-            _items = new ObjectPool<TestData>(() => new TestData(), td => td.Data = "Reset at " + DateTime.Now.ToShortDateString());
+            _items = new ObjectPool(() => new TestData(), td => ((TestData)td).Data = "Reset at " + DateTime.Now.ToShortDateString());
         }
 
         [Fact]
         public void Should_Get_New_Instance_Of_Object()
         {
             Assert.Equal(0, _items.Count);
-            var item = _items.Get();
+            var item = _items.Get<TestData>();
             Assert.IsType<TestData>(item);
             Assert.True(string.IsNullOrEmpty(item.Data));
         }
@@ -25,23 +25,23 @@ namespace PhoenixSystem.Engine.Tests
         [Fact]
         public void Should_Get_Pooled_Instance_Of_Object()
         {
-            var item = _items.Get();
+            var item = _items.Get<TestData>();
             _items.Put(item);
             item = null;
-            item = _items.Get();
+            item = _items.Get<TestData>();
             Assert.StartsWith("Reset at ", item.Data);
         }
 
         [Fact]
         public void Should_Put_Item_In_Pool()
         {
-            var item = _items.Get();
+            var item = _items.Get<TestData>();
             Assert.Equal(0, _items.Count);
             _items.Put(item);
             Assert.Equal(1, _items.Count);
         }
 
-        private class TestData
+        public class TestData
         {
             public TestData(string data = "")
             {

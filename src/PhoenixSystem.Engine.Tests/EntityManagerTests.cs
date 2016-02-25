@@ -10,7 +10,7 @@ namespace PhoenixSystem.Engine.Tests
 
         public EntityManagerTests()
         {
-            var cm = new DefaultChannelManager();
+            var cm = new ChannelManager();
             _em = new EntityManager(cm);
         }
 
