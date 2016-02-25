@@ -9,20 +9,20 @@ namespace PhoenixSystem.Engine.Entity
     public class EntityManager : IEntityManager
     {
         private readonly IChannelManager _channelManager;
-        private readonly IObjectPool _entityPool;
+        private readonly IObjectPool<IEntity> _entityPool;
         private IGameManager _gameManager;
 
-        public EntityManager(IChannelManager channelManager)
+        public EntityManager(IChannelManager channelManager, IObjectPool<IEntity> objectPool)
         {
             _channelManager = channelManager;
-            _entityPool = new ObjectPool(() => new DefaultEntity(), entity => ResetEntity((IEntity)entity));
+            _entityPool = objectPool;
         }
 
         public IDictionary<Guid, IEntity> Entities { get; } = new Dictionary<Guid, IEntity>();
 
         public IEntity Get(string name = "", string[] channels = null)
         {
-            var entity = _entityPool.Get<IEntity>();
+            var entity = _entityPool.Get();
 
             entity.Name = name;
 
@@ -50,25 +50,19 @@ namespace PhoenixSystem.Engine.Entity
             _gameManager = gameManager;
         }
 
-        private static void ResetEntity(IEntity e)
-        {
-            e.Channels.Clear();
-            e.IsDeleted = false;
-        }
-
         private void CleanupDeleted(object sender, EventArgs eargs)
         {
-            var e = sender as IEntity;
+            var entity = sender as IEntity;
 
-            if (e == null) return;
+            if (entity == null) return;
 
-            e.Deleted -= CleanupDeleted;
+            entity.Deleted -= CleanupDeleted;
 
-            _entityPool.Put(e);
+            _entityPool.Put(entity);
 
-            Entities.Remove(e.ID);
+            Entities.Remove(entity.ID);
 
-            _gameManager.RemoveEntity(e);
+            _gameManager.RemoveEntity(entity);
         }
     }
 }

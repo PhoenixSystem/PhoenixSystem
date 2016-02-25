@@ -10,12 +10,11 @@ namespace PhoenixSystem.Engine.Tests
     public class AspectMatchingFamilyTests
     {
         private readonly IAspectMatchingFamily _aspectMatchingFamily;
-        private readonly IChannelManager _channelManager;
 
         public AspectMatchingFamilyTests()
         {
-            _channelManager = new ChannelManager();
-            _aspectMatchingFamily = new DefaultAspectMatchingFamily<LabelAspect>(_channelManager);
+            var channelManager = new ChannelManager();
+            _aspectMatchingFamily = new DefaultAspectMatchingFamily<LabelAspect>(channelManager);
         }
 
         [Fact]

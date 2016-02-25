@@ -15,8 +15,7 @@ namespace PhoenixSystem.Engine.Tests
         public AspectManagerTests()
         {
             var channelManager = new ChannelManager();
-            var labelAspectPool = new ObjectPool(() => new LabelAspect(), a => ((IAspect)a).Reset());
-            _aspectManager = new AspectManager(channelManager, labelAspectPool);
+            _aspectManager = new AspectManager(channelManager, new AspectPool<LabelAspect>());
         }
 
         [Fact]

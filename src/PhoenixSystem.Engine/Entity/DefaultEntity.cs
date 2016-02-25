@@ -31,6 +31,12 @@ namespace PhoenixSystem.Engine.Entity
         public IList<string> Channels { get; } = new List<string>();
         public IDictionary<string, IComponent> Components { get; } = new Dictionary<string, IComponent>();
 
+        public void Reset()
+        {
+            Channels.Clear();
+            IsDeleted = false;
+        }
+
         public event EventHandler Deleted;
 
         public void Delete()
@@ -49,19 +55,7 @@ namespace PhoenixSystem.Engine.Entity
             return e;
         }
 
-        public virtual void OnDeleted()
-        {
-            Deleted?.Invoke(this, null);
-        }
-
-        #region -- Add Component --
-
         public event EventHandler<ComponentChangedEventArgs> ComponentAdded;
-
-        protected void OnComponentAdded(IComponent c)
-        {
-            ComponentAdded?.Invoke(this, new ComponentChangedEventArgs(c));
-        }
 
         public IEntity AddComponent(IComponent c, bool overwriteIfExists = false)
         {
@@ -77,16 +71,7 @@ namespace PhoenixSystem.Engine.Entity
             return this;
         }
 
-        #endregion
-
-        #region -- Remove Component -- 
-
         public event EventHandler<ComponentChangedEventArgs> ComponentRemoved;
-
-        protected void OnComponentRemoved(IComponent c)
-        {
-            ComponentRemoved?.Invoke(this, new ComponentChangedEventArgs(c));
-        }
 
         public bool RemoveComponent(Type componentType)
         {
@@ -103,10 +88,6 @@ namespace PhoenixSystem.Engine.Entity
             component = null;
             return true;
         }
-
-        #endregion
-
-        #region -- Has Component --
 
         public bool HasComponent(string componentTypeName)
         {
@@ -128,6 +109,19 @@ namespace PhoenixSystem.Engine.Entity
             return types.All(HasComponent);
         }
 
-        #endregion -- Has Component --
+        public virtual void OnDeleted()
+        {
+            Deleted?.Invoke(this, null);
+        }
+
+        protected void OnComponentAdded(IComponent c)
+        {
+            ComponentAdded?.Invoke(this, new ComponentChangedEventArgs(c));
+        }
+
+        protected void OnComponentRemoved(IComponent c)
+        {
+            ComponentRemoved?.Invoke(this, new ComponentChangedEventArgs(c));
+        }
     }
 }

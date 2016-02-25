@@ -3,13 +3,13 @@ using System.Collections.Concurrent;
 
 namespace PhoenixSystem.Engine.Collections
 {
-    public class ObjectPool : IObjectPool
+    public class ObjectPool<T> : IObjectPool<T>
     {
-        private readonly Func<object> _creatorFunction;
-        private readonly ConcurrentBag<object> _items;
-        private readonly Action<object> _resetFunction;
+        private readonly Func<T> _creatorFunction;
+        private readonly ConcurrentBag<T> _items;
+        private readonly Action<T> _resetFunction;
 
-        public ObjectPool(Func<object> creatorFunction, Action<object> resetFunction = null)
+        public ObjectPool(Func<T> creatorFunction, Action<T> resetFunction = null)
         {
             if (creatorFunction == null)
             {
@@ -23,26 +23,21 @@ namespace PhoenixSystem.Engine.Collections
                 _resetFunction = resetFunction;
             }
 
-            _items = new ConcurrentBag<object>();
+            _items = new ConcurrentBag<T>();
         }
 
         public int Count => _items.Count;
 
-        public object Get()
+        public T Get()
         {
-            object item;
+            T item;
             return _items.TryTake(out item) ? item : _creatorFunction();
         }
 
-        public void Put(object item)
+        public void Put(T item)
         {
             _resetFunction?.Invoke(item);
             _items.Add(item);
-        }
-
-        public T Get<T>()
-        {
-            return (T) Get();
         }
     }
 }
