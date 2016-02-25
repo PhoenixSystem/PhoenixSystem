@@ -1,4 +1,6 @@
-﻿using Xunit;
+﻿using PhoenixSystem.Engine.Channel;
+using PhoenixSystem.Engine.Entity;
+using Xunit;
 
 namespace PhoenixSystem.Engine.Tests
 {
@@ -8,7 +10,7 @@ namespace PhoenixSystem.Engine.Tests
 
         public EntityManagerTests()
         {
-            var cm = new BasicChannelManager();
+            var cm = new DefaultChannelManager();
             _em = new EntityManager(cm);
         }
 

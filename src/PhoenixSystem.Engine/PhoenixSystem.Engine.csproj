@@ -40,50 +40,51 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AspectManager.cs" />
+    <Compile Include="Aspect\AspectManager.cs" />
     <Compile Include="Attributes\AssociatedComponentsAttribute.cs" />
-    <Compile Include="BaseComponent.cs" />
-    <Compile Include="BaseEntityAspectManager.cs" />
-    <Compile Include="BaseGameManager.cs" />
-    <Compile Include="BaseAspect.cs" />
-    <Compile Include="BaseSystem.cs" />
-    <Compile Include="BasicEntityAspectManager.cs" />
+    <Compile Include="Component\BaseComponent.cs" />
+    <Compile Include="Entity\BaseEntityAspectManager.cs" />
+    <Compile Include="Game\BaseGameManager.cs" />
+    <Compile Include="Aspect\BaseAspect.cs" />
+    <Compile Include="System\BaseSystem.cs" />
+    <Compile Include="Entity\DefaultEntityAspectManager.cs" />
     <Compile Include="Collections\IObjectPool.cs" />
     <Compile Include="Collections\ObjectPool.cs" />
     <Compile Include="Extensions\EntityExtension.cs" />
-    <Compile Include="EntityManager.cs" />
+    <Compile Include="Entity\EntityManager.cs" />
     <Compile Include="Events\EntityRemovedEventArgs.cs" />
     <Compile Include="Events\EntityChangedEventArgs.cs" />
     <Compile Include="Events\ChannelChangedEventArgs.cs" />
     <Compile Include="Events\ComponentChangedEventArgs.cs" />
-    <Compile Include="Entity.cs" />
-    <Compile Include="BasicAspectMatchingFamily.cs" />
+    <Compile Include="Entity\DefaultEntity.cs" />
+    <Compile Include="Aspect\DefaultAspectMatchingFamily.cs" />
     <Compile Include="Events\GameManagerChangedEventArgs.cs" />
     <Compile Include="Events\GameManagerUpdateEventArgs.cs" />
     <Compile Include="Events\SystemStartedEventArgs.cs" />
     <Compile Include="Events\SystemSuspendedEventArgs.cs" />
     <Compile Include="Events\SystemRemovedEventArgs.cs" />
     <Compile Include="Events\TickEventArgs.cs" />
-    <Compile Include="BasicChannelManager.cs" />
+    <Compile Include="Channel\DefaultChannelManager.cs" />
     <Compile Include="Extensions\IChannelFilterableExtensions.cs" />
-    <Compile Include="IAspect.cs" />
-    <Compile Include="IAspectManager.cs" />
+    <Compile Include="Aspect\IAspect.cs" />
+    <Compile Include="Aspect\IAspectManager.cs" />
     <Compile Include="Attributes\IAssociatedComponentsAttribute.cs" />
-    <Compile Include="IChannelFilterable.cs" />
-    <Compile Include="IComponent.cs" />
-    <Compile Include="IEntity.cs" />
-    <Compile Include="IEntityAspectManager.cs" />
-    <Compile Include="IAspectMatchingFamily.cs" />
-    <Compile Include="IChannelManager.cs" />
-    <Compile Include="IEntityManager.cs" />
-    <Compile Include="IGameManager.cs" />
+    <Compile Include="Channel\IChannelFilterable.cs" />
+    <Compile Include="Component\IComponent.cs" />
+    <Compile Include="Entity\IEntity.cs" />
+    <Compile Include="Entity\IEntityAspectManager.cs" />
+    <Compile Include="Aspect\IAspectMatchingFamily.cs" />
+    <Compile Include="Channel\IChannelManager.cs" />
+    <Compile Include="Entity\IEntityManager.cs" />
+    <Compile Include="Game\IGameManager.cs" />
     <Compile Include="IManager.cs" />
-    <Compile Include="ISystem.cs" />
+    <Compile Include="System\ISystem.cs" />
     <Compile Include="ITickEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Events\SystemChangedEventArgs.cs" />
     <Compile Include="Extensions\SystemExtension.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

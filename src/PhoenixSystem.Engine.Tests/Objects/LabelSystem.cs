@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using PhoenixSystem.Engine.Channel;
+using PhoenixSystem.Engine.Game;
+using PhoenixSystem.Engine.System;
 
 namespace PhoenixSystem.Engine.Tests.Objects
 {

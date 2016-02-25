@@ -1,36 +1,33 @@
-﻿using PhoenixSystem.Engine.Tests.Objects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
+using PhoenixSystem.Engine.Channel;
+using PhoenixSystem.Engine.Entity;
+using PhoenixSystem.Engine.Tests.Objects;
 using Xunit;
 
 namespace PhoenixSystem.Engine.Tests
 {
     public class EntityAspectManagerTests
     {
-        IEntityManager em;
-        BasicEntityAspectManager _eam;
+        private readonly DefaultEntityAspectManager _eam;
+        private readonly IEntityManager _entityManager;
+
         public EntityAspectManagerTests()
         {
-            var cm = new BasicChannelManager();
-            em = new EntityManager(cm);
-            _eam = new BasicEntityAspectManager(cm, em);
+            var cm = new DefaultChannelManager();
+            _entityManager = new EntityManager(cm);
+            _eam = new DefaultEntityAspectManager(cm, _entityManager);
         }
 
         [Fact]
         public void GetAspectList_Should_Return_Collection_Of_Appropriate_Type_Of_Aspect()
         {
-            var expected = typeof(LabelAspect);
-            var entity = new Entity("TestEntity", "all");
+            var expected = typeof (LabelAspect);
+            var entity = new Entity.DefaultEntity("TestEntity", "all");
             entity.CreateLabelAspect("Test", 0, 0);
-            em.Entities.Add(entity.ID,entity);
+            _entityManager.Entities.Add(entity.ID, entity);
             _eam.RegisterEntity(entity);
             var aspectList = _eam.GetAspectList<LabelAspect>();
             Assert.Equal(expected, aspectList.First().GetType());
         }
-
-        
     }
 }

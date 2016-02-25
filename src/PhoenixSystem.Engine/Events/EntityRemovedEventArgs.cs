@@ -1,4 +1,5 @@
 ﻿using System;
+using PhoenixSystem.Engine.Entity;
 
 namespace PhoenixSystem.Engine.Events
 {

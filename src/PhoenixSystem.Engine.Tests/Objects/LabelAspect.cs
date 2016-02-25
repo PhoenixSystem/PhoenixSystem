@@ -1,4 +1,6 @@
-﻿using PhoenixSystem.Engine.Attributes;
+﻿using PhoenixSystem.Engine.Aspect;
+using PhoenixSystem.Engine.Attributes;
+using PhoenixSystem.Engine.Entity;
 
 namespace PhoenixSystem.Engine.Tests.Objects
 {

@@ -1,9 +1,9 @@
 ﻿using System;
 using PhoenixSystem.Engine.Events;
 
-namespace PhoenixSystem.Engine
+namespace PhoenixSystem.Engine.Channel
 {
-    public class BasicChannelManager : IChannelManager
+    public class DefaultChannelManager : IChannelManager
     {
         private string _channel = "default";
 
