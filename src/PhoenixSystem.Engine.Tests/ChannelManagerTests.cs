@@ -8,7 +8,7 @@ namespace PhoenixSystem.Engine.Tests
         [Fact]
         public void Should_Notify_When_Channel_Changes()
         {
-            IChannelManager cm = new DefaultChannelManager();
+            IChannelManager cm = new ChannelManager();
             var notify = false;
             cm.ChannelChanged += (s, e) => notify = true;
             cm.Channel = "different";

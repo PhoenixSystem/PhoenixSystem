@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using PhoenixSystem.Engine.Channel;
+using PhoenixSystem.Engine.Collections;
 using PhoenixSystem.Engine.Entity;
 
 namespace PhoenixSystem.Engine.Aspect
 {
     public class DefaultAspectMatchingFamily<TAspectType> : IAspectMatchingFamily where TAspectType : IAspect, new()
     {
-        private readonly AspectManager<TAspectType> _aspectManager;
+        private readonly IAspectManager _aspectManager;
         private readonly IList<string> _componentTypes = new List<string>();
-        private readonly Dictionary<Guid, IAspect> _entities = new Dictionary<Guid, IAspect>();
+        private readonly IDictionary<Guid, IAspect> _entities = new Dictionary<Guid, IAspect>();
 
         public DefaultAspectMatchingFamily(IChannelManager channelManager)
         {
-            _aspectManager = new AspectManager<TAspectType>(channelManager);
+            _aspectManager = new AspectManager(channelManager, new ObjectPool(() => new TAspectType(), a => ((TAspectType) a).Reset()));
         }
 
         public void CleanUp()
