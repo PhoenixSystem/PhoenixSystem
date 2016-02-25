@@ -15,7 +15,7 @@ namespace PhoenixSystem.Engine.Entity
         public EntityManager(IChannelManager channelManager)
         {
             _channelManager = channelManager;
-            _entityPool = new ObjectPool<IEntity>(() => new Engine.Entity.Entity(), ResetEntity);
+            _entityPool = new ObjectPool<IEntity>(() => new DefaultEntity(), ResetEntity);
         }
 
         public IDictionary<Guid, IEntity> Entities { get; } = new Dictionary<Guid, IEntity>();

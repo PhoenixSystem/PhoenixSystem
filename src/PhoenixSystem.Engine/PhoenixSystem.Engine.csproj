@@ -56,7 +56,7 @@
     <Compile Include="Events\EntityChangedEventArgs.cs" />
     <Compile Include="Events\ChannelChangedEventArgs.cs" />
     <Compile Include="Events\ComponentChangedEventArgs.cs" />
-    <Compile Include="Entity\Entity.cs" />
+    <Compile Include="Entity\DefaultEntity.cs" />
     <Compile Include="Aspect\DefaultAspectMatchingFamily.cs" />
     <Compile Include="Events\GameManagerChangedEventArgs.cs" />
     <Compile Include="Events\GameManagerUpdateEventArgs.cs" />

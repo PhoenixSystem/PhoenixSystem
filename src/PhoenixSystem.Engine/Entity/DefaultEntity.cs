@@ -6,9 +6,9 @@ using PhoenixSystem.Engine.Events;
 
 namespace PhoenixSystem.Engine.Entity
 {
-    public class Entity : IEntity
+    public class DefaultEntity : IEntity
     {
-        public Entity(string name = "", params string[] channels)
+        public DefaultEntity(string name = "", params string[] channels)
         {
             Name = name;
 
@@ -41,7 +41,7 @@ namespace PhoenixSystem.Engine.Entity
 
         public IEntity Clone()
         {
-            var e = new Entity(Name, Channels.ToArray());
+            var e = new DefaultEntity(Name, Channels.ToArray());
             foreach (var c in Components.Values)
             {
                 e.Components.Add(c.GetType().Name, c.Clone());

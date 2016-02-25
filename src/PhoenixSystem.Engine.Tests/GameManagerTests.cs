@@ -27,7 +27,7 @@ namespace PhoenixSystem.Engine.Tests
         public void AddEntity_Should_Increase_Entity_Count()
         {
             var expected = 1;
-            var entity = new Entity.Entity();
+            var entity = new Entity.DefaultEntity();
             Assert.Equal(0, _gameManager.EntityManager.Entities.Count);
             _gameManager.AddEntity(entity);
             Assert.Equal(expected, _gameManager.EntityManager.Entities.Count);
@@ -37,7 +37,7 @@ namespace PhoenixSystem.Engine.Tests
         public void AddEntity_Should_Notify_EntityAdded()
         {
             var notified = false;
-            var entity = new Entity.Entity();
+            var entity = new Entity.DefaultEntity();
             _gameManager.EntityAdded += (s, e) => notified = true;
             _gameManager.AddEntity(entity);
             Assert.True(notified);
@@ -46,7 +46,7 @@ namespace PhoenixSystem.Engine.Tests
         [Fact]
         public void Entity_Should_Be_In_Entities_After_Added()
         {
-            var entity = new Entity.Entity();
+            var entity = new Entity.DefaultEntity();
             _gameManager.AddEntity(entity);
             Assert.True(_gameManager.EntityManager.Entities.ContainsKey(entity.ID));
         }
@@ -54,7 +54,7 @@ namespace PhoenixSystem.Engine.Tests
         [Fact]
         public void RemoveEntity_Should_Decrease_Entity_Count()
         {
-            var entity = new Entity.Entity();
+            var entity = new Entity.DefaultEntity();
             Assert.Equal(0, _gameManager.EntityManager.Entities.Count);
             _gameManager.AddEntity(entity);
             Assert.Equal(1, _gameManager.EntityManager.Entities.Count);
@@ -66,7 +66,7 @@ namespace PhoenixSystem.Engine.Tests
         public void RemoveEntity_Should_Notify_EntityRemoved()
         {
             var notified = false;
-            var entity = new Entity.Entity();
+            var entity = new Entity.DefaultEntity();
             _gameManager.AddEntity(entity);
             _gameManager.EntityRemoved += (s, e) => notified = true;
             _gameManager.RemoveEntity(entity);
@@ -76,7 +76,7 @@ namespace PhoenixSystem.Engine.Tests
         [Fact]
         public void Entity_Should_Not_Be_In_Entities_After_Removed()
         {
-            var entity = new Entity.Entity();
+            var entity = new Entity.DefaultEntity();
             _gameManager.AddEntity(entity);
             Assert.True(_gameManager.EntityManager.Entities.ContainsKey(entity.ID));
             _gameManager.RemoveEntity(entity);
@@ -89,7 +89,7 @@ namespace PhoenixSystem.Engine.Tests
             var count = 5;
             for (var i = 0; i < count; i++)
             {
-                _gameManager.AddEntity(new Entity.Entity());
+                _gameManager.AddEntity(new Entity.DefaultEntity());
             }
             Assert.Equal(count, _gameManager.EntityManager.Entities.Count);
             _gameManager.RemoveAllEntities();

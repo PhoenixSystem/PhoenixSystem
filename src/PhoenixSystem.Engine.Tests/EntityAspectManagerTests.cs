@@ -22,7 +22,7 @@ namespace PhoenixSystem.Engine.Tests
         public void GetAspectList_Should_Return_Collection_Of_Appropriate_Type_Of_Aspect()
         {
             var expected = typeof (LabelAspect);
-            var entity = new Entity.Entity("TestEntity", "all");
+            var entity = new Entity.DefaultEntity("TestEntity", "all");
             entity.CreateLabelAspect("Test", 0, 0);
             _entityManager.Entities.Add(entity.ID, entity);
             _eam.RegisterEntity(entity);
