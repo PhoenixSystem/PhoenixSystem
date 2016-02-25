@@ -7,7 +7,6 @@ namespace PhoenixSystem.Engine
     public class EntityManager : IEntityManager
     {
         private readonly IChannelManager _channelManager;
-
         private readonly IObjectPool<IEntity> _entityPool;
         private IGameManager _gameManager;
 
@@ -52,9 +51,15 @@ namespace PhoenixSystem.Engine
         private void CleanupDeleted(object sender, EventArgs eargs)
         {
             var e = sender as IEntity;
+
+            if (e == null) return;
+
             e.Deleted -= CleanupDeleted;
+
             _entityPool.Put(e);
+
             Entities.Remove(e.ID);
+
             _gameManager.RemoveEntity(e);
         }
     }

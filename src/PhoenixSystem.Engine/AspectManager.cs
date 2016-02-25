@@ -5,7 +5,7 @@ using PhoenixSystem.Engine.Extensions;
 
 namespace PhoenixSystem.Engine
 {
-    public class AspectManager<TAspectType> : IAspectManager<TAspectType> where TAspectType : IAspect, new()
+    public class AspectManager<TAspectType> : IAspectManager where TAspectType : IAspect, new()
     {
         private readonly LinkedList<IAspect> _aspects = new LinkedList<IAspect>();
         private readonly ObjectPool<IAspect> _aspectPool;

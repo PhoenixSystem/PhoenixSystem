@@ -1,20 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using PhoenixSystem.Engine.Events;
 
 namespace PhoenixSystem.Engine
 {
     public interface IGameManager
     {
         IEntityManager EntityManager { get; }
-        
-        IEnumerable<ISystem> Systems { get; }
         IEnumerable<IManager> Managers { get; }
+        IEnumerable<ISystem> Systems { get; }
         bool IsUpdating { get; }
-        
         void Update(ITickEvent tickEvent);
-        
-        event EventHandler EntityAdded;        
+        event EventHandler EntityAdded;
         void AddEntity(IEntity e);
         void AddEntities(IEnumerable<IEntity> entities);
         void RemoveAllEntities();
@@ -23,15 +19,15 @@ namespace PhoenixSystem.Engine
         event EventHandler SystemAdded;
         void AddSystem(ISystem system);
         event EventHandler SystemRemoved;
-        void RemoveSystem<SystemType>(bool shouldNotify) where SystemType : ISystem;
+        void RemoveSystem<TSystemType>(bool shouldNotify) where TSystemType : ISystem;
         void RemoveAllSystems(bool shouldNotify);
         event EventHandler SystemSuspended;
-        void SuspendSystem<SystemType>() where SystemType : ISystem;
+        void SuspendSystem<TSystemType>() where TSystemType : ISystem;
         event EventHandler SystemStarted;
-        void StartSystem<SystemType>() where SystemType : ISystem;
-        IEnumerable<AspectType> GetAspectList<AspectType>() where AspectType : IAspect, new();
-        IEnumerable<AspectType> GetUnfilteredAspectList<AspectType>() where AspectType : IAspect, new();
-        void ReleaseAspectList<AspectType>();
+        void StartSystem<TSystemType>() where TSystemType : ISystem;
+        IEnumerable<TAspectType> GetAspectList<TAspectType>() where TAspectType : IAspect, new();
+        IEnumerable<TAspectType> GetUnfilteredAspectList<TAspectType>() where TAspectType : IAspect, new();
+        void ReleaseAspectList<TAspectType>();
         void RegisterManager(IManager manager);
     }
 }

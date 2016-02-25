@@ -16,7 +16,9 @@ namespace PhoenixSystem.Engine
             foreach (var s in channels)
             {
                 if (string.IsNullOrEmpty(s))
+                {
                     throw new ArgumentException("channel cannot be empty string or null");
+                }
 
                 Channels.Add(s);
             }
@@ -27,6 +29,7 @@ namespace PhoenixSystem.Engine
         public bool IsDeleted { get; set; }
         public IList<string> Channels { get; } = new List<string>();
         public Dictionary<string, IComponent> Components { get; } = new Dictionary<string, IComponent>();
+
         public event EventHandler Deleted;
 
         public void Delete()
@@ -44,7 +47,6 @@ namespace PhoenixSystem.Engine
             }
             return e;
         }
-        
 
         public virtual void OnDeleted()
         {

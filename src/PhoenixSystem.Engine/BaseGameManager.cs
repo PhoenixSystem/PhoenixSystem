@@ -8,43 +8,28 @@ namespace PhoenixSystem.Engine
 {
     public abstract class BaseGameManager : IGameManager
     {
-        private readonly IEntityAspectManager _entityAspectManager;
-
         private readonly IChannelManager _channelManager;
+        private readonly IEntityAspectManager _entityAspectManager;
+        private readonly SortedList<int, IManager> _managers = new SortedList<int, IManager>();
+        private readonly List<ISystem> _systems = new List<ISystem>();
 
         protected BaseGameManager(
-            IEntityAspectManager entityAspectManager, 
+            IEntityAspectManager entityAspectManager,
             IEntityManager entityManager,
             IChannelManager channelManager)
         {
             EntityManager = entityManager;
             _channelManager = channelManager;
-            _entityAspectManager = entityAspectManager;
-            //_entityAspectManager.GameManager = this;            
+            _entityAspectManager = entityAspectManager;       
         }
-
 
         public IEntityManager EntityManager { get; }
 
         public bool IsUpdating { get; private set; }
 
-        private SortedList<int, IManager> _managers = new SortedList<int, IManager>();
-        public IEnumerable<IManager> Managers
-        {
-            get
-            {
-                return _managers.Values;
-            }
-        }
+        public IEnumerable<IManager> Managers => _managers.Values;
 
-        private List<ISystem> _systems = new List<ISystem>();
-        public IEnumerable<ISystem> Systems
-        {
-            get
-            {
-                return _systems;
-            }
-        }
+        public IEnumerable<ISystem> Systems => _systems;
 
         public event EventHandler EntityAdded;
         public event EventHandler EntityRemoved;
@@ -82,6 +67,7 @@ namespace PhoenixSystem.Engine
 
             _systems.Add(system);
             _systems.Sort();
+
             system.AddToGameManager(this);
 
             SystemAdded?.Invoke(this, new SystemChangedEventArgs(system));
@@ -100,6 +86,7 @@ namespace PhoenixSystem.Engine
         public void RegisterManager(IManager manager)
         {
             manager.Register(this);
+
             _managers.Add(manager.Priority, manager);
         }
 
@@ -141,36 +128,28 @@ namespace PhoenixSystem.Engine
             EntityRemoved?.Invoke(this, new EntityRemovedEventArgs(entity));
         }
 
-        public void RemoveSystem(Type systemType, bool shouldNotify)
+        public void RemoveSystem<TSystemType>(bool shouldNotify) where TSystemType : ISystem
         {
-            var system = _systems.FirstOrDefault(s => s.GetType() == systemType);
-            if (system == null) return;
-
-            system.RemoveFromGameManager(this);
-            _systems.Remove(system);
-            _systems.Sort();
-            if (!shouldNotify) return;
-
-            SystemRemoved?.Invoke(this, new SystemRemovedEventArgs(system));
+            RemoveSystem(typeof (TSystemType), shouldNotify);
         }
 
-        public void RemoveSystem<SystemType>(bool shouldNotify) where SystemType : ISystem
+        public void StartSystem<TSystemType>() where TSystemType : ISystem
         {
-            RemoveSystem(typeof(SystemType), shouldNotify);
-        }
+            var system = _systems.SingleOrDefault(s => s.GetType() == typeof (TSystemType));
 
-        public void StartSystem<SystemType>() where SystemType: ISystem
-        {
-            var system = _systems.SingleOrDefault(s => s.GetType() == typeof(SystemType));
             if (system == null) return;
+
             system.Start();
+
             SystemStarted?.Invoke(this, new SystemStartedEventArgs(system));
         }
 
-        public void SuspendSystem<SystemType>() where SystemType : ISystem
+        public void SuspendSystem<TSystemType>() where TSystemType : ISystem
         {
-            var system = _systems.SingleOrDefault(s => s.GetType() == typeof(SystemType));
+            var system = _systems.SingleOrDefault(s => s.GetType() == typeof (TSystemType));
+
             if (system == null) return;
+
             system.Stop();
 
             SystemSuspended?.Invoke(this, new SystemSuspendedEventArgs(system));
@@ -181,21 +160,38 @@ namespace PhoenixSystem.Engine
             IsUpdating = true;
 
             var curChan = _channelManager.Channel;
-            foreach (var system in _systems)
+
+            foreach (var system in _systems.Where(system => system.IsInChannel(curChan, "all")))
             {
-                if (system.IsInChannel(curChan, "all"))
-                    system.Update(tickEvent);
+                system.Update(tickEvent);
             }
 
             OnSystemsUpdated(tickEvent);
+
             foreach (var manager in _managers.Values)
             {
-                    manager.Update();
+                manager.Update();
             }
 
             OnManagersUpdated(tickEvent);
 
             IsUpdating = false;
+        }
+
+        public void RemoveSystem(Type systemType, bool shouldNotify)
+        {
+            var system = _systems.FirstOrDefault(s => s.GetType() == systemType);
+
+            if (system == null) return;
+
+            system.RemoveFromGameManager(this);
+
+            _systems.Remove(system);
+            _systems.Sort();
+
+            if (!shouldNotify) return;
+
+            SystemRemoved?.Invoke(this, new SystemRemovedEventArgs(system));
         }
 
         protected virtual void OnSystemsUpdated(ITickEvent tickEvent)
