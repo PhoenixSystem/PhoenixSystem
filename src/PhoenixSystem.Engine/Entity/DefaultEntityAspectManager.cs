@@ -23,7 +23,7 @@ namespace PhoenixSystem.Engine.Entity
         {
             foreach (var kvp in _aspectFamilies)
             {
-                kvp.Value.ComponentAddedToEntity(entity, component.GetType().Name);
+                kvp.Value.ComponentAddedToEntity(entity, component.GetType());
             }
         }
 
@@ -31,7 +31,7 @@ namespace PhoenixSystem.Engine.Entity
         {
             foreach (var kvp in _aspectFamilies)
             {
-                kvp.Value.ComponentRemovedFromEntity(entity, component.GetType().Name);
+                kvp.Value.ComponentRemovedFromEntity(entity, component.GetType());
             }
         }
         

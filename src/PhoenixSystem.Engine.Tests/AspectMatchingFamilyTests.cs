@@ -78,7 +78,7 @@ namespace PhoenixSystem.Engine.Tests
         {
             var e1 = new DefaultEntity("e1", "test").AddComponent(new XYComponent());
             Assert.Equal(0, _aspectMatchingFamily.EntireAspectList.Count());
-            _aspectMatchingFamily.ComponentAddedToEntity(e1, typeof (XYComponent).Name);
+            _aspectMatchingFamily.ComponentAddedToEntity(e1, typeof (XYComponent));
             Assert.Equal(0, _aspectMatchingFamily.EntireAspectList.Count());
         }
 
@@ -88,7 +88,7 @@ namespace PhoenixSystem.Engine.Tests
             var e1 =
                 new DefaultEntity("e1", "test").CreateLabelAspect("test", 0, 0).AddComponent(new SomeOtherComponent());
             Assert.Equal(0, _aspectMatchingFamily.EntireAspectList.Count());
-            _aspectMatchingFamily.ComponentAddedToEntity(e1, typeof (SomeOtherComponent).Name);
+            _aspectMatchingFamily.ComponentAddedToEntity(e1, typeof (SomeOtherComponent));
             Assert.Equal(0, _aspectMatchingFamily.EntireAspectList.Count());
         }
 
@@ -97,7 +97,7 @@ namespace PhoenixSystem.Engine.Tests
         {
             var e1 = new DefaultEntity("e1", "test").CreateLabelAspect("test", 0, 0);
             Assert.Equal(0, _aspectMatchingFamily.EntireAspectList.Count());
-            _aspectMatchingFamily.ComponentAddedToEntity(e1, typeof (XYComponent).Name);
+            _aspectMatchingFamily.ComponentAddedToEntity(e1, typeof (XYComponent));
             Assert.Equal(1, _aspectMatchingFamily.EntireAspectList.Count());
         }
 
@@ -108,7 +108,7 @@ namespace PhoenixSystem.Engine.Tests
             var e2 = new DefaultEntity("e2", "test").CreateLabelAspect("test", 0, 0);
             _aspectMatchingFamily.NewEntity(e1);
             Assert.Equal(1, _aspectMatchingFamily.EntireAspectList.Count());
-            _aspectMatchingFamily.ComponentRemovedFromEntity(e2, typeof (XYComponent).Name);
+            _aspectMatchingFamily.ComponentRemovedFromEntity(e2, typeof (XYComponent));
             Assert.Equal(1, _aspectMatchingFamily.EntireAspectList.Count());
         }
 
@@ -119,7 +119,7 @@ namespace PhoenixSystem.Engine.Tests
             Assert.Equal(0, _aspectMatchingFamily.EntireAspectList.Count());
             _aspectMatchingFamily.NewEntity(e1);
             Assert.Equal(1, _aspectMatchingFamily.EntireAspectList.Count());
-            _aspectMatchingFamily.ComponentRemovedFromEntity(e1, typeof (SomeOtherComponent).Name);
+            _aspectMatchingFamily.ComponentRemovedFromEntity(e1, typeof (SomeOtherComponent));
             Assert.Equal(1, _aspectMatchingFamily.EntireAspectList.Count());
         }
 
@@ -129,7 +129,7 @@ namespace PhoenixSystem.Engine.Tests
             var e1 = new DefaultEntity("e1", "test").CreateLabelAspect("label", 0, 0);
             _aspectMatchingFamily.NewEntity(e1);
             Assert.Equal(1, _aspectMatchingFamily.EntireAspectList.Count());
-            _aspectMatchingFamily.ComponentRemovedFromEntity(e1, typeof (XYComponent).Name);
+            _aspectMatchingFamily.ComponentRemovedFromEntity(e1, typeof (XYComponent));
             Assert.Equal(0, _aspectMatchingFamily.EntireAspectList.Count());
         }
     }

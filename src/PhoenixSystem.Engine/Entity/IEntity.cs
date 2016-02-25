@@ -10,20 +10,17 @@ namespace PhoenixSystem.Engine.Entity
     {
         Guid ID { get; }
         bool IsDeleted { get; set; }
-        IDictionary<string, IComponent> Components { get; }
+        IDictionary<Type, IComponent> Components { get; }
         string Name { get; set; }
         event EventHandler Deleted;
         void Delete();        
         IEntity Clone();
         void Reset();
         bool HasComponent(Type componentType);
-        bool HasComponent(string componentTypeName);
         bool HasComponents(IEnumerable<Type> types);
-        bool HasComponents(IEnumerable<string> types);
         event EventHandler<ComponentChangedEventArgs> ComponentAdded;
         IEntity AddComponent(IComponent component, bool shouldOverwrite = false);        
         event EventHandler<ComponentChangedEventArgs> ComponentRemoved;
         bool RemoveComponent(Type componentType);
-        bool RemoveComponent(string componentType);
     }
 }
