@@ -18,10 +18,10 @@ namespace PhoenixSystem.Engine.Tests
         [Fact]
         public void Get_Should_Return_A_New_Aspect_Of_Appropriate_Type()
         {
-            var expected = typeof (LabelAspect);
+            var expected = typeof(LabelAspect);
             var e = new Entity("Test", "all");
             e.CreateLabelAspect("Test", 0, 0);
-            
+
             var actual = _am.Get(e);
             Assert.Equal(expected, actual.GetType());
             Assert.Equal(actual, _am.Aspects.First());
@@ -65,5 +65,18 @@ namespace PhoenixSystem.Engine.Tests
             aspect.Delete();
             Assert.Equal(0, _am.ChannelAspects.Count());
         }
+
+        [Fact]
+        public void Aspect_Should_Be_Removed_From_Aspects_List_When_Deleted()
+        {
+            var e = new Entity("Test", "not_channel").CreateLabelAspect("Test", 0, 0);
+            Assert.Equal(0, _am.ChannelAspects.Count());
+            var aspect = _am.Get(e);
+            Assert.Equal(1, _am.Aspects.Count());
+            Assert.Equal(aspect, _am.Aspects.First());
+            aspect.Delete();
+            Assert.Equal(0, _am.Aspects.Count());
+        }
+
     }
 }
