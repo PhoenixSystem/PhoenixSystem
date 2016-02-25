@@ -29,7 +29,7 @@ namespace PhoenixSystem.Engine.Entity
         public string Name { get; set; }
         public bool IsDeleted { get; set; }
         public IList<string> Channels { get; } = new List<string>();
-        public Dictionary<string, IComponent> Components { get; } = new Dictionary<string, IComponent>();
+        public IDictionary<string, IComponent> Components { get; } = new Dictionary<string, IComponent>();
 
         public event EventHandler Deleted;
 

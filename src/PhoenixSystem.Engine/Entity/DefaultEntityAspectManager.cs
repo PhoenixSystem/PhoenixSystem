@@ -9,7 +9,7 @@ namespace PhoenixSystem.Engine.Entity
 {
     public sealed class DefaultEntityAspectManager : BaseEntityAspectManager
     {
-        private readonly Dictionary<string, IAspectMatchingFamily> _aspectFamilies = new Dictionary<string, IAspectMatchingFamily>();
+        private readonly IDictionary<string, IAspectMatchingFamily> _aspectFamilies = new Dictionary<string, IAspectMatchingFamily>();
         private readonly IChannelManager _channelManager;
         private readonly IEntityManager _entityManager;
 
@@ -19,19 +19,19 @@ namespace PhoenixSystem.Engine.Entity
             _entityManager = entityManager;
         }
 
-        public override void ComponentAddedToEntity(IEntity e, IComponent component)
+        public override void ComponentAddedToEntity(IEntity entity, IComponent component)
         {
             foreach (var kvp in _aspectFamilies)
             {
-                kvp.Value.ComponentAddedToEntity(e, component.GetType().Name);
+                kvp.Value.ComponentAddedToEntity(entity, component.GetType().Name);
             }
         }
 
-        public override void ComponentRemovedFromEntity(IEntity e, IComponent component)
+        public override void ComponentRemovedFromEntity(IEntity entity, IComponent component)
         {
             foreach (var kvp in _aspectFamilies)
             {
-                kvp.Value.ComponentRemovedFromEntity(e, component.GetType().Name);
+                kvp.Value.ComponentRemovedFromEntity(entity, component.GetType().Name);
             }
         }
         
@@ -70,11 +70,11 @@ namespace PhoenixSystem.Engine.Entity
             return _aspectFamilies[type].EntireAspectList.Cast<TAspectType>();
         }
 
-        public override void RegisterEntity(IEntity e)
+        public override void RegisterEntity(IEntity entity)
         {
             foreach (var kvp in _aspectFamilies)
             {
-                kvp.Value.NewEntity(e);
+                kvp.Value.NewEntity(entity);
             }
         }
 
@@ -94,11 +94,11 @@ namespace PhoenixSystem.Engine.Entity
             _aspectFamilies.Remove(type);
         }
 
-        public override void UnregisterEntity(IEntity e)
+        public override void UnregisterEntity(IEntity entity)
         {
             foreach (var kvp in _aspectFamilies)
             {
-                kvp.Value.RemoveEntity(e);
+                kvp.Value.RemoveEntity(entity);
             }
         }
     }

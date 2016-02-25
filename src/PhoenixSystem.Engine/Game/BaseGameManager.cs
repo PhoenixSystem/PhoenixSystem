@@ -8,6 +8,8 @@ using PhoenixSystem.Engine.Events;
 using PhoenixSystem.Engine.Extensions;
 using PhoenixSystem.Engine.System;
 
+// ReSharper disable CollectionNeverQueried.Local
+
 namespace PhoenixSystem.Engine.Game
 {
     public abstract class BaseGameManager : IGameManager

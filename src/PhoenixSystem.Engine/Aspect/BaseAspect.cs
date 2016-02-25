@@ -30,19 +30,18 @@ namespace PhoenixSystem.Engine.Aspect
             OnDeleted();
         }
 
-        public void Init(IEntity e)
+        public void Init(IEntity entity)
         {
+            if (!EntityIsMatch(entity)) return;
 
-            if (EntityIsMatch(e))
+            InitComponents(entity);
+
+            foreach (var s in entity.Channels)
             {
-                InitComponents(e);
-
-                foreach (var s in e.Channels)
-                {
-                    Channels.Add(s);
-                } 
+                Channels.Add(s);
             }
         }
+
 
         public virtual void Reset()
         {
@@ -55,26 +54,26 @@ namespace PhoenixSystem.Engine.Aspect
             Deleted?.Invoke(this, null);
         }
 
-        public void InitComponents(IEntity e)
+        private bool EntityIsMatch(IEntity entity)
         {
-            foreach (
-                var componentTypeName in this.GetAssociatedComponentTypes().Select(componentType => componentType.Name))
+            var componentTypes = this.GetAssociatedComponentTypes();
+            return entity.HasComponents(componentTypes);
+        }
+
+        private void InitComponents(IEntity entity)
+        {
+            foreach (var name in this.GetAssociatedComponentTypes().Select(componentType => componentType.Name))
             {
-                if (Components.ContainsKey(componentTypeName))
+                if (Components.ContainsKey(name))
                 {
-                    Components[componentTypeName] = e.Components[componentTypeName];
+                    Components[name] = entity.Components[name];
                 }
                 else
                 {
-                    Components.Add(componentTypeName, e.Components[componentTypeName]);
+                    Components.Add(name, entity.Components[name]);
                 }
-            }
-        }
 
-        public bool EntityIsMatch(IEntity e)
-        {
-            var componentTypes = this.GetAssociatedComponentTypes();
-            return e.HasComponents(componentTypes);
+            }
         }
     }
 }

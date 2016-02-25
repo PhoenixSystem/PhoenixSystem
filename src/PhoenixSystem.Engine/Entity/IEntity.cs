@@ -10,7 +10,7 @@ namespace PhoenixSystem.Engine.Entity
     {
         Guid ID { get; }
         bool IsDeleted { get; set; }
-        Dictionary<string, IComponent> Components { get; }
+        IDictionary<string, IComponent> Components { get; }
         string Name { get; set; }
         event EventHandler Deleted;
         void Delete();        
