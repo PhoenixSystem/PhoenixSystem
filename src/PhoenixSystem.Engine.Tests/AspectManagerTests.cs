@@ -41,6 +41,16 @@ namespace PhoenixSystem.Engine.Tests
         }
 
         [Fact]
+        public void Get_Should_Not_Add_To_ChannelAspects_If_Entity_Is_Not_In_Current_Channel()
+        {
+            Assert.Equal(0, am.Aspects.Count());
+            var e = new Entity("test", "not_default").CreateLabelAspect("test", 0, 0);
+            am.Get(e);
+            Assert.Equal(0, am.ChannelAspects.Count());
+            Assert.Equal(1, am.Aspects.Count());
+        }
+
+        [Fact]
         public void Get_Should_Add_To_Aspects()
         {
             Assert.Equal(0, am.Aspects.Count());
@@ -48,6 +58,17 @@ namespace PhoenixSystem.Engine.Tests
             var aspect = am.Get(e);
             Assert.Equal(1, am.Aspects.Count());
         }
-        
+
+        [Fact]
+        public void Aspect_Should_Be_Removed_From_Channel_List_When_In_Channel_And_Deleted()
+        {
+            var e = new Entity("Test", "default").CreateLabelAspect("Test", 0, 0);
+            var aspect = am.Get(e);
+            Assert.Equal(1, am.ChannelAspects.Count());
+            Assert.Equal(aspect, am.ChannelAspects.First());
+            aspect.Delete();
+            Assert.Equal(0, am.ChannelAspects.Count());
+        }
+
     }
 }

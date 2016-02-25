@@ -45,13 +45,15 @@ namespace PhoenixSystem.Engine
 
             aspect.Deleted -= Aspect_Deleted;
 
-            _aspectPool.Put(aspect);
-            _aspects.Remove(aspect);
-
             if (aspect.IsInChannel(_channelManager.Channel, "all"))
             {
                 _channelAspects.Remove(aspect);
             }
+
+            _aspects.Remove(aspect);
+            _aspectPool.Put(aspect);
+            
+            
         }
     }
 }
