@@ -42,6 +42,7 @@ namespace PhoenixSystem.Engine.Aspect
             }
         }
 
+
         public virtual void Reset()
         {
             Components.Clear();
@@ -71,6 +72,7 @@ namespace PhoenixSystem.Engine.Aspect
                 {
                     Components.Add(name, entity.Components[name]);
                 }
+
             }
         }
     }

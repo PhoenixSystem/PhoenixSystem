@@ -3,18 +3,22 @@ using System.Collections.Generic;
 using PhoenixSystem.Engine.Channel;
 using PhoenixSystem.Engine.Collections;
 using PhoenixSystem.Engine.Entity;
+using PhoenixSystem.Engine.Attributes;
+using System.Linq;
 
 namespace PhoenixSystem.Engine.Aspect
 {
     public class DefaultAspectMatchingFamily<TAspectType> : IAspectMatchingFamily where TAspectType : IAspect, new()
     {
         private readonly IAspectManager _aspectManager;
-        private readonly IList<string> _componentTypes = new List<string>();
+        private readonly List<string> _componentTypes = new List<string>();
         private readonly IDictionary<Guid, IAspect> _entities = new Dictionary<Guid, IAspect>();
 
         public DefaultAspectMatchingFamily(IChannelManager channelManager)
         {
-            _aspectManager = new AspectManager(channelManager, new ObjectPool(() => new TAspectType(), a => ((TAspectType) a).Reset()));
+            _aspectManager = new AspectManager(channelManager, new ObjectPool(() => new TAspectType(), aspect => ((IAspect)aspect).Reset()));
+            var componentTypes = AssociatedComponentsAttributeHelper.GetAssociatedComponentTypes(typeof(TAspectType));
+            _componentTypes.AddRange(componentTypes.Select(s => s.Name));
         }
 
         public void CleanUp()
@@ -44,16 +48,6 @@ namespace PhoenixSystem.Engine.Aspect
         public IEnumerable<IAspect> ActiveAspectList => _aspectManager.ChannelAspects;
 
         public IEnumerable<IAspect> EntireAspectList => _aspectManager.Aspects;
-
-        public void Init()
-        {
-            var n = new TAspectType();
-
-            foreach (var c in n.Components)
-            {
-                _componentTypes.Add(c.Key);
-            }
-        }
 
         public void NewEntity(IEntity e)
         {

@@ -44,9 +44,7 @@ namespace PhoenixSystem.Engine.Entity
                 return _aspectFamilies[aspectType].ActiveAspectList.Cast<TAspectType>();
             }
 
-            var aspectFamily = new DefaultAspectMatchingFamily<TAspectType>(_channelManager);
-
-            aspectFamily.Init();
+            var aspectFamily = new DefaultAspectMatchingFamily<TAspectType>(_channelManager);            
 
             _aspectFamilies[aspectType] = aspectFamily;
 
