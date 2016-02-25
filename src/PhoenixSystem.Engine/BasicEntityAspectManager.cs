@@ -9,6 +9,7 @@ namespace PhoenixSystem.Engine
         private readonly Dictionary<string, IAspectMatchingFamily> _aspectFamilies = new Dictionary<string, IAspectMatchingFamily>();
         private readonly IChannelManager _channelManager;
         private readonly IEntityManager _entityManager;
+
         public BasicEntityAspectManager(IChannelManager channelManager, IEntityManager entityManager)
         {
             _channelManager = channelManager;

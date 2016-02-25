@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PhoenixSystem.Engine
 {
-    public interface IAspect :IChannelFilterable
+    public interface IAspect : IChannelFilterable
     {
         Guid ID { get; }
         Dictionary<string, IComponent> Components { get; }

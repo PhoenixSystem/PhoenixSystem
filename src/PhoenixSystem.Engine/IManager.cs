@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace PhoenixSystem.Engine
+﻿namespace PhoenixSystem.Engine
 {
-    public interface IManager :IChannelFilterable
+    public interface IManager : IChannelFilterable
     {
         int Priority { get; }
         void Update();

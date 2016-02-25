@@ -13,7 +13,7 @@ namespace PhoenixSystem.Engine
             set
             {
                 _channel = value;
-                ChannelChanged?.Invoke(this, new ChannelChangedEventArgs {Channel = _channel});
+                ChannelChanged?.Invoke(this, new ChannelChangedEventArgs(_channel));
             }
         }
 

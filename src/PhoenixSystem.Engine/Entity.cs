@@ -16,7 +16,9 @@ namespace PhoenixSystem.Engine
             foreach (var s in channels)
             {
                 if (string.IsNullOrEmpty(s))
+                {
                     throw new ArgumentException("channel cannot be empty string or null");
+                }
 
                 Channels.Add(s);
             }
@@ -27,6 +29,7 @@ namespace PhoenixSystem.Engine
         public bool IsDeleted { get; set; }
         public IList<string> Channels { get; } = new List<string>();
         public Dictionary<string, IComponent> Components { get; } = new Dictionary<string, IComponent>();
+
         public event EventHandler Deleted;
 
         public void Delete()
@@ -44,7 +47,6 @@ namespace PhoenixSystem.Engine
             }
             return e;
         }
-        
 
         public virtual void OnDeleted()
         {
@@ -57,7 +59,7 @@ namespace PhoenixSystem.Engine
 
         protected void OnComponentAdded(IComponent c)
         {
-            ComponentAdded?.Invoke(this, new ComponentChangedEventArgs {Component = c});
+            ComponentAdded?.Invoke(this, new ComponentChangedEventArgs(c));
         }
 
         public IEntity AddComponent(IComponent c, bool overwriteIfExists = false)
@@ -82,7 +84,7 @@ namespace PhoenixSystem.Engine
 
         protected void OnComponentRemoved(IComponent c)
         {
-            ComponentRemoved?.Invoke(this, new ComponentChangedEventArgs {Component = c});
+            ComponentRemoved?.Invoke(this, new ComponentChangedEventArgs(c));
         }
 
         public bool RemoveComponent(Type componentType)

@@ -2,7 +2,7 @@
 
 namespace PhoenixSystem.Engine.Attributes
 {
-    [AttributeUsage(AttributeTargets.Class, Inherited = true)]
+    [AttributeUsage(AttributeTargets.Class)]
     public sealed class AssociatedComponentsAttribute : Attribute, IAssociatedComponentsAttribute
     {
         // This is a positional argument
@@ -36,7 +36,10 @@ namespace PhoenixSystem.Engine.Attributes
             var attribute = types[0] as IAssociatedComponentsAttribute;
 
             if (attribute == null || attribute.ComponentTypes.Length == 0)
+            {
                 throw new ApplicationException("Associated Components missing from Aspect");
+            }
+
             return attribute.ComponentTypes;
         }
     }

@@ -43,7 +43,6 @@ namespace PhoenixSystem.Engine
             Channels.Clear();
         }
 
-
         protected virtual void OnDeleted()
         {
             Deleted?.Invoke(this, null);
