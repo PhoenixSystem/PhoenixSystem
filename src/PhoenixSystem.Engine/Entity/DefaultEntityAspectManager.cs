@@ -7,7 +7,7 @@ using PhoenixSystem.Engine.Component;
 
 namespace PhoenixSystem.Engine.Entity
 {
-    public sealed class DefaultEntityAspectManager : BaseEntityAspectManager
+    public sealed class DefaultEntityAspectManager : IEntityAspectManager
     {
         private readonly IDictionary<string, IAspectMatchingFamily> _aspectFamilies = new Dictionary<string, IAspectMatchingFamily>();
         private readonly IChannelManager _channelManager;
@@ -19,7 +19,7 @@ namespace PhoenixSystem.Engine.Entity
             _entityManager = entityManager;
         }
 
-        public override void ComponentAddedToEntity(IEntity entity, IComponent component)
+        public void ComponentAddedToEntity(IEntity entity, IComponent component)
         {
             foreach (var kvp in _aspectFamilies)
             {
@@ -27,15 +27,15 @@ namespace PhoenixSystem.Engine.Entity
             }
         }
 
-        public override void ComponentRemovedFromEntity(IEntity entity, IComponent component)
+        public void ComponentRemovedFromEntity(IEntity entity, IComponent component)
         {
             foreach (var kvp in _aspectFamilies)
             {
                 kvp.Value.ComponentRemovedFromEntity(entity, component.GetType());
             }
         }
-        
-        public override IEnumerable<TAspectType> GetAspectList<TAspectType>()
+
+        public IEnumerable<TAspectType> GetAspectList<TAspectType>() where TAspectType : IAspect, new()
         {
             var aspectType = typeof (TAspectType).Name;
 
@@ -44,7 +44,7 @@ namespace PhoenixSystem.Engine.Entity
                 return _aspectFamilies[aspectType].ActiveAspectList.Cast<TAspectType>();
             }
 
-            var aspectFamily = new DefaultAspectMatchingFamily<TAspectType>(_channelManager);            
+            var aspectFamily = new DefaultAspectMatchingFamily<TAspectType>(_channelManager);
 
             _aspectFamilies[aspectType] = aspectFamily;
 
@@ -56,19 +56,20 @@ namespace PhoenixSystem.Engine.Entity
             return aspectFamily.ActiveAspectList.Cast<TAspectType>();
         }
 
-        public override IEnumerable<TAspectType> GetUnfilteredAspectList<TAspectType>()
+        public IEnumerable<TAspectType> GetUnfilteredAspectList<TAspectType>() where TAspectType : IAspect, new()
         {
             var type = typeof (TAspectType).Name;
 
             if (!_aspectFamilies.ContainsKey(type))
             {
-                throw new ApplicationException("Unable to retrieve unfiltered aspect list until AspectType is registered using GetNodeList");
+                throw new ApplicationException(
+                    "Unable to retrieve unfiltered aspect list until AspectType is registered using GetNodeList");
             }
 
             return _aspectFamilies[type].EntireAspectList.Cast<TAspectType>();
         }
 
-        public override void RegisterEntity(IEntity entity)
+        public void RegisterEntity(IEntity entity)
         {
             foreach (var kvp in _aspectFamilies)
             {
@@ -76,7 +77,7 @@ namespace PhoenixSystem.Engine.Entity
             }
         }
 
-        public override void ReleaseAspectList<TAspectType>()
+        public void ReleaseAspectList<TAspectType>()
         {
             var type = typeof (TAspectType).Name;
 
@@ -92,7 +93,7 @@ namespace PhoenixSystem.Engine.Entity
             _aspectFamilies.Remove(type);
         }
 
-        public override void UnregisterEntity(IEntity entity)
+        public void UnregisterEntity(IEntity entity)
         {
             foreach (var kvp in _aspectFamilies)
             {

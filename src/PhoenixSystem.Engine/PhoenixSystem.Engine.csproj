@@ -45,7 +45,6 @@
     <Compile Include="Collections\AspectPool.cs" />
     <Compile Include="Collections\EntityPool.cs" />
     <Compile Include="Component\BaseComponent.cs" />
-    <Compile Include="Entity\BaseEntityAspectManager.cs" />
     <Compile Include="Game\BaseGameManager.cs" />
     <Compile Include="Aspect\BaseAspect.cs" />
     <Compile Include="System\BaseSystem.cs" />

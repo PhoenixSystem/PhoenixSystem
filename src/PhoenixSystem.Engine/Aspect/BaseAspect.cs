@@ -7,15 +7,10 @@ using PhoenixSystem.Engine.Entity;
 namespace PhoenixSystem.Engine.Aspect
 {
     public abstract class BaseAspect : IAspect
-    {
-        protected BaseAspect()
-        {
-            Components = new Dictionary<Type, IComponent>();
-        }
-
+    {        
         public bool IsDeleted { get; private set; }
 
-        public IDictionary<Type, IComponent> Components { get; }
+        public IDictionary<Type, IComponent> Components { get; } = new Dictionary<Type, IComponent>();
 
         public IList<string> Channels { get; } = new List<string>();
 
@@ -41,7 +36,6 @@ namespace PhoenixSystem.Engine.Aspect
             }
         }
 
-
         public virtual void Reset()
         {
             Components.Clear();
@@ -56,6 +50,7 @@ namespace PhoenixSystem.Engine.Aspect
         private bool EntityIsMatch(IEntity entity)
         {
             var componentTypes = this.GetAssociatedComponentTypes();
+
             return entity.HasComponents(componentTypes);
         }
 
