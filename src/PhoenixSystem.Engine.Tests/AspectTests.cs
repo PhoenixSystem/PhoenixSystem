@@ -1,4 +1,6 @@
-﻿using PhoenixSystem.Engine.Tests.Objects;
+﻿using PhoenixSystem.Engine.Component;
+using PhoenixSystem.Engine.Entity;
+using PhoenixSystem.Engine.Tests.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,7 +42,7 @@ namespace PhoenixSystem.Engine.Tests
         public void Init_Should_Apply_Entity_Channels_To_Aspect()
         {
             var expected = new string[] { "one", "two", "three" };
-            var e = new Entity("Test", expected).CreateLabelAspect("Label", 0, 0);
+            var e = new DefaultEntity("Test", expected).CreateLabelAspect("Label", 0, 0);
             var aspect = new LabelAspect();
             aspect.Init(e);
             Assert.True(aspect.Channels.All(s => expected.Contains(s)));
@@ -49,13 +51,27 @@ namespace PhoenixSystem.Engine.Tests
         [Fact]
         public void Init_Should_Create_Pointers_To_Entity_Components_From_Aspect()
         {
-            var e = new Entity("Test", "default").CreateLabelAspect("Label", 0, 0);
+            var e = new DefaultEntity("Test", "default").CreateLabelAspect("Label", 0, 0);
             var aspect = new LabelAspect();
             aspect.Init(e);
             foreach(var component in e.Components.Values)
             {
                 Assert.Equal<IComponent>(component, aspect.Components[component.GetType().Name]);
             }
+        }
+
+        [Fact]
+        public void Reset_Should_Clear_Components_and_Channels()
+        {
+            var e = new DefaultEntity("Test", "default").CreateLabelAspect("Label", 0, 0);
+            var aspect = new LabelAspect();
+            aspect.Init(e);
+            Assert.True(aspect.Components.Count > 0);
+            Assert.True(aspect.Channels.Count > 0);
+            aspect.Reset();
+            Assert.Equal(0, aspect.Components.Count);
+            Assert.Equal(0, aspect.Channels.Count);
+
         }
 
         

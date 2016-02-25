@@ -32,11 +32,15 @@ namespace PhoenixSystem.Engine.Aspect
 
         public void Init(IEntity e)
         {
-            InitComponents(e);
 
-            foreach (var s in e.Channels)
+            if (EntityIsMatch(e))
             {
-                Channels.Add(s);
+                InitComponents(e);
+
+                foreach (var s in e.Channels)
+                {
+                    Channels.Add(s);
+                } 
             }
         }
 
