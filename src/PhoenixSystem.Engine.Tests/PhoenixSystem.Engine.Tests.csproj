@@ -70,6 +70,7 @@
     <Compile Include="ObjectPoolTests.cs" />
     <Compile Include="Objects\LabelAspect.cs" />
     <Compile Include="Objects\LabelSystem.cs" />
+    <Compile Include="Objects\SomeOtherComponent.cs" />
     <Compile Include="Objects\StringComponent.cs" />
     <Compile Include="Objects\TestGameManager.cs" />
     <Compile Include="Objects\XYComponent.cs" />

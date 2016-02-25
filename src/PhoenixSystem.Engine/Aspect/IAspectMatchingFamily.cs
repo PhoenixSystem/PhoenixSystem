@@ -7,7 +7,7 @@ namespace PhoenixSystem.Engine.Aspect
     {
         IEnumerable<IAspect> ActiveAspectList { get; }
         IEnumerable<IAspect> EntireAspectList { get; }
-        void Init();
+        
         void NewEntity(IEntity entity);
         void RemoveEntity(IEntity entity);
         void ComponentAddedToEntity(IEntity entity, string componentType);
