@@ -1,0 +1,6 @@
+language: csharp
+solution: ./src/PhoenixSystem.sln
+script:
+  - xbuild /p:Configuration=Release ./src/PhoenixSystem.sln
+  - mono ./src/packages/xunit.runner.console*/tools/xunit.console.exe ./src/PhoenixSystem.Engine.Tests/bin/Release/PhoenixSystem.Engine.Tests.dll
+

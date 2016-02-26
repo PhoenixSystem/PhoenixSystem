@@ -54,7 +54,7 @@ namespace PhoenixSystem.Engine.Tests
         {
             Assert.Equal(0, _aspectManager.Aspects.Count());
             var e = new DefaultEntity("Test", "irrelevant").CreateLabelAspect("Test", 0, 0);
-            var aspect = _aspectManager.Get(e);
+            _aspectManager.Get(e);
             Assert.Equal(1, _aspectManager.Aspects.Count());
         }
 

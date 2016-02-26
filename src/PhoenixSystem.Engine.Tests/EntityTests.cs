@@ -19,7 +19,7 @@ namespace PhoenixSystem.Engine.Tests
         [Fact]
         public void Entity_Should_Throw_Exception_If_Channel_Is_Null_Or_Empty()
         {
-            Assert.Throws<ArgumentException>(() => { var e = new DefaultEntity("Test", new string[1]); });
+            Assert.Throws<ArgumentException>(() => { new DefaultEntity("Test", new string[1]); });
         }
 
         [Fact]

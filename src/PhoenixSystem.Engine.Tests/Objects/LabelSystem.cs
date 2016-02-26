@@ -29,7 +29,8 @@ namespace PhoenixSystem.Engine.Tests.Objects
 
         public override void Update(ITickEvent tickEvent)
         {
-            Console.WriteLine("LabelSystem Update Executed");
+			foreach(var labelAspect in _labelAspects)
+				Console.WriteLine("Label Aspect: " + labelAspect.ID.ToString() + " exists");
         }
     }
 }
