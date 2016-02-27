@@ -34,7 +34,7 @@ namespace PhoenixSystem.Engine.Entity
                 kvp.Value.ComponentRemovedFromEntity(entity, component.GetType());
             }
         }
-
+        
         public IEnumerable<TAspectType> GetAspectList<TAspectType>() where TAspectType : IAspect, new()
         {
             var aspectType = typeof (TAspectType).Name;
@@ -44,7 +44,7 @@ namespace PhoenixSystem.Engine.Entity
                 return _aspectFamilies[aspectType].ActiveAspectList.Cast<TAspectType>();
             }
 
-            var aspectFamily = new DefaultAspectMatchingFamily<TAspectType>(_channelManager);
+            var aspectFamily = new DefaultAspectMatchingFamily<TAspectType>(_channelManager);            
 
             _aspectFamilies[aspectType] = aspectFamily;
 
@@ -62,8 +62,7 @@ namespace PhoenixSystem.Engine.Entity
 
             if (!_aspectFamilies.ContainsKey(type))
             {
-                throw new ApplicationException(
-                    "Unable to retrieve unfiltered aspect list until AspectType is registered using GetNodeList");
+                throw new InvalidOperationException("Unable to retrieve unfiltered aspect list until AspectType is registered using GetNodeList");
             }
 
             return _aspectFamilies[type].EntireAspectList.Cast<TAspectType>();
@@ -83,7 +82,7 @@ namespace PhoenixSystem.Engine.Entity
 
             if (!_aspectFamilies.ContainsKey(type))
             {
-                throw new ApplicationException("Aspect Family does not exist for type: " + type);
+                throw new InvalidOperationException("Aspect Family does not exist for type: " + type);
             }
 
             var aspectFamily = _aspectFamilies[type];

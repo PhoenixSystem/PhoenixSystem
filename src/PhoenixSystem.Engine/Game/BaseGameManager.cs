@@ -16,7 +16,7 @@ namespace PhoenixSystem.Engine.Game
     {
         private readonly IChannelManager _channelManager;
         private readonly IEntityAspectManager _entityAspectManager;
-        private readonly SortedList<int, IManager> _managers = new SortedList<int, IManager>();
+        private readonly List<IManager> _managers = new List<IManager>();
         private readonly List<ISystem> _systems = new List<ISystem>();
 
         protected BaseGameManager(
@@ -33,7 +33,7 @@ namespace PhoenixSystem.Engine.Game
 
         public bool IsUpdating { get; private set; }
 
-        public IEnumerable<IManager> Managers => _managers.Values;
+        public IEnumerable<IManager> Managers => _managers;
 
         public IEnumerable<ISystem> Systems => _systems;
 
@@ -68,7 +68,7 @@ namespace PhoenixSystem.Engine.Game
         {
             if (HasSystem(system))
             {
-                throw new ApplicationException($"System {system.GetType().Name} already added to game manager.");
+                throw new InvalidOperationException($"System {system.GetType().Name} already added to game manager.");
             }
 
             _systems.Add(system);
@@ -93,7 +93,8 @@ namespace PhoenixSystem.Engine.Game
         {
             manager.Register(this);
 
-            _managers.Add(manager.Priority, manager);
+            _managers.Add(manager);
+            _managers.Sort();
         }
 
         public void ReleaseAspectList<TAspectType>()
@@ -174,7 +175,7 @@ namespace PhoenixSystem.Engine.Game
 
             OnSystemsUpdated(tickEvent);
 
-            foreach (var manager in _managers.Values)
+            foreach (var manager in _managers)
             {
                 manager.Update();
             }
