@@ -8,8 +8,8 @@
     <ProjectGuid>{6997DC99-5867-4EF9-8DF9-B4A4C41C28D6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PhoenixSystem.Engine.PCL</RootNamespace>
-    <AssemblyName>PhoenixSystem.Engine.PCL</AssemblyName>
+    <RootNamespace>PhoenixSystem.Engine</RootNamespace>
+    <AssemblyName>PhoenixSystem.Engine</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
