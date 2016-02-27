@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using PhoenixSystem.Engine.Attributes;
 using PhoenixSystem.Engine.Channel;
 using PhoenixSystem.Engine.Collections;
 using PhoenixSystem.Engine.Entity;
-using PhoenixSystem.Engine.Attributes;
-using System.Linq;
 
 namespace PhoenixSystem.Engine.Aspect
 {
@@ -17,7 +16,7 @@ namespace PhoenixSystem.Engine.Aspect
         public DefaultAspectMatchingFamily(IChannelManager channelManager)
         {
             _aspectManager = new AspectManager(channelManager, new AspectPool<TAspectType>());
-            var componentTypes = AssociatedComponentsAttributeHelper.GetAssociatedComponentTypes(typeof(TAspectType));
+            var componentTypes = AssociatedComponentsAttributeHelper.GetAssociatedComponentTypes(typeof (TAspectType));
             _componentTypes.AddRange(componentTypes);
         }
 
@@ -31,50 +30,56 @@ namespace PhoenixSystem.Engine.Aspect
             _entities.Clear();
         }
 
-        public void ComponentAddedToEntity(IEntity e, Type componentType)
+        public void ComponentAddedToEntity(IEntity entity, Type componentType)
         {
-            if (!_componentTypes.Contains(componentType) || !IsMatch(e)) return;
+            if (!_componentTypes.Contains(componentType) || !IsMatch(entity)) return;
 
-            Add(e);
+            Add(entity);
         }
 
-        public void ComponentRemovedFromEntity(IEntity e, Type componentType)
+        public void ComponentRemovedFromEntity(IEntity entity, Type componentType)
         {
-            if (!ContainsEntity(e) || !_componentTypes.Contains(componentType)) return;
+            if (!ContainsEntity(entity) || !_componentTypes.Contains(componentType)) return;
 
-            Remove(e);
+            Remove(entity);
         }
 
         public IEnumerable<IAspect> ActiveAspectList => _aspectManager.ChannelAspects;
 
         public IEnumerable<IAspect> EntireAspectList => _aspectManager.Aspects;
 
-        public void NewEntity(IEntity e)
+        public void NewEntity(IEntity entity)
         {
-            if (ContainsEntity(e) || !IsMatch(e)) return;
+            if (ContainsEntity(entity) || !IsMatch(entity)) return;
 
-            Add(e);
+            Add(entity);
         }
 
-        public void RemoveEntity(IEntity e)
+        public void RemoveEntity(IEntity entity)
         {
-            if (!ContainsEntity(e)) return;
+            if (!ContainsEntity(entity)) return;
 
-            Remove(e);
+            Remove(entity);
         }
 
-        private bool IsMatch(IEntity e)
+        private bool IsMatch(IEntity entity)
         {
-            return e.HasComponents(_componentTypes);
+            if (entity == null) throw new ArgumentNullException(nameof(entity));
+
+            return entity.HasComponents(_componentTypes);
         }
 
-        private bool ContainsEntity(IEntity e)
+        private bool ContainsEntity(IEntity entity)
         {
-            return _entities.ContainsKey(e.ID);
+            if (entity == null) throw new ArgumentNullException(nameof(entity));
+
+            return _entities.ContainsKey(entity.ID);
         }
 
         private void Add(IEntity entity)
         {
+            if (entity == null) throw new ArgumentNullException(nameof(entity));
+
             var aspect = _aspectManager.Get(entity);
 
             _entities.Add(entity.ID, aspect);
@@ -82,7 +87,11 @@ namespace PhoenixSystem.Engine.Aspect
 
         private void Remove(IEntity entity)
         {
+            if (entity == null) throw new ArgumentNullException(nameof(entity));
+
             var aspect = _entities[entity.ID];
+
+            if (aspect == null) return;
 
             aspect.Delete();
 
