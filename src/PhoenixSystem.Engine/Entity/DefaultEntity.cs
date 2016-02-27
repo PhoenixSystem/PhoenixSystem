@@ -63,7 +63,7 @@ namespace PhoenixSystem.Engine.Entity
 
             if (HasComponent(componentType) && !overwriteIfExists)
             {
-                throw new ApplicationException("Component already exists on this entity");
+                throw new InvalidOperationException("Component already exists on this entity");
             }
 
             Components[componentType] = c;

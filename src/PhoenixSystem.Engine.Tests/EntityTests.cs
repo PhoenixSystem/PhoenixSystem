@@ -36,7 +36,7 @@ namespace PhoenixSystem.Engine.Tests
         {
             var e = new DefaultEntity("test", "tests");
             e.AddComponent(new StringComponent {Value = "label"});
-            Assert.Throws<ApplicationException>(() => e.AddComponent(new StringComponent {Value = "who cares"}));
+            Assert.Throws<InvalidOperationException>(() => e.AddComponent(new StringComponent {Value = "who cares"}));
         }
 
         [Fact]

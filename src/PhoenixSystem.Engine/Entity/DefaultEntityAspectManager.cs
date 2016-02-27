@@ -62,7 +62,7 @@ namespace PhoenixSystem.Engine.Entity
 
             if (!_aspectFamilies.ContainsKey(type))
             {
-                throw new ApplicationException("Unable to retrieve unfiltered aspect list until AspectType is registered using GetNodeList");
+                throw new InvalidOperationException("Unable to retrieve unfiltered aspect list until AspectType is registered using GetNodeList");
             }
 
             return _aspectFamilies[type].EntireAspectList.Cast<TAspectType>();
@@ -82,7 +82,7 @@ namespace PhoenixSystem.Engine.Entity
 
             if (!_aspectFamilies.ContainsKey(type))
             {
-                throw new ApplicationException("Aspect Family does not exist for type: " + type);
+                throw new InvalidOperationException("Aspect Family does not exist for type: " + type);
             }
 
             var aspectFamily = _aspectFamilies[type];

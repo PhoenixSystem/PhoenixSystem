@@ -79,16 +79,16 @@
     <Compile Include="SystemTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PhoenixSystem.Engine\PhoenixSystem.Engine.csproj">
-      <Project>{47dab103-0cf2-4bd3-af18-377660001d83}</Project>
-      <Name>PhoenixSystem.Engine</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PhoenixSystem.Engine\PhoenixSystem.Engine.csproj">
+      <Project>{6997dc99-5867-4ef9-8df9-b4a4c41c28d6}</Project>
+      <Name>PhoenixSystem.Engine</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

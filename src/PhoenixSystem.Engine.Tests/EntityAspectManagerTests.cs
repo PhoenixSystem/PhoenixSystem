@@ -50,13 +50,13 @@ namespace PhoenixSystem.Engine.Tests
         [Fact]
         public void GetUnfilteredAspectList_Should_Throw_If_ActiveAspectList_Is_Not_Initialized()
         {
-            Assert.Throws<ApplicationException>(() => { _entityAspectManager.GetUnfilteredAspectList<LabelAspect>(); });
+            Assert.Throws<InvalidOperationException>(() => { _entityAspectManager.GetUnfilteredAspectList<LabelAspect>(); });
         }
 
         [Fact]
         public void ReleaseAspectList_Should_Throw_If_AspectFamily_Does_Not_Exist()
         {
-            Assert.Throws<ApplicationException>(() => { _entityAspectManager.ReleaseAspectList<LabelAspect>(); });
+            Assert.Throws<InvalidOperationException>(() => { _entityAspectManager.ReleaseAspectList<LabelAspect>(); });
         }
 
         [Fact]

@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 using PhoenixSystem.Engine.Aspect;
+using System.Linq;
 
 namespace PhoenixSystem.Engine.Attributes
 {
@@ -27,18 +30,19 @@ namespace PhoenixSystem.Engine.Attributes
             //TODO: optimize this so that we don't have to construct a new attribute everytime referenced.
             //Should probably reference some sort of in-memory manager that caches the AssociatedComponents for each 
             //Aspect
-            var types = aspect.GetCustomAttributes(typeof (AssociatedComponentsAttribute), true);
+            
+            IEnumerable<Attribute> types = aspect.GetTypeInfo().GetCustomAttributes(typeof (AssociatedComponentsAttribute), true);
 
-            if (types.Length == 0)
+            if (types.Count() == 0)
             {
-                throw new ApplicationException("Associated Components missing from Aspect");
+                throw new InvalidOperationException("Associated Components missing from Aspect");
             }
 
-            var attribute = types[0] as IAssociatedComponentsAttribute;
+            var attribute = types.FirstOrDefault() as IAssociatedComponentsAttribute;
 
             if (attribute == null || attribute.ComponentTypes.Length == 0)
             {
-                throw new ApplicationException("Associated Components missing from Aspect");
+                throw new InvalidOperationException("Associated Components missing from Aspect");
             }
 
             return attribute.ComponentTypes;
