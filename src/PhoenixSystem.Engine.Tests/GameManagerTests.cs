@@ -5,6 +5,7 @@ using PhoenixSystem.Engine.Entity;
 using PhoenixSystem.Engine.Game;
 using PhoenixSystem.Engine.Tests.Objects;
 using Xunit;
+using PhoenixSystem.Engine.System;
 
 namespace PhoenixSystem.Engine.Tests
 {
@@ -160,6 +161,25 @@ namespace PhoenixSystem.Engine.Tests
             _gameManager.SystemRemoved += (s, e) => notified = true;
             _gameManager.RemoveSystem<LabelSystem>(shouldNotify);
             Assert.Equal(shouldNotify, notified);
+        }
+
+        [Fact]
+        public void DrawableSystem_Should_Be_Added_To_DrawableSystems()
+        {
+            var system = new DrawableLabelSystem(_channelManager, 10);
+            _gameManager.AddSystem(system);
+            Assert.Equal(system, _gameManager.DrawableSystems.First());
+            Assert.Equal(1, _gameManager.DrawableSystems.Count());
+        }
+
+        [Fact]
+        public void DrawableSystem_Should_Be_Removed_From_DrawableSystems()
+        {
+            var system = new DrawableLabelSystem(_channelManager, 10);
+            _gameManager.AddSystem(system);
+            Assert.Equal(system, _gameManager.DrawableSystems.First());
+            _gameManager.RemoveSystem<DrawableLabelSystem>(false);
+            Assert.DoesNotContain<IDrawableSystem>(system, _gameManager.DrawableSystems);            
         }
     }
 }

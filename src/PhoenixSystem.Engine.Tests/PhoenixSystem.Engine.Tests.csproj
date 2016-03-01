@@ -69,6 +69,7 @@
     <Compile Include="EntityTests.cs" />
     <Compile Include="GameManagerTests.cs" />
     <Compile Include="ObjectPoolTests.cs" />
+    <Compile Include="Objects\DrawableLabelSystem.cs" />
     <Compile Include="Objects\LabelAspect.cs" />
     <Compile Include="Objects\LabelSystem.cs" />
     <Compile Include="Objects\SomeOtherComponent.cs" />

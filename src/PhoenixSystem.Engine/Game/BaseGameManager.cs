@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using PhoenixSystem.Engine.Aspect;
 using PhoenixSystem.Engine.Channel;
 using PhoenixSystem.Engine.Entity;
@@ -18,6 +19,7 @@ namespace PhoenixSystem.Engine.Game
         private readonly IEntityAspectManager _entityAspectManager;
         private readonly List<IManager> _managers = new List<IManager>();
         private readonly List<ISystem> _systems = new List<ISystem>();
+        private readonly List<IDrawableSystem> _drawableSystems = new List<IDrawableSystem>();
 
         protected BaseGameManager(
             IEntityAspectManager entityAspectManager,
@@ -31,11 +33,14 @@ namespace PhoenixSystem.Engine.Game
 
         public IEntityManager EntityManager { get; }
 
-        public bool IsUpdating { get; private set; }
+        public bool IsUpdating { get; private set; } = false;
 
         public IEnumerable<IManager> Managers => _managers;
 
         public IEnumerable<ISystem> Systems => _systems;
+        public IEnumerable<IDrawableSystem> DrawableSystems => _drawableSystems;
+
+        public bool IsDrawing { get; private set; } = false;
 
         public event EventHandler EntityAdded;
         public event EventHandler EntityRemoved;
@@ -74,6 +79,12 @@ namespace PhoenixSystem.Engine.Game
             _systems.Add(system);
             _systems.Sort();
 
+            if(system is IDrawableSystem)
+            {
+                _drawableSystems.Add(system as IDrawableSystem);
+                _drawableSystems.Sort();
+            }
+
             system.AddToGameManager(this);
 
             SystemAdded?.Invoke(this, new SystemChangedEventArgs(system));
@@ -108,6 +119,7 @@ namespace PhoenixSystem.Engine.Game
             {
                 RemoveSystem(_systems.First().GetType(), shouldNotify);
             }
+            
         }
 
         public void RemoveAllEntities()
@@ -196,6 +208,12 @@ namespace PhoenixSystem.Engine.Game
             _systems.Remove(system);
             _systems.Sort();
 
+            if(system is IDrawableSystem)
+            {
+                _drawableSystems.Remove(system as IDrawableSystem);
+                _drawableSystems.Sort();
+            }
+
             if (!shouldNotify) return;
 
             SystemRemoved?.Invoke(this, new SystemRemovedEventArgs(system));
@@ -222,6 +240,19 @@ namespace PhoenixSystem.Engine.Game
         private void EntityOnComponentAdded(object sender, ComponentChangedEventArgs e)
         {
             _entityAspectManager.ComponentAddedToEntity(sender as IEntity, e.Component);
+        }
+
+        public void Draw(ITickEvent tickEvent)
+        {
+            IsDrawing = true;
+
+            foreach(var drawableSystem in DrawableSystems.Where(sys => sys.IsInChannel(_channelManager.Channel)))
+            {
+                drawableSystem.Draw(tickEvent);
+            }
+
+            IsDrawing = false;
+
         }
     }
 }

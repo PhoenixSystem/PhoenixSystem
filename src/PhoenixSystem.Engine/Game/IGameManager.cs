@@ -11,8 +11,14 @@ namespace PhoenixSystem.Engine.Game
         IEntityManager EntityManager { get; }
         IEnumerable<IManager> Managers { get; }
         IEnumerable<ISystem> Systems { get; }
+
+        IEnumerable<IDrawableSystem> DrawableSystems { get; }
         bool IsUpdating { get; }
         void Update(ITickEvent tickEvent);
+
+        bool IsDrawing { get; }
+        void Draw(ITickEvent tickEvent);
+
         event EventHandler EntityAdded;
         void AddEntity(IEntity e);
         void AddEntities(IEnumerable<IEntity> entities);
