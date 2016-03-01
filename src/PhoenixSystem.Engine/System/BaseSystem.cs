@@ -6,7 +6,7 @@ using PhoenixSystem.Engine.Game;
 
 namespace PhoenixSystem.Engine.System
 {
-    public abstract class BaseSystem : ISystem, IComparable<BaseSystem>
+    public abstract class BaseSystem : ISystem
     {
         protected BaseSystem(IChannelManager channelManager, int priority, IEnumerable<string> channels = null)
         {
@@ -27,7 +27,7 @@ namespace PhoenixSystem.Engine.System
 
         public bool IsActive { get; private set; }
 
-        public int CompareTo(BaseSystem other)
+        public int CompareTo(ISystem other)
         {
             return Priority.CompareTo(other.Priority);
         }

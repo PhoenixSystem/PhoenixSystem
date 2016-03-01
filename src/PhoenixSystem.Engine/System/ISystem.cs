@@ -4,7 +4,7 @@ using PhoenixSystem.Engine.Game;
 
 namespace PhoenixSystem.Engine.System
 {
-    public interface ISystem : IChannelFilterable
+    public interface ISystem : IChannelFilterable, IComparable<ISystem>
     {
         Guid ID { get; }
         int Priority { get; }
