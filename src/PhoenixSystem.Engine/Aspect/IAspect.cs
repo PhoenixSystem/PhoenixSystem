@@ -18,7 +18,7 @@ namespace PhoenixSystem.Engine.Aspect
 
     public static class IAspectHelpers
     {
-        public static T GetComponent<T>(this IAspect aspect) where T : class, IAspect
+        public static T GetComponent<T>(this IAspect aspect) where T : class, IComponent
         {
             if (!aspect.Components.ContainsKey(typeof(T)))
                 throw new InvalidOperationException("Component type " + typeof(T).Name + "not found.");
