@@ -10,7 +10,7 @@ namespace PhoenixSystem.Engine.Attributes
     public sealed class AssociatedComponentsAttribute : Attribute, IAssociatedComponentsAttribute
     {
         // This is a positional argument
-        public AssociatedComponentsAttribute(Type[] associatedComponents)
+        public AssociatedComponentsAttribute(params Type[] associatedComponents)
         {
             ComponentTypes = associatedComponents;
         }
