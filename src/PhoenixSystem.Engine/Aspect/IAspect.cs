@@ -15,4 +15,14 @@ namespace PhoenixSystem.Engine.Aspect
         void Reset();
         void Init(IEntity e);
     }
+
+    public static class IAspectHelpers
+    {
+        public static T GetComponent<T>(this IAspect aspect) where T : class, IComponent
+        {
+            if (!aspect.Components.ContainsKey(typeof(T)))
+                throw new InvalidOperationException("Component type " + typeof(T).Name + "not found.");
+            return aspect.Components[typeof(T)] as T;
+        }
+    }
 }
