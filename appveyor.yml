@@ -1,0 +1,10 @@
+#reference: http://www.appveyor.com/docs/appveyor-yml
+
+version: 0.1.{build}
+
+branches: 
+  only:
+   - master
+   
+before_build:
+  nuget restore src\PhoenixSystem.sln
