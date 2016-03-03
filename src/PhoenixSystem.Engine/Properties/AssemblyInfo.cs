@@ -7,10 +7,10 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("PhoenixSystem.Engine.PCL")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Phoenix System is an Entity Component System written in C# for Game Development and other cool stuff.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("PhoenixSystem.Engine.PCL")]
+[assembly: AssemblyProduct("Phoenix Entity Component System")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
