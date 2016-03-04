@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("PhoenixSystem.Engine.PCL")]
 [assembly: AssemblyDescription("Phoenix System is an Entity Component System written in C# for Game Development and other cool stuff.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Jonathan Mast (@jonathanpmast), Rob Lindley (@coderrob)")]
 [assembly: AssemblyProduct("Phoenix Entity Component System")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
