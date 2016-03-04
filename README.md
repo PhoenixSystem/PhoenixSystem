@@ -2,7 +2,8 @@
 
 ###An Entity Component System written in C# for .NET and Mono
 
-[![Build status](https://ci.appveyor.com/api/projects/status/c3chbd56hj9pu31k?svg=true)](https://ci.appveyor.com/project/jonathanpmast/phoenixsystem)
+[![Build status](https://ci.appveyor.com/api/projects/status/c3chbd56hj9pu31k?svg=true)](https://ci.appveyor.com/project/Phoenix/phoenixsystem)
+
 
 
 This repository maintains the core abstractions and objects for the Phoenix System; a(nother) component entity system based on the varied articles and posting detailing Entity Systems in game development.
