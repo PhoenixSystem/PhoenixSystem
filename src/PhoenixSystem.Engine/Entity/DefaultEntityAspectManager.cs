@@ -34,7 +34,7 @@ namespace PhoenixSystem.Engine.Entity
                 kvp.Value.ComponentRemovedFromEntity(entity, component.GetType());
             }
         }
-        
+
         public IEnumerable<TAspectType> GetAspectList<TAspectType>() where TAspectType : IAspect, new()
         {
             var aspectType = typeof (TAspectType).Name;
@@ -44,7 +44,7 @@ namespace PhoenixSystem.Engine.Entity
                 return _aspectFamilies[aspectType].ActiveAspectList.Cast<TAspectType>();
             }
 
-            var aspectFamily = new DefaultAspectMatchingFamily<TAspectType>(_channelManager);            
+            var aspectFamily = new DefaultAspectMatchingFamily<TAspectType>(_channelManager);
 
             _aspectFamilies[aspectType] = aspectFamily;
 

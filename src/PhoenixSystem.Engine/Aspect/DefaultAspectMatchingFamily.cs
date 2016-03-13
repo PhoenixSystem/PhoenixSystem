@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using PhoenixSystem.Engine.Attributes;
 using PhoenixSystem.Engine.Channel;
 using PhoenixSystem.Engine.Collections;
 using PhoenixSystem.Engine.Entity;
+using PhoenixSystem.Engine.Extensions;
 
 namespace PhoenixSystem.Engine.Aspect
 {
@@ -16,7 +16,7 @@ namespace PhoenixSystem.Engine.Aspect
         public DefaultAspectMatchingFamily(IChannelManager channelManager)
         {
             _aspectManager = new AspectManager(channelManager, new AspectPool<TAspectType>());
-            var componentTypes = AssociatedComponentsAttributeHelper.GetAssociatedComponentTypes(typeof (TAspectType));
+            var componentTypes = AssociatedComponentsAttributeExtension.GetAssociatedComponentTypes(typeof (TAspectType));
             _componentTypes.AddRange(componentTypes);
         }
 
