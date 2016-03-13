@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using PhoenixSystem.Engine.Attributes;
 using PhoenixSystem.Engine.Component;
 using PhoenixSystem.Engine.Entity;
+using PhoenixSystem.Engine.Extensions;
 
 namespace PhoenixSystem.Engine.Aspect
 {

@@ -38,6 +38,7 @@
     <None Include="PhoenixSystem.Engine.nuspec" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\AspectExtension.cs" />
     <Compile Include="Aspect\AspectManager.cs" />
     <Compile Include="Aspect\BaseAspect.cs" />
     <Compile Include="Aspect\DefaultAspectMatchingFamily.cs" />
@@ -45,6 +46,7 @@
     <Compile Include="Aspect\IAspectManager.cs" />
     <Compile Include="Aspect\IAspectMatchingFamily.cs" />
     <Compile Include="Attributes\AssociatedComponentsAttribute.cs" />
+    <Compile Include="Extensions\AssociatedComponentsAttributeExtension.cs" />
     <Compile Include="Attributes\IAssociatedComponentsAttribute.cs" />
     <Compile Include="Channel\ChannelManager.cs" />
     <Compile Include="Channel\IChannelFilterable.cs" />
