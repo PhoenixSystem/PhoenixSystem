@@ -34,6 +34,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Render\AnimationCache.cs" />
     <Compile Include="Aspects\MovementAspect.cs" />
     <Compile Include="Aspects\SpriteAnimationAspect.cs" />
     <Compile Include="Aspects\TextRenderAspect.cs" />
@@ -49,7 +50,11 @@
     <Compile Include="Components\StringComponent.cs" />
     <Compile Include="Components\TextureRenderComponent.cs" />
     <Compile Include="Components\VelocityComponent.cs" />
+    <Compile Include="IFileReader.cs" />
+    <Compile Include="MonogameTickEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Render\Sprite\SpriteFrame.cs" />
+    <Compile Include="Render\Sprite\SpriteSheet.cs" />
     <Compile Include="Systems\MovementSystem.cs" />
     <Compile Include="Systems\SpriteAnimationSystem.cs" />
     <Compile Include="Systems\TextRenderSystem.cs" />
