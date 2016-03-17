@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1fecca11-0a67-469a-8281-a8d7ea29d9f6}</ProjectGuid>
+    <ProjectGuid>{1FECCA11-0A67-469A-8281-A8D7EA29D9F6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PhoenixSystem.Monogame</RootNamespace>
@@ -34,11 +34,39 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
+    <Compile Include="Aspects\MovementAspect.cs" />
+    <Compile Include="Aspects\SpriteAnimationAspect.cs" />
+    <Compile Include="Aspects\TextRenderAspect.cs" />
+    <Compile Include="Aspects\TextureRenderAspect.cs" />
+    <Compile Include="Components\AnimationComponent.cs" />
+    <Compile Include="Components\ColorComponent.cs" />
+    <Compile Include="Components\PositionComponent.cs" />
+    <Compile Include="Components\RenderLayerComponent.cs" />
+    <Compile Include="Components\RotationComponent.cs" />
+    <Compile Include="Components\ScaleComponent.cs" />
+    <Compile Include="Components\SizeComponent.cs" />
+    <Compile Include="Components\SpriteFontComponent.cs" />
+    <Compile Include="Components\StringComponent.cs" />
+    <Compile Include="Components\TextureRenderComponent.cs" />
+    <Compile Include="Components\VelocityComponent.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Systems\MovementSystem.cs" />
+    <Compile Include="Systems\SpriteAnimationSystem.cs" />
+    <Compile Include="Systems\TextRenderSystem.cs" />
+    <Compile Include="Systems\TextureRenderSystem.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Reference Include="MonoGame.Framework, Version=3.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoGame.Framework.Portable.3.2.99.1-Beta\lib\portable-net45+win+wpa81+Xamarin.iOS10+MonoAndroid10+MonoTouch10\MonoGame.Framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PhoenixSystem.Engine, Version=0.0.1.15, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\PhoenixSystem.Engine.0.0.1.15\lib\portable-net45+win+wpa81+MonoAndroid10+xamarinios10+MonoTouch10\PhoenixSystem.Engine.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -48,5 +76,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-
 </Project>
