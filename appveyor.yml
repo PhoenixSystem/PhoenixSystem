@@ -1,6 +1,6 @@
 #reference: http://www.appveyor.com/docs/appveyor-yml
 
-version: 0.0.1.{build}
+version: 0.0.1.{build}-beta
 
 branches: 
   only:
