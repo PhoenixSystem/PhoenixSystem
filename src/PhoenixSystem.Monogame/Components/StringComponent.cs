@@ -1,25 +1,14 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using PhoenixSystem.Engine.Component;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PhoenixSystem.Engine.Component;
 
-namespace PhoenixSample.PCL.Monogame.Components
+namespace PhoenixSystem.Monogame.Components
 {
     public class StringComponent : BaseComponent
     {
-        public StringComponent()
-        {
-
-        }
-
-        public string Text { get; set; } = String.Empty;
+        public string Text { get; set; } = string.Empty;
 
         public override IComponent Clone()
         {
-            return new StringComponent() { Text = this.Text };
+            return new StringComponent {Text = Text};
         }
 
 

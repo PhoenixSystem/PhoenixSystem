@@ -1,21 +1,18 @@
-﻿using PhoenixSample.PCL.TexturePacker;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using PhoenixSystem.Monogame.Render.Sprite;
 
-namespace PhoenixSample.PCL.Animation
+namespace PhoenixSystem.Monogame.Render
 {
     public class AnimationCache
     {
-        private SpriteSheet _spriteSheet;
+        private readonly SpriteSheet _spriteSheet;
 
         public AnimationCache(SpriteSheet spriteSheet)
         {
             _spriteSheet = spriteSheet;
         }
-        public IDictionary<string, string[]> Animations { get; private set; } = new Dictionary<string, string[]>();
+
+        public IDictionary<string, string[]> Animations { get; } = new Dictionary<string, string[]>();
 
         public SpriteFrame GetSpriteFrame(string animation, int frameIndex)
         {

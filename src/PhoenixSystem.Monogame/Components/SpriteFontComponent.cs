@@ -1,12 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using PhoenixSystem.Engine.Component;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace PhoenixSample.PCL.Monogame.Components
+namespace PhoenixSystem.Monogame.Components
 {
     public class SpriteFontComponent : BaseComponent
     {
@@ -14,7 +9,7 @@ namespace PhoenixSample.PCL.Monogame.Components
 
         public override IComponent Clone()
         {
-            var tc = new SpriteFontComponent() { Font = this.Font };
+            var tc = new SpriteFontComponent {Font = Font};
             return tc;
         }
 

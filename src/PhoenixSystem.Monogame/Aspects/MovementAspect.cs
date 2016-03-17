@@ -1,13 +1,8 @@
-﻿using PhoenixSample.PCL.Monogame.Components;
-using PhoenixSystem.Engine.Aspect;
+﻿using PhoenixSystem.Engine.Aspect;
 using PhoenixSystem.Engine.Attributes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using PhoenixSystem.Monogame.Components;
 
-namespace PhoenixSample.PCL.Monogame.Aspects
+namespace PhoenixSystem.Monogame.Aspects
 {
     [AssociatedComponents(typeof(PositionComponent), typeof(VelocityComponent))]
     public class MovementAspect :BaseAspect

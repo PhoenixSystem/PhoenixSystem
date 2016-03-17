@@ -1,23 +1,19 @@
 using PhoenixSystem.Engine.Component;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace PhoenixSample.PCL
+namespace PhoenixSystem.Monogame.Components
 {
     public class RotationComponent : BaseComponent
     {
         public float Factor { get; set; }
+
         public override IComponent Clone()
         {
-            return new RotationComponent() { Factor = this.Factor };
+            return new RotationComponent {Factor = Factor};
         }
 
         public override void Reset()
         {
-            this.Factor = 0.0f;
+            Factor = 0.0f;
         }
     }
 }

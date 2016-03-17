@@ -1,12 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using PhoenixSystem.Engine.Component;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace PhoenixSample.PCL.Monogame.Components
+namespace PhoenixSystem.Monogame.Components
 {
     public class VelocityComponent : BaseComponent
     {
@@ -15,7 +10,7 @@ namespace PhoenixSample.PCL.Monogame.Components
 
         public override IComponent Clone()
         {
-            return new VelocityComponent()
+            return new VelocityComponent
             {
                 Direction = new Vector2(Direction.X, Direction.Y),
                 Speed = new Vector2(Direction.X, Direction.Y)

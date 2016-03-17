@@ -1,11 +1,6 @@
 ﻿using PhoenixSystem.Engine.Component;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace PhoenixSample.PCL.Monogame.Components
+namespace PhoenixSystem.Monogame.Components
 {
     public class SizeComponent : BaseComponent
     {
@@ -14,7 +9,7 @@ namespace PhoenixSample.PCL.Monogame.Components
 
         public override IComponent Clone()
         {
-            return new SizeComponent() { Height = this.Height, Width = this.Width };
+            return new SizeComponent {Height = Height, Width = Width};
         }
 
         public override void Reset()

@@ -1,31 +1,31 @@
-using PhoenixSystem.Engine.System;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PhoenixSystem.Engine;
-using PhoenixSystem.Engine.Game;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using PhoenixSystem.Engine;
 using PhoenixSystem.Engine.Channel;
 using PhoenixSystem.Engine.Extensions;
-using PhoenixSample.PCL.Monogame.Components;
-using Microsoft.Xna.Framework;
+using PhoenixSystem.Engine.Game;
+using PhoenixSystem.Engine.System;
+using PhoenixSystem.Monogame.Aspects;
+using PhoenixSystem.Monogame.Components;
 
-namespace PhoenixSample.PCL
+namespace PhoenixSystem.Monogame.Systems
 {
     public class TextureRenderSystem : BaseSystem, IDrawableSystem
     {
+        private const float ClockwiseNinetyDegreeRotation = (float) (Math.PI/2.0f);
+        private readonly SpriteBatch _spriteBatch;
         private IEnumerable<TextureRenderAspect> _aspects;
-        private SpriteBatch _spriteBatch;
-        private const float ClockwiseNinetyDegreeRotation = (float)(Math.PI / 2.0f);
 
-        public TextureRenderSystem(SpriteBatch spriteBatch, IChannelManager channelManager, int priority, params string[] channels)
+        public TextureRenderSystem(SpriteBatch spriteBatch, IChannelManager channelManager, int priority,
+            params string[] channels)
             : base(channelManager, priority, channels)
         {
             _spriteBatch = spriteBatch;
         }
-        public bool IsDrawing { get; set; } = false;
+
+        public bool IsDrawing { get; set; }
 
         public override void AddToGameManager(IGameManager gameManager)
         {
@@ -43,32 +43,47 @@ namespace PhoenixSample.PCL
                 var scale = aspect.GetComponent<ScaleComponent>();
                 var rotation = aspect.GetComponent<RotationComponent>().Factor;
                 var spriteEffects = texture.SpriteEffects;
-                Vector2 origin = texture.Origin;
+                var origin = texture.Origin;
                 if (texture.IsRotated)
                 {
                     rotation -= ClockwiseNinetyDegreeRotation;
+
                     switch (spriteEffects)
                     {
-                        case SpriteEffects.FlipHorizontally: spriteEffects = SpriteEffects.FlipVertically; break;
-                        case SpriteEffects.FlipVertically: spriteEffects = SpriteEffects.FlipHorizontally; break;
+                        case SpriteEffects.FlipHorizontally:
+                            spriteEffects = SpriteEffects.FlipVertically;
+                            break;
+
+                        case SpriteEffects.FlipVertically:
+                            spriteEffects = SpriteEffects.FlipHorizontally;
+                            break;
+
+                        case SpriteEffects.None:
+                            break;
+
+                        default:
+                            throw new ArgumentOutOfRangeException();
                     }
                 }
+
                 switch (spriteEffects)
                 {
-                    case SpriteEffects.FlipHorizontally: origin.X = texture.SourceRect.Width - origin.X; break;
-                    case SpriteEffects.FlipVertically: origin.Y = texture.SourceRect.Height - origin.Y; break;
+                    case SpriteEffects.FlipHorizontally:
+                        origin.X = texture.SourceRect.Width - origin.X;
+                        break;
+
+                    case SpriteEffects.FlipVertically:
+                        origin.Y = texture.SourceRect.Height - origin.Y;
+                        break;
+
+                    case SpriteEffects.None:
+                        break;
+
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
 
-                _spriteBatch.Draw(
-                    texture: texture.Texture,
-                    position: position.CurrentPosition,
-                    sourceRectangle: texture.SourceRect,
-                    color: color.Color,
-                    rotation: rotation,
-                    origin: origin,
-                    scale: new Vector2(scale.Factor, scale.Factor),
-                    effects: spriteEffects
-                    );
+                _spriteBatch.Draw(texture.Texture, position.CurrentPosition, sourceRectangle: texture.SourceRect, color: color.Color, rotation: rotation, origin: origin, scale: new Vector2(scale.Factor, scale.Factor), effects: spriteEffects);
             }
 
             IsDrawing = false;
@@ -76,12 +91,10 @@ namespace PhoenixSample.PCL
 
         public override void RemoveFromGameManager(IGameManager gameManager)
         {
-            
         }
 
         public override void Update(ITickEvent tickEvent)
         {
-            
         }
     }
 }

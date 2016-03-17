@@ -1,19 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
 using PhoenixSystem.Engine.Component;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace PhoenixSample.PCL.Monogame.Components
+namespace PhoenixSystem.Monogame.Components
 {
     public class ColorComponent : BaseComponent
     {
-        public Color? Color { get; set; } = null;
+        public Color? Color { get; set; }
+
         public override IComponent Clone()
         {
-            return new ColorComponent() { Color = this.Color };
+            return new ColorComponent {Color = Color};
         }
 
         public override void Reset()

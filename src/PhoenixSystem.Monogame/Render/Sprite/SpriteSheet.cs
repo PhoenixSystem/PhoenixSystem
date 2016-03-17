@@ -1,35 +1,32 @@
-namespace PhoenixSample.PCL.TexturePacker
+using System.Collections.Generic;
+
+namespace PhoenixSystem.Monogame.Render.Sprite
 {
-    using System.Collections.Generic;
-
-    using Microsoft.Xna.Framework.Graphics;
-
     public class SpriteSheet
     {
-        private readonly IDictionary<string, SpriteFrame> spriteList;
+        private readonly IDictionary<string, SpriteFrame> _spriteList;
 
         public SpriteSheet()
         {
-            spriteList = new Dictionary<string, SpriteFrame>();
+            _spriteList = new Dictionary<string, SpriteFrame>();
         }
 
         public void Add(string name, SpriteFrame sprite)
         {
-            spriteList.Add(name, sprite);
+            _spriteList.Add(name, sprite);
         }
 
         public void Add(SpriteSheet otherSheet)
         {
-            foreach (var sprite in otherSheet.spriteList)
+            foreach (var sprite in otherSheet._spriteList)
             {
-                spriteList.Add(sprite);
+                _spriteList.Add(sprite);
             }
         }
 
         public SpriteFrame Sprite(string sprite)
         {
-            return this.spriteList[sprite];
+            return _spriteList[sprite];
         }
-
     }
 }

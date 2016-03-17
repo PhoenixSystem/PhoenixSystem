@@ -1,50 +1,40 @@
 ﻿using PhoenixSystem.Engine.Component;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace PhoenixSample.PCL.Monogame.Components
+namespace PhoenixSystem.Monogame.Components
 {
     public class AnimationComponent : BaseComponent
     {
-
         public string CurrentAnimation { get; set; } = string.Empty;
         public float FPS { get; set; } = 10.0f;
-        public float TimePerFrame
-        {
-            get
-            {
-                return 1.0f/ FPS;
-            }
-        }
-        public int CurrentFrameIndex { get; set; } = 0;
-        public bool ShouldLoop { get; set; } = false;
-        public bool Active { get; set; } = false;
-        public float TimeInCurrentFrame { get; set; } = 0.0f;
+
+        public float TimePerFrame => 1.0f/FPS;
+
+        public int CurrentFrameIndex { get; set; }
+        public bool ShouldLoop { get; set; }
+        public bool Active { get; set; }
+        public float TimeInCurrentFrame { get; set; }
 
         public override IComponent Clone()
         {
-            return new AnimationComponent()
+            return new AnimationComponent
             {
-                CurrentAnimation = this.CurrentAnimation,
-                FPS = this.FPS,
-                CurrentFrameIndex = this.CurrentFrameIndex,
-                ShouldLoop = this.ShouldLoop,
-                Active = this.Active,
-                TimeInCurrentFrame = this.TimeInCurrentFrame
+                CurrentAnimation = CurrentAnimation,
+                FPS = FPS,
+                CurrentFrameIndex = CurrentFrameIndex,
+                ShouldLoop = ShouldLoop,
+                Active = Active,
+                TimeInCurrentFrame = TimeInCurrentFrame
             };
         }
 
         public override void Reset()
         {
-            this.CurrentFrameIndex = 0;
-            this.FPS = 10.0f;
-            this.CurrentAnimation = string.Empty;
-            this.ShouldLoop = false;
-            this.Active = false;
-            this.TimeInCurrentFrame = 0.0f;
+            CurrentFrameIndex = 0;
+            FPS = 10.0f;
+            CurrentAnimation = string.Empty;
+            ShouldLoop = false;
+            Active = false;
+            TimeInCurrentFrame = 0.0f;
         }
     }
 }
