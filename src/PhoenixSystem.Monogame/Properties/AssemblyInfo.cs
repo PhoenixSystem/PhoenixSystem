@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("PhoenixSystem.Monogame")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("PhoenixSystem.Monogame.PCL")]
+[assembly: AssemblyDescription("Phoenix System is an Entity Component System written in C# for Game Development and other cool stuff.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("PhoenixSystem.Monogame")]
+[assembly: AssemblyCompany("Jonathan Mast (@jonathanpmast), Rob Lindley (@coderrob)")]
+[assembly: AssemblyProduct("Phoenix Entity Component System")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
