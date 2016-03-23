@@ -18,7 +18,7 @@ namespace PhoenixSystem.Engine.Game
 
         IEntityAspectManager EntityAspectManager { get; }
         IEntityManager EntityManager { get; }
-        IManagers Managers { get; }
+        IManagerManager Managers { get; }
         ISystemManager Systems { get; }
         bool IsUpdating { get; }
         bool IsDrawing { get; }

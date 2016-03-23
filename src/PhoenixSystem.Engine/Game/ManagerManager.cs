@@ -2,7 +2,7 @@
 
 namespace PhoenixSystem.Engine.Game
 {
-    public class Managers : IManagers
+    public class ManagerManager : IManagerManager
     {
         private readonly List<IManager> _managers = new List<IManager>();
         private IGameManager _gameManager;

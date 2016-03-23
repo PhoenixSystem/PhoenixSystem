@@ -13,7 +13,7 @@ namespace PhoenixSystem.Engine.Game
             IEntityAspectManager entityAspectManager,
             IEntityManager entityManager,
             ISystemManager systemManager, 
-            IManagers managers)
+            IManagerManager managers)
         {
             EntityAspectManager = entityAspectManager;
             EntityManager = entityManager;
@@ -25,7 +25,7 @@ namespace PhoenixSystem.Engine.Game
 
         public IEntityAspectManager EntityAspectManager { get; }
         public IEntityManager EntityManager { get; }
-        public IManagers Managers { get; }
+        public IManagerManager Managers { get; }
         public ISystemManager Systems { get; }
 
         public bool IsUpdating { get; private set; }

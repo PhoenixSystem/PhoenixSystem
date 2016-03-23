@@ -7,7 +7,7 @@ namespace PhoenixSystem.Engine.Tests.Objects
     internal class TestGameManager : BaseGameManager
     {
         public TestGameManager(IEntityAspectManager entityAspectManager, IEntityManager entityManager, ISystemManager systemManager)
-            : base(entityAspectManager, entityManager, systemManager, new Managers())
+            : base(entityAspectManager, entityManager, systemManager, new ManagerManager())
         {
         }
     }

@@ -1,6 +1,6 @@
 ﻿namespace PhoenixSystem.Engine.Game
 {
-    public interface IManagers
+    public interface IManagerManager
     {
         void Register(IGameManager gameManager);
         void Add(IManager manager);
