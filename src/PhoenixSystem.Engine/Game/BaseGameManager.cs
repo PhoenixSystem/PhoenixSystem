@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using PhoenixSystem.Engine.Aspect;
-using PhoenixSystem.Engine.Channel;
 using PhoenixSystem.Engine.Entity;
 using PhoenixSystem.Engine.Events;
-using PhoenixSystem.Engine.Extensions;
 using PhoenixSystem.Engine.System;
 
 // ReSharper disable CollectionNeverQueried.Local
@@ -14,30 +11,32 @@ namespace PhoenixSystem.Engine.Game
 {
     public abstract class BaseGameManager : IGameManager
     {
-        private readonly IChannelManager _channelManager;
-        private readonly List<IDrawableSystem> _drawableSystems = new List<IDrawableSystem>();
         private readonly IEntityAspectManager _entityAspectManager;
         private readonly List<IManager> _managers = new List<IManager>();
-        private readonly List<ISystem> _systems = new List<ISystem>();
 
         protected BaseGameManager(
             IEntityAspectManager entityAspectManager,
             IEntityManager entityManager,
-            IChannelManager channelManager)
+            ISystemManager systemManager)
         {
             EntityManager = entityManager;
-            _channelManager = channelManager;
+            Systems = systemManager;
             _entityAspectManager = entityAspectManager;
+            
+            Systems.SetGameManager(this);
+            Systems.SystemAdded += (sender, args) => SystemAdded?.Invoke(sender, args);
+            Systems.SystemStarted += (sender, args) => SystemStarted?.Invoke(sender, args);
+            Systems.SystemRemoved += (sender, args) => SystemRemoved?.Invoke(sender, args);
+            Systems.SystemStarted += (sender, args) => SystemStarted?.Invoke(sender, args);
+            Systems.SystemStopped += (sender, args) => SystemSuspended?.Invoke(sender, args);
         }
 
         public IEntityManager EntityManager { get; }
-        public bool IsUpdating { get; private set; }
         public IEnumerable<IManager> Managers => _managers;
-        public IEnumerable<ISystem> Systems => _systems;
-        public IEnumerable<IDrawableSystem> DrawableSystems => _drawableSystems;
-
+        public ISystemManager Systems { get; }
+        public bool IsUpdating { get; private set; }
         public bool IsDrawing { get; private set; }
-
+        
         public event EventHandler EntityAdded;
         public event EventHandler EntityRemoved;
         public event EventHandler SystemAdded;
@@ -67,23 +66,7 @@ namespace PhoenixSystem.Engine.Game
 
         public void AddSystem(ISystem system)
         {
-            if (HasSystem(system))
-            {
-                throw new InvalidOperationException($"System {system.GetType().Name} already added to game manager.");
-            }
-
-            _systems.Add(system);
-            _systems.Sort();
-
-            if (system is IDrawableSystem)
-            {
-                _drawableSystems.Add(system as IDrawableSystem);
-                _drawableSystems.Sort();
-            }
-
-            system.AddToGameManager(this);
-
-            SystemAdded?.Invoke(this, new SystemChangedEventArgs(system));
+            Systems.Add(system);
         }
 
         public IEnumerable<TAspectType> GetAspectList<TAspectType>() where TAspectType : IAspect, new()
@@ -111,10 +94,7 @@ namespace PhoenixSystem.Engine.Game
 
         public void RemoveAllSystems(bool shouldNotify)
         {
-            while (_systems.Count > 0)
-            {
-                RemoveSystem(_systems.First().GetType(), shouldNotify);
-            }
+            Systems.Clear(shouldNotify);
         }
 
         public void RemoveAllEntities()
@@ -149,36 +129,19 @@ namespace PhoenixSystem.Engine.Game
 
         public void StartSystem<TSystemType>() where TSystemType : ISystem
         {
-            var system = _systems.SingleOrDefault(s => s.GetType() == typeof (TSystemType));
-
-            if (system == null) return;
-
-            system.Start();
-
-            SystemStarted?.Invoke(this, new SystemStartedEventArgs(system));
+            Systems.Start(typeof (TSystemType));
         }
 
         public void SuspendSystem<TSystemType>() where TSystemType : ISystem
         {
-            var system = _systems.SingleOrDefault(s => s.GetType() == typeof (TSystemType));
-
-            if (system == null) return;
-
-            system.Stop();
-
-            SystemSuspended?.Invoke(this, new SystemSuspendedEventArgs(system));
+            Systems.Stop(typeof (TSystemType));
         }
 
         public virtual void Update(ITickEvent tickEvent)
         {
             IsUpdating = true;
 
-            var curChan = _channelManager.Channel;
-
-            foreach (var system in _systems.Where(system => system.IsInChannel(curChan, "all")))
-            {
-                system.Update(tickEvent);
-            }
+            Systems.Update(tickEvent);
 
             OnSystemsUpdated(tickEvent);
 
@@ -196,34 +159,14 @@ namespace PhoenixSystem.Engine.Game
         {
             IsDrawing = true;
 
-            foreach (var drawableSystem in DrawableSystems.Where(sys => sys.IsInChannel(_channelManager.Channel)))
-            {
-                drawableSystem.Draw(tickEvent);
-            }
+            Systems.Draw(tickEvent);
 
             IsDrawing = false;
         }
 
         public void RemoveSystem(Type systemType, bool shouldNotify)
         {
-            var system = _systems.FirstOrDefault(s => s.GetType() == systemType);
-
-            if (system == null) return;
-
-            system.RemoveFromGameManager(this);
-
-            _systems.Remove(system);
-            _systems.Sort();
-
-            if (system is IDrawableSystem)
-            {
-                _drawableSystems.Remove(system as IDrawableSystem);
-                _drawableSystems.Sort();
-            }
-
-            if (!shouldNotify) return;
-
-            SystemRemoved?.Invoke(this, new SystemRemovedEventArgs(system));
+            Systems.Remove(systemType, shouldNotify);
         }
 
         protected virtual void OnSystemsUpdated(ITickEvent tickEvent)
@@ -232,11 +175,6 @@ namespace PhoenixSystem.Engine.Game
 
         protected virtual void OnManagersUpdated(ITickEvent tickEvent)
         {
-        }
-
-        private bool HasSystem(ISystem system)
-        {
-            return _systems.Any(s => s.ID == system.ID);
         }
 
         private void EntityOnComponentRemoved(object sender, ComponentChangedEventArgs e)
