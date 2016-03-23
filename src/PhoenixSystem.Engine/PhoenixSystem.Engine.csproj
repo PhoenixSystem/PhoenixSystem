@@ -58,7 +58,6 @@
     <Compile Include="Collections\ObjectPool.cs" />
     <Compile Include="Component\BaseComponent.cs" />
     <Compile Include="Component\IComponent.cs" />
-    <Compile Include="Entity\BaseEntityAspectManager.cs" />
     <Compile Include="Entity\DefaultEntity.cs" />
     <Compile Include="Entity\DefaultEntityAspectManager.cs" />
     <Compile Include="Entity\EntityManager.cs" />
