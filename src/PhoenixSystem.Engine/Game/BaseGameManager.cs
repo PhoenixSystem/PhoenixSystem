@@ -5,8 +5,6 @@ using PhoenixSystem.Engine.Entity;
 using PhoenixSystem.Engine.Events;
 using PhoenixSystem.Engine.System;
 
-// ReSharper disable CollectionNeverQueried.Local
-
 namespace PhoenixSystem.Engine.Game
 {
     public abstract class BaseGameManager : IGameManager
@@ -42,10 +40,7 @@ namespace PhoenixSystem.Engine.Game
 
         public void AddEntities(IEnumerable<IEntity> entities)
         {
-            foreach (var e in entities)
-            {
-                AddEntity(e);
-            }
+            EntityManager.Add(entities);
         }
 
         public void AddEntity(IEntity entity)

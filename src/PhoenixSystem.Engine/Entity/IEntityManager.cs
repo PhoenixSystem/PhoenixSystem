@@ -17,6 +17,7 @@ namespace PhoenixSystem.Engine.Entity
         IEntity Get(string name = "", string[] channels = null);
         void Clear();
         void Add(IEntity entity);
+        void Add(IEnumerable<IEntity> entities);
         void Remove(IEntity entity);
     }
 }

@@ -78,6 +78,14 @@ namespace PhoenixSystem.Engine.Entity
             EntityAdded?.Invoke(this, new EntityChangedEventArgs(entity));
         }
 
+        public void Add(IEnumerable<IEntity> entities)
+        {
+            foreach (var entity in entities)
+            {
+                Add(entity);
+            }
+        }
+
         public void Remove(IEntity entity)
         {
             if (!Entities.ContainsKey(entity.ID)) return;
