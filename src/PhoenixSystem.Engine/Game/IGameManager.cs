@@ -15,8 +15,9 @@ namespace PhoenixSystem.Engine.Game
         event EventHandler EntityAdded;
         event EventHandler EntityRemoved;
 
+        IEntityAspectManager EntityAspectManager { get; }
         IEntityManager EntityManager { get; }
-        IEnumerable<IManager> Managers { get; }
+        IManagers Managers { get; }
         ISystemManager Systems { get; }
         bool IsUpdating { get; }
         bool IsDrawing { get; }

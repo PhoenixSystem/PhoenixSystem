@@ -10,25 +10,26 @@ using PhoenixSystem.Engine.System;
 namespace PhoenixSystem.Engine.Game
 {
     public abstract class BaseGameManager : IGameManager
-    {
-        private readonly IEntityAspectManager _entityAspectManager;
-        private readonly List<IManager> _managers = new List<IManager>();
-
+    {        
         protected BaseGameManager(
             IEntityAspectManager entityAspectManager,
             IEntityManager entityManager,
-            ISystemManager systemManager)
+            ISystemManager systemManager, 
+            IManagers managers)
         {
-            _entityAspectManager = entityAspectManager;
+            EntityAspectManager = entityAspectManager;
             EntityManager = entityManager;
             Systems = systemManager;
+            Managers = managers;
 
-            RegisterEvents();
+            RegisterManagers();
         }
 
+        public IEntityAspectManager EntityAspectManager { get; }
         public IEntityManager EntityManager { get; }
-        public IEnumerable<IManager> Managers => _managers;
+        public IManagers Managers { get; }
         public ISystemManager Systems { get; }
+
         public bool IsUpdating { get; private set; }
         public bool IsDrawing { get; private set; }
 
@@ -59,25 +60,22 @@ namespace PhoenixSystem.Engine.Game
 
         public IEnumerable<TAspectType> GetAspectList<TAspectType>() where TAspectType : IAspect, new()
         {
-            return _entityAspectManager.GetAspectList<TAspectType>();
+            return EntityAspectManager.GetAspectList<TAspectType>();
         }
 
         public IEnumerable<TAspectType> GetUnfilteredAspectList<TAspectType>() where TAspectType : IAspect, new()
         {
-            return _entityAspectManager.GetUnfilteredAspectList<TAspectType>();
+            return EntityAspectManager.GetUnfilteredAspectList<TAspectType>();
         }
 
         public void RegisterManager(IManager manager)
         {
-            manager.Register(this);
-
-            _managers.Add(manager);
-            _managers.Sort();
+            Managers.Add(manager);
         }
 
         public void ReleaseAspectList<TAspectType>()
         {
-            _entityAspectManager.ReleaseAspectList<TAspectType>();
+            EntityAspectManager.ReleaseAspectList<TAspectType>();
         }
 
         public void RemoveAllSystems(bool shouldNotify)
@@ -118,11 +116,8 @@ namespace PhoenixSystem.Engine.Game
 
             OnSystemsUpdated(tickEvent);
 
-            foreach (var manager in _managers)
-            {
-                manager.Update();
-            }
-
+            Managers.Update(tickEvent);
+            
             OnManagersUpdated(tickEvent);
 
             IsUpdating = false;
@@ -150,8 +145,10 @@ namespace PhoenixSystem.Engine.Game
         {
         }
 
-        private void RegisterEvents()
+        private void RegisterManagers()
         {
+            Managers.Register(this);
+
             // Entity events
             EntityManager.Register(this);
             EntityManager.EntityAdded += EntityManagerOnEntityAdded;
@@ -170,25 +167,23 @@ namespace PhoenixSystem.Engine.Game
 
         private void EntityManagerOnComponentRemoved(object sender, ComponentRemovedEventArgs args)
         {
-            _entityAspectManager.ComponentRemovedFromEntity(sender as IEntity, args.Component);
+            EntityAspectManager.ComponentRemovedFromEntity(sender as IEntity, args.Component);
         }
 
         private void EntityManagerOnComponentAdded(object sender, ComponentAddedEventArgs args)
         {
-            _entityAspectManager.ComponentAddedToEntity(sender as IEntity, args.Component);
+            EntityAspectManager.ComponentAddedToEntity(sender as IEntity, args.Component);
         }
 
         private void EntityManagerOnEntityRemoved(object sender, EntityRemovedEventArgs args)
         {
-            _entityAspectManager.UnregisterEntity(args.Entity);
-
+            EntityAspectManager.UnregisterEntity(args.Entity);
             EntityRemoved?.Invoke(sender, args);
         }
 
         private void EntityManagerOnEntityAdded(object sender, EntityChangedEventArgs args)
         {
-            _entityAspectManager.RegisterEntity(args.Entity);
-
+            EntityAspectManager.RegisterEntity(args.Entity);
             EntityAdded?.Invoke(sender, args);
         }
     }
