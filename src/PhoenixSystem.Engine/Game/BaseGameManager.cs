@@ -164,7 +164,7 @@ namespace PhoenixSystem.Engine.Game
             EntityAspectManager.ComponentRemovedFromEntity(sender as IEntity, args.Component);
         }
 
-        private void EntityManagerOnComponentAdded(object sender, ComponentAddedEventArgs args)
+        private void EntityManagerOnComponentAdded(object sender, ComponentChangedEventArgs args)
         {
             EntityAspectManager.ComponentAddedToEntity(sender as IEntity, args.Component);
         }

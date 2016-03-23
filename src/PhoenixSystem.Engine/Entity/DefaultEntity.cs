@@ -15,7 +15,7 @@ namespace PhoenixSystem.Engine.Entity
         }
 
         public event EventHandler Deleted;
-        public event EventHandler<ComponentAddedEventArgs> ComponentAdded;
+        public event EventHandler<ComponentChangedEventArgs> ComponentAdded;
         public event EventHandler<ComponentRemovedEventArgs> ComponentRemoved;
 
         public Guid ID { get; } = Guid.NewGuid();
@@ -87,7 +87,7 @@ namespace PhoenixSystem.Engine.Entity
 
         protected void OnComponentAdded(IComponent c)
         {
-            ComponentAdded?.Invoke(this, new ComponentAddedEventArgs(c));
+            ComponentAdded?.Invoke(this, new ComponentChangedEventArgs(c));
         }
 
         protected void OnComponentRemoved(IComponent c)

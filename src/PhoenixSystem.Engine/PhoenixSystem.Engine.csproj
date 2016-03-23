@@ -66,7 +66,7 @@
     <Compile Include="Entity\IEntityAspectManager.cs" />
     <Compile Include="Entity\IEntityManager.cs" />
     <Compile Include="Events\ChannelChangedEventArgs.cs" />
-    <Compile Include="Events\ComponentAddedEventArgs.cs" />
+    <Compile Include="Events\ComponentChangedEventArgs.cs" />
     <Compile Include="Events\EntityChangedEventArgs.cs" />
     <Compile Include="Events\EntityRemovedEventArgs.cs" />
     <Compile Include="Events\GameManagerChangedEventArgs.cs" />

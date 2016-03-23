@@ -23,7 +23,7 @@ namespace PhoenixSystem.Engine.Entity
 
         public event EventHandler<EntityChangedEventArgs> EntityAdded;
         public event EventHandler<EntityRemovedEventArgs> EntityRemoved;
-        public event EventHandler<ComponentAddedEventArgs> ComponentAdded;
+        public event EventHandler<ComponentChangedEventArgs> ComponentAdded;
         public event EventHandler<ComponentRemovedEventArgs> ComponentRemoved;
 
         public void Register(IGameManager gameManager)

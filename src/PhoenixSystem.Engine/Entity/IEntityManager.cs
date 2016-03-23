@@ -9,7 +9,7 @@ namespace PhoenixSystem.Engine.Entity
     {
         event EventHandler<EntityChangedEventArgs> EntityAdded;
         event EventHandler<EntityRemovedEventArgs> EntityRemoved;
-        event EventHandler<ComponentAddedEventArgs> ComponentAdded;
+        event EventHandler<ComponentChangedEventArgs> ComponentAdded;
         event EventHandler<ComponentRemovedEventArgs> ComponentRemoved;
 
         IDictionary<Guid, IEntity> Entities { get; }        
