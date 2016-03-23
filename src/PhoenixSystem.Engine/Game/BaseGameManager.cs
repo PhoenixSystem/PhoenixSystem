@@ -23,7 +23,7 @@ namespace PhoenixSystem.Engine.Game
             Systems = systemManager;
             _entityAspectManager = entityAspectManager;
             
-            Systems.SetGameManager(this);
+            Systems.Register(this);
             Systems.SystemAdded += (sender, args) => SystemAdded?.Invoke(sender, args);
             Systems.SystemStarted += (sender, args) => SystemStarted?.Invoke(sender, args);
             Systems.SystemRemoved += (sender, args) => SystemRemoved?.Invoke(sender, args);

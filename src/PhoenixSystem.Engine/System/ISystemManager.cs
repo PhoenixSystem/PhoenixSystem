@@ -10,7 +10,7 @@ namespace PhoenixSystem.Engine.System
         event EventHandler SystemStarted;
         event EventHandler SystemStopped;
 
-        void SetGameManager(IGameManager gameManager);
+        void Register(IGameManager gameManager);
         void Add(ISystem system);
         void Remove(Type systemType, bool shouldNotify = false);
         void Start(Type systemType);

@@ -25,7 +25,7 @@ namespace PhoenixSystem.Engine.System
         public event EventHandler SystemStarted;
         public event EventHandler SystemStopped;
 
-        public void SetGameManager(IGameManager gameManager)
+        public void Register(IGameManager gameManager)
         {
             _gameManager = gameManager;
         }
