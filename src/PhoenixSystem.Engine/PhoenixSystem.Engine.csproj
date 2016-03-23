@@ -74,7 +74,7 @@
     <Compile Include="Events\SystemChangedEventArgs.cs" />
     <Compile Include="Events\SystemRemovedEventArgs.cs" />
     <Compile Include="Events\SystemStartedEventArgs.cs" />
-    <Compile Include="Events\SystemSuspendedEventArgs.cs" />
+    <Compile Include="Events\SystemStoppedEventArgs.cs" />
     <Compile Include="Events\TickEventArgs.cs" />
     <Compile Include="Extensions\EntityExtension.cs" />
     <Compile Include="Extensions\IChannelFilterableExtensions.cs" />

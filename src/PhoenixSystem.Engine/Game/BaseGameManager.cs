@@ -33,12 +33,12 @@ namespace PhoenixSystem.Engine.Game
         public bool IsUpdating { get; private set; }
         public bool IsDrawing { get; private set; }
 
-        public event EventHandler EntityAdded;
-        public event EventHandler EntityRemoved;
-        public event EventHandler SystemAdded;
-        public event EventHandler SystemRemoved;
-        public event EventHandler SystemStarted;
-        public event EventHandler SystemSuspended;
+        public event EventHandler<SystemChangedEventArgs> SystemAdded;
+        public event EventHandler<SystemRemovedEventArgs> SystemRemoved;
+        public event EventHandler<SystemStoppedEventArgs> SystemSuspended;
+        public event EventHandler<SystemStartedEventArgs> SystemStarted;
+        public event EventHandler<EntityChangedEventArgs> EntityAdded;
+        public event EventHandler<EntityRemovedEventArgs> EntityRemoved;
 
         public void AddEntities(IEnumerable<IEntity> entities)
         {

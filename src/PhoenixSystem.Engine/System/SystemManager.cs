@@ -20,10 +20,10 @@ namespace PhoenixSystem.Engine.System
             _channelManager = channelManager;
         }
 
-        public event EventHandler SystemRemoved;
-        public event EventHandler SystemAdded;
-        public event EventHandler SystemStarted;
-        public event EventHandler SystemStopped;
+        public event EventHandler<SystemRemovedEventArgs> SystemRemoved;
+        public event EventHandler<SystemChangedEventArgs> SystemAdded;
+        public event EventHandler<SystemStartedEventArgs> SystemStarted;
+        public event EventHandler<SystemStoppedEventArgs> SystemStopped;
 
         public void Register(IGameManager gameManager)
         {
@@ -59,7 +59,7 @@ namespace PhoenixSystem.Engine.System
 
             system.Stop();
 
-            SystemStopped?.Invoke(this, new SystemSuspendedEventArgs(system));
+            SystemStopped?.Invoke(this, new SystemStoppedEventArgs(system));
         }
 
         public ISystem GetBySystemType(Type systemType)

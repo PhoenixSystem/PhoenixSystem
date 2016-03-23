@@ -2,18 +2,19 @@
 using System.Collections.Generic;
 using PhoenixSystem.Engine.Aspect;
 using PhoenixSystem.Engine.Entity;
+using PhoenixSystem.Engine.Events;
 using PhoenixSystem.Engine.System;
 
 namespace PhoenixSystem.Engine.Game
 {
     public interface IGameManager
     {
-        event EventHandler SystemAdded;
-        event EventHandler SystemRemoved;
-        event EventHandler SystemSuspended;
-        event EventHandler SystemStarted;
-        event EventHandler EntityAdded;
-        event EventHandler EntityRemoved;
+        event EventHandler<SystemChangedEventArgs> SystemAdded;
+        event EventHandler<SystemRemovedEventArgs> SystemRemoved;
+        event EventHandler<SystemStoppedEventArgs> SystemSuspended;
+        event EventHandler<SystemStartedEventArgs> SystemStarted;
+        event EventHandler<EntityChangedEventArgs> EntityAdded;
+        event EventHandler<EntityRemovedEventArgs> EntityRemoved;
 
         IEntityAspectManager EntityAspectManager { get; }
         IEntityManager EntityManager { get; }

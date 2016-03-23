@@ -3,9 +3,9 @@ using PhoenixSystem.Engine.System;
 
 namespace PhoenixSystem.Engine.Events
 {
-    public class SystemSuspendedEventArgs : EventArgs
+    public class SystemStoppedEventArgs : EventArgs
     {
-        public SystemSuspendedEventArgs(ISystem system)
+        public SystemStoppedEventArgs(ISystem system)
         {
             System = system;
         }

@@ -1,14 +1,15 @@
 ﻿using System;
+using PhoenixSystem.Engine.Events;
 using PhoenixSystem.Engine.Game;
 
 namespace PhoenixSystem.Engine.System
 {
     public interface ISystemManager
     {
-        event EventHandler SystemRemoved;
-        event EventHandler SystemAdded;
-        event EventHandler SystemStarted;
-        event EventHandler SystemStopped;
+        event EventHandler<SystemRemovedEventArgs> SystemRemoved;
+        event EventHandler<SystemChangedEventArgs> SystemAdded;
+        event EventHandler<SystemStartedEventArgs> SystemStarted;
+        event EventHandler<SystemStoppedEventArgs> SystemStopped;
 
         void Register(IGameManager gameManager);
         void Add(ISystem system);
