@@ -35,7 +35,7 @@ namespace PhoenixSystem.Engine.Game
 
         public event EventHandler<SystemChangedEventArgs> SystemAdded;
         public event EventHandler<SystemRemovedEventArgs> SystemRemoved;
-        public event EventHandler<SystemStoppedEventArgs> SystemSuspended;
+        public event EventHandler<SystemStoppedEventArgs> SystemStopped;
         public event EventHandler<SystemStartedEventArgs> SystemStarted;
         public event EventHandler<EntityChangedEventArgs> EntityAdded;
         public event EventHandler<EntityRemovedEventArgs> EntityRemoved;
@@ -162,7 +162,7 @@ namespace PhoenixSystem.Engine.Game
             Systems.SystemStarted += (sender, args) => SystemStarted?.Invoke(sender, args);
             Systems.SystemRemoved += (sender, args) => SystemRemoved?.Invoke(sender, args);
             Systems.SystemStarted += (sender, args) => SystemStarted?.Invoke(sender, args);
-            Systems.SystemStopped += (sender, args) => SystemSuspended?.Invoke(sender, args);
+            Systems.SystemStopped += (sender, args) => SystemStopped?.Invoke(sender, args);
         }
 
         private void EntityManagerOnComponentRemoved(object sender, ComponentRemovedEventArgs args)

@@ -11,7 +11,7 @@ namespace PhoenixSystem.Engine.Game
     {
         event EventHandler<SystemChangedEventArgs> SystemAdded;
         event EventHandler<SystemRemovedEventArgs> SystemRemoved;
-        event EventHandler<SystemStoppedEventArgs> SystemSuspended;
+        event EventHandler<SystemStoppedEventArgs> SystemStopped;
         event EventHandler<SystemStartedEventArgs> SystemStarted;
         event EventHandler<EntityChangedEventArgs> EntityAdded;
         event EventHandler<EntityRemovedEventArgs> EntityRemoved;
