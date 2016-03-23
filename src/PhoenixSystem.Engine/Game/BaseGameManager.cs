@@ -156,7 +156,6 @@ namespace PhoenixSystem.Engine.Game
             Systems.SystemAdded += (sender, args) => SystemAdded?.Invoke(sender, args);
             Systems.SystemStarted += (sender, args) => SystemStarted?.Invoke(sender, args);
             Systems.SystemRemoved += (sender, args) => SystemRemoved?.Invoke(sender, args);
-            Systems.SystemStarted += (sender, args) => SystemStarted?.Invoke(sender, args);
             Systems.SystemStopped += (sender, args) => SystemStopped?.Invoke(sender, args);
         }
 
