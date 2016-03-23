@@ -11,19 +11,12 @@ namespace PhoenixSystem.Engine.Entity
         public DefaultEntity(string name = "", params string[] channels)
         {
             Name = name;
-
-            if (channels == null) return;
-
-            foreach (var s in channels)
-            {
-                if (string.IsNullOrEmpty(s))
-                {
-                    throw new ArgumentException("channel cannot be empty string or null");
-                }
-
-                Channels.Add(s);
-            }
+            AddChannels(channels);
         }
+
+        public event EventHandler Deleted;
+        public event EventHandler<ComponentAddedEventArgs> ComponentAdded;
+        public event EventHandler<ComponentRemovedEventArgs> ComponentRemoved;
 
         public Guid ID { get; } = Guid.NewGuid();
         public string Name { get; set; }
@@ -35,9 +28,7 @@ namespace PhoenixSystem.Engine.Entity
         {
             Channels.Clear();
             IsDeleted = false;
-        }
-
-        public event EventHandler Deleted;
+        }        
 
         public void Delete()
         {
@@ -55,8 +46,6 @@ namespace PhoenixSystem.Engine.Entity
             return e;
         }
 
-        public event EventHandler<ComponentChangedEventArgs> ComponentAdded;
-
         public IEntity AddComponent(IComponent c, bool overwriteIfExists = false)
         {
             var componentType = c.GetType();
@@ -70,8 +59,6 @@ namespace PhoenixSystem.Engine.Entity
             OnComponentAdded(c);
             return this;
         }
-
-        public event EventHandler<ComponentChangedEventArgs> ComponentRemoved;
 
         public bool RemoveComponent(Type componentType)
         {
@@ -100,12 +87,27 @@ namespace PhoenixSystem.Engine.Entity
 
         protected void OnComponentAdded(IComponent c)
         {
-            ComponentAdded?.Invoke(this, new ComponentChangedEventArgs(c));
+            ComponentAdded?.Invoke(this, new ComponentAddedEventArgs(c));
         }
 
         protected void OnComponentRemoved(IComponent c)
         {
-            ComponentRemoved?.Invoke(this, new ComponentChangedEventArgs(c));
+            ComponentRemoved?.Invoke(this, new ComponentRemovedEventArgs(c));
+        }
+
+        private void AddChannels(string[] channels)
+        {
+            if (channels == null) return;
+
+            foreach (var s in channels)
+            {
+                if (string.IsNullOrEmpty(s))
+                {
+                    throw new ArgumentException("channel cannot be empty string or null");
+                }
+
+                Channels.Add(s);
+            }
         }
     }
 }

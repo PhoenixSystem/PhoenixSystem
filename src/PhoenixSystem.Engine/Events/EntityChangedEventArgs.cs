@@ -3,7 +3,7 @@ using PhoenixSystem.Engine.Entity;
 
 namespace PhoenixSystem.Engine.Events
 {
-    internal class EntityChangedEventArgs : EventArgs
+    public class EntityChangedEventArgs : EventArgs
     {
         public EntityChangedEventArgs(IEntity entity)
         {

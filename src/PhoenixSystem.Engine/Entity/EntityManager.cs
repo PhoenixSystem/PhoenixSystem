@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using PhoenixSystem.Engine.Channel;
 using PhoenixSystem.Engine.Collections;
+using PhoenixSystem.Engine.Events;
 using PhoenixSystem.Engine.Game;
 
 namespace PhoenixSystem.Engine.Entity
@@ -12,10 +13,22 @@ namespace PhoenixSystem.Engine.Entity
         private readonly IObjectPool<IEntity> _entityPool;
         private IGameManager _gameManager;
 
-        public EntityManager(IChannelManager channelManager, IObjectPool<IEntity> objectPool)
+        public EntityManager(
+            IChannelManager channelManager,
+            IObjectPool<IEntity> objectPool)
         {
             _channelManager = channelManager;
             _entityPool = objectPool;
+        }
+
+        public event EventHandler<EntityChangedEventArgs> EntityAdded;
+        public event EventHandler<EntityRemovedEventArgs> EntityRemoved;
+        public event EventHandler<ComponentAddedEventArgs> ComponentAdded;
+        public event EventHandler<ComponentRemovedEventArgs> ComponentRemoved;
+
+        public void Register(IGameManager gameManager)
+        {
+            _gameManager = gameManager;
         }
 
         public IDictionary<Guid, IEntity> Entities { get; } = new Dictionary<Guid, IEntity>();
@@ -45,9 +58,37 @@ namespace PhoenixSystem.Engine.Entity
             return entity;
         }
 
-        public void Register(IGameManager gameManager)
+        public void Clear()
         {
-            _gameManager = gameManager;
+            foreach (var entity in Entities)
+            {
+                entity.Value.Delete();
+            }
+
+            Entities.Clear();
+        }
+
+        public void Add(IEntity entity)
+        {
+            Entities[entity.ID] = entity;
+
+            entity.ComponentAdded += ComponentAdded;
+            entity.ComponentRemoved += ComponentRemoved;
+
+            EntityAdded?.Invoke(this, new EntityChangedEventArgs(entity));
+        }
+
+        public void Remove(IEntity entity)
+        {
+            if (!Entities.ContainsKey(entity.ID)) return;
+
+            entity = Entities[entity.ID];
+            entity.ComponentAdded -= ComponentAdded;
+            entity.ComponentRemoved -= ComponentRemoved;
+
+            Entities.Remove(entity.ID);
+
+            EntityRemoved?.Invoke(this, new EntityRemovedEventArgs(entity));
         }
 
         private void CleanupDeleted(object sender, EventArgs eargs)

@@ -19,16 +19,11 @@ namespace PhoenixSystem.Engine.Game
             IEntityManager entityManager,
             ISystemManager systemManager)
         {
+            _entityAspectManager = entityAspectManager;
             EntityManager = entityManager;
             Systems = systemManager;
-            _entityAspectManager = entityAspectManager;
-            
-            Systems.Register(this);
-            Systems.SystemAdded += (sender, args) => SystemAdded?.Invoke(sender, args);
-            Systems.SystemStarted += (sender, args) => SystemStarted?.Invoke(sender, args);
-            Systems.SystemRemoved += (sender, args) => SystemRemoved?.Invoke(sender, args);
-            Systems.SystemStarted += (sender, args) => SystemStarted?.Invoke(sender, args);
-            Systems.SystemStopped += (sender, args) => SystemSuspended?.Invoke(sender, args);
+
+            RegisterEvents();
         }
 
         public IEntityManager EntityManager { get; }
@@ -36,7 +31,7 @@ namespace PhoenixSystem.Engine.Game
         public ISystemManager Systems { get; }
         public bool IsUpdating { get; private set; }
         public bool IsDrawing { get; private set; }
-        
+
         public event EventHandler EntityAdded;
         public event EventHandler EntityRemoved;
         public event EventHandler SystemAdded;
@@ -54,14 +49,7 @@ namespace PhoenixSystem.Engine.Game
 
         public void AddEntity(IEntity entity)
         {
-            EntityManager.Entities[entity.ID] = entity;
-
-            entity.ComponentAdded += EntityOnComponentAdded;
-            entity.ComponentRemoved += EntityOnComponentRemoved;
-
-            _entityAspectManager.RegisterEntity(entity);
-
-            EntityAdded?.Invoke(this, new EntityChangedEventArgs(entity));
+            EntityManager.Add(entity);
         }
 
         public void AddSystem(ISystem system)
@@ -99,42 +87,27 @@ namespace PhoenixSystem.Engine.Game
 
         public void RemoveAllEntities()
         {
-            foreach (var entity in EntityManager.Entities)
-            {
-                entity.Value.Delete();
-            }
-
-            EntityManager.Entities.Clear();
+            EntityManager.Clear();
         }
 
         public void RemoveEntity(IEntity entity)
         {
-            if (!EntityManager.Entities.ContainsKey(entity.ID)) return;
-
-            entity = EntityManager.Entities[entity.ID];
-            entity.ComponentAdded -= EntityOnComponentAdded;
-            entity.ComponentRemoved -= EntityOnComponentRemoved;
-
-            _entityAspectManager.UnregisterEntity(entity);
-
-            EntityManager.Entities.Remove(entity.ID);
-
-            EntityRemoved?.Invoke(this, new EntityRemovedEventArgs(entity));
+            EntityManager.Remove(entity);
         }
 
         public void RemoveSystem<TSystemType>(bool shouldNotify) where TSystemType : ISystem
         {
-            RemoveSystem(typeof (TSystemType), shouldNotify);
+            RemoveSystem(typeof(TSystemType), shouldNotify);
         }
 
         public void StartSystem<TSystemType>() where TSystemType : ISystem
         {
-            Systems.Start(typeof (TSystemType));
+            Systems.Start(typeof(TSystemType));
         }
 
         public void SuspendSystem<TSystemType>() where TSystemType : ISystem
         {
-            Systems.Stop(typeof (TSystemType));
+            Systems.Stop(typeof(TSystemType));
         }
 
         public virtual void Update(ITickEvent tickEvent)
@@ -177,14 +150,46 @@ namespace PhoenixSystem.Engine.Game
         {
         }
 
-        private void EntityOnComponentRemoved(object sender, ComponentChangedEventArgs e)
+        private void RegisterEvents()
         {
-            _entityAspectManager.ComponentRemovedFromEntity(sender as IEntity, e.Component);
+            // Entity events
+            EntityManager.Register(this);
+            EntityManager.EntityAdded += EntityManagerOnEntityAdded;
+            EntityManager.EntityRemoved += EntityManagerOnEntityRemoved;
+            EntityManager.ComponentAdded += EntityManagerOnComponentAdded;
+            EntityManager.ComponentRemoved += EntityManagerOnComponentRemoved;
+
+            // Systems events
+            Systems.Register(this);
+            Systems.SystemAdded += (sender, args) => SystemAdded?.Invoke(sender, args);
+            Systems.SystemStarted += (sender, args) => SystemStarted?.Invoke(sender, args);
+            Systems.SystemRemoved += (sender, args) => SystemRemoved?.Invoke(sender, args);
+            Systems.SystemStarted += (sender, args) => SystemStarted?.Invoke(sender, args);
+            Systems.SystemStopped += (sender, args) => SystemSuspended?.Invoke(sender, args);
         }
 
-        private void EntityOnComponentAdded(object sender, ComponentChangedEventArgs e)
+        private void EntityManagerOnComponentRemoved(object sender, ComponentRemovedEventArgs args)
         {
-            _entityAspectManager.ComponentAddedToEntity(sender as IEntity, e.Component);
+            _entityAspectManager.ComponentRemovedFromEntity(sender as IEntity, args.Component);
+        }
+
+        private void EntityManagerOnComponentAdded(object sender, ComponentAddedEventArgs args)
+        {
+            _entityAspectManager.ComponentAddedToEntity(sender as IEntity, args.Component);
+        }
+
+        private void EntityManagerOnEntityRemoved(object sender, EntityRemovedEventArgs args)
+        {
+            _entityAspectManager.UnregisterEntity(args.Entity);
+
+            EntityRemoved?.Invoke(sender, args);
+        }
+
+        private void EntityManagerOnEntityAdded(object sender, EntityChangedEventArgs args)
+        {
+            _entityAspectManager.RegisterEntity(args.Entity);
+
+            EntityAdded?.Invoke(sender, args);
         }
     }
 }
