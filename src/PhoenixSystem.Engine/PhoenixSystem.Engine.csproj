@@ -79,10 +79,7 @@
     <Compile Include="Extensions\IChannelFilterableExtensions.cs" />
     <Compile Include="Game\BaseGameManager.cs" />
     <Compile Include="Game\IGameManager.cs" />
-    <Compile Include="Game\IManagerManager.cs" />
-    <Compile Include="Game\ManagerManager.cs" />
     <Compile Include="IDrawable.cs" />
-    <Compile Include="IManager.cs" />
     <Compile Include="ITickEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="System\BaseSystem.cs" />
