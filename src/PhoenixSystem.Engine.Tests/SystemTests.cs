@@ -11,10 +11,12 @@ namespace PhoenixSystem.Engine.Tests
     public class SystemTests
     {
         private readonly IChannelManager _channelManager;
+        private readonly ISystemManager _systemManager;
 
         public SystemTests()
         {
             _channelManager = new ChannelManager();
+            _systemManager = new SystemManager(_channelManager);
         }
 
         [Fact]
@@ -41,9 +43,9 @@ namespace PhoenixSystem.Engine.Tests
         public void Should_Notify_AddedToGameManager_When_Added_To_GameManager()
         {
             var raised = false;
-            var expected = true;
+            const bool expected = true;
             var em = new EntityManager(_channelManager, new EntityPool());
-            var tgm = new TestGameManager(new DefaultEntityAspectManager(_channelManager, em), em, _channelManager);
+            var tgm = new TestGameManager(new DefaultEntityAspectManager(_channelManager, em), em, _systemManager);
             var system = new LabelSystem(_channelManager, 10, new[] {"default"});
             system.AddedToGameManager += (s, e) => raised = true;
             system.AddToGameManager(tgm);
@@ -54,9 +56,9 @@ namespace PhoenixSystem.Engine.Tests
         public void Should_Notify_RemovedFromGameManager_When_Removed_From_GameManager()
         {
             var raised = false;
-            var expected = true;
+            const bool expected = true;
             var em = new EntityManager(_channelManager, new EntityPool());
-            var tgm = new TestGameManager(new DefaultEntityAspectManager(_channelManager, em), em, _channelManager);
+            var tgm = new TestGameManager(new DefaultEntityAspectManager(_channelManager, em), em, _systemManager);
             var system = new LabelSystem(_channelManager, 10, new[] {"default"});
 
             system.AddToGameManager(tgm);

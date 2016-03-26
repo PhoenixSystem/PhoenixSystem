@@ -1,11 +1,10 @@
-﻿using System.Linq;
-using PhoenixSystem.Engine.Channel;
+﻿using PhoenixSystem.Engine.Channel;
 using PhoenixSystem.Engine.Collections;
 using PhoenixSystem.Engine.Entity;
 using PhoenixSystem.Engine.Game;
+using PhoenixSystem.Engine.System;
 using PhoenixSystem.Engine.Tests.Objects;
 using Xunit;
-using PhoenixSystem.Engine.System;
 
 namespace PhoenixSystem.Engine.Tests
 {
@@ -16,9 +15,9 @@ namespace PhoenixSystem.Engine.Tests
 
         public GameManagerTests()
         {
+            var systemManager = new SystemManager(_channelManager);
             var entityManager = new EntityManager(_channelManager, new EntityPool());
-            _gameManager = new TestGameManager(new DefaultEntityAspectManager(_channelManager, entityManager),
-                entityManager, _channelManager);
+            _gameManager = new TestGameManager(new DefaultEntityAspectManager(_channelManager, entityManager), entityManager, systemManager);
         }
 
         [Fact]
@@ -90,7 +89,7 @@ namespace PhoenixSystem.Engine.Tests
         [Fact]
         public void Remove_All_Entities_Should_Result_In_0_Remaining_Entities()
         {
-            var count = 5;
+            const int count = 5;
             for (var i = 0; i < count; i++)
             {
                 _gameManager.AddEntity(new DefaultEntity());
@@ -103,7 +102,7 @@ namespace PhoenixSystem.Engine.Tests
         [Fact]
         public void AddSystem_Should_Increase_Count_Of_Systems()
         {
-            var expected = 1;
+            const int expected = 1;
             var system = new LabelSystem(_channelManager, 10);
             Assert.Equal(0, _gameManager.Systems.Count());
             _gameManager.AddSystem(system);
@@ -115,7 +114,7 @@ namespace PhoenixSystem.Engine.Tests
         {
             var system = new LabelSystem(_channelManager, 10);
             _gameManager.AddSystem(system);
-            Assert.True(_gameManager.Systems.Any(s => s.GetType() == system.GetType()));
+            Assert.True(_gameManager.Systems.GetBySystemType(system.GetType()) != null);
         }
 
         [Fact]
@@ -144,9 +143,9 @@ namespace PhoenixSystem.Engine.Tests
         {
             var system = new LabelSystem(_channelManager, 10);
             _gameManager.AddSystem(system);
-            Assert.True(_gameManager.Systems.Any(s => s.GetType() == system.GetType()));
+            Assert.True(_gameManager.Systems.GetBySystemType(system.GetType()) != null);
             _gameManager.RemoveSystem<LabelSystem>(false);
-            Assert.True(_gameManager.Systems.All(s => s.GetType() != typeof (LabelSystem)));
+            Assert.True(_gameManager.Systems.GetBySystemType(typeof (LabelSystem)) == null);
         }
 
         [Theory,
@@ -168,8 +167,8 @@ namespace PhoenixSystem.Engine.Tests
         {
             var system = new DrawableLabelSystem(_channelManager, 10);
             _gameManager.AddSystem(system);
-            Assert.Equal(system, _gameManager.DrawableSystems.First());
-            Assert.Equal(1, _gameManager.DrawableSystems.Count());
+            Assert.Equal(system, _gameManager.Systems.GetBySystemType(system.GetType()));
+            Assert.Equal(1, _gameManager.Systems.Count());
         }
 
         [Fact]
@@ -177,9 +176,9 @@ namespace PhoenixSystem.Engine.Tests
         {
             var system = new DrawableLabelSystem(_channelManager, 10);
             _gameManager.AddSystem(system);
-            Assert.Equal(system, _gameManager.DrawableSystems.First());
+            Assert.Equal(system, _gameManager.Systems.GetBySystemType(system.GetType()));
             _gameManager.RemoveSystem<DrawableLabelSystem>(false);
-            Assert.DoesNotContain<IDrawableSystem>(system, _gameManager.DrawableSystems);            
+            Assert.Equal(0, _gameManager.Systems.Count());
         }
     }
 }

@@ -20,7 +20,7 @@ namespace PhoenixSystem.Engine.Entity
         bool HasComponents(IEnumerable<Type> types);
         event EventHandler<ComponentChangedEventArgs> ComponentAdded;
         IEntity AddComponent(IComponent component, bool shouldOverwrite = false);        
-        event EventHandler<ComponentChangedEventArgs> ComponentRemoved;
+        event EventHandler<ComponentRemovedEventArgs> ComponentRemoved;
         bool RemoveComponent(Type componentType);
     }
 }

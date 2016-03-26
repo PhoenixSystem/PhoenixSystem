@@ -1,192 +1,118 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using PhoenixSystem.Engine.Aspect;
-using PhoenixSystem.Engine.Channel;
 using PhoenixSystem.Engine.Entity;
 using PhoenixSystem.Engine.Events;
-using PhoenixSystem.Engine.Extensions;
 using PhoenixSystem.Engine.System;
-
-// ReSharper disable CollectionNeverQueried.Local
 
 namespace PhoenixSystem.Engine.Game
 {
     public abstract class BaseGameManager : IGameManager
-    {
-        private readonly IChannelManager _channelManager;
-        private readonly List<IDrawableSystem> _drawableSystems = new List<IDrawableSystem>();
-        private readonly IEntityAspectManager _entityAspectManager;
-        private readonly List<IManager> _managers = new List<IManager>();
-        private readonly List<ISystem> _systems = new List<ISystem>();
-
+    {        
         protected BaseGameManager(
             IEntityAspectManager entityAspectManager,
             IEntityManager entityManager,
-            IChannelManager channelManager)
+            ISystemManager systemManager, 
+            IManagerManager managers)
         {
+            EntityAspectManager = entityAspectManager;
             EntityManager = entityManager;
-            _channelManager = channelManager;
-            _entityAspectManager = entityAspectManager;
+            Systems = systemManager;
+            Managers = managers;
+
+            RegisterManagers();
         }
 
+        public IEntityAspectManager EntityAspectManager { get; }
         public IEntityManager EntityManager { get; }
-        public bool IsUpdating { get; private set; }
-        public IEnumerable<IManager> Managers => _managers;
-        public IEnumerable<ISystem> Systems => _systems;
-        public IEnumerable<IDrawableSystem> DrawableSystems => _drawableSystems;
+        public IManagerManager Managers { get; }
+        public ISystemManager Systems { get; }
 
+        public bool IsUpdating { get; private set; }
         public bool IsDrawing { get; private set; }
 
-        public event EventHandler EntityAdded;
-        public event EventHandler EntityRemoved;
-        public event EventHandler SystemAdded;
-        public event EventHandler SystemRemoved;
-        public event EventHandler SystemStarted;
-        public event EventHandler SystemSuspended;
+        public event EventHandler<SystemChangedEventArgs> SystemAdded;
+        public event EventHandler<SystemRemovedEventArgs> SystemRemoved;
+        public event EventHandler<SystemStoppedEventArgs> SystemStopped;
+        public event EventHandler<SystemStartedEventArgs> SystemStarted;
+        public event EventHandler<EntityChangedEventArgs> EntityAdded;
+        public event EventHandler<EntityRemovedEventArgs> EntityRemoved;
 
         public void AddEntities(IEnumerable<IEntity> entities)
         {
-            foreach (var e in entities)
-            {
-                AddEntity(e);
-            }
+            EntityManager.Add(entities);
         }
 
         public void AddEntity(IEntity entity)
         {
-            EntityManager.Entities[entity.ID] = entity;
-
-            entity.ComponentAdded += EntityOnComponentAdded;
-            entity.ComponentRemoved += EntityOnComponentRemoved;
-
-            _entityAspectManager.RegisterEntity(entity);
-
-            EntityAdded?.Invoke(this, new EntityChangedEventArgs(entity));
+            EntityManager.Add(entity);
         }
 
         public void AddSystem(ISystem system)
         {
-            if (HasSystem(system))
-            {
-                throw new InvalidOperationException($"System {system.GetType().Name} already added to game manager.");
-            }
-
-            _systems.Add(system);
-            _systems.Sort();
-
-            if (system is IDrawableSystem)
-            {
-                _drawableSystems.Add(system as IDrawableSystem);
-                _drawableSystems.Sort();
-            }
-
-            system.AddToGameManager(this);
-
-            SystemAdded?.Invoke(this, new SystemChangedEventArgs(system));
+            Systems.Add(system);
         }
 
         public IEnumerable<TAspectType> GetAspectList<TAspectType>() where TAspectType : IAspect, new()
         {
-            return _entityAspectManager.GetAspectList<TAspectType>();
+            return EntityAspectManager.GetAspectList<TAspectType>();
         }
 
         public IEnumerable<TAspectType> GetUnfilteredAspectList<TAspectType>() where TAspectType : IAspect, new()
         {
-            return _entityAspectManager.GetUnfilteredAspectList<TAspectType>();
+            return EntityAspectManager.GetUnfilteredAspectList<TAspectType>();
         }
 
         public void RegisterManager(IManager manager)
         {
-            manager.Register(this);
-
-            _managers.Add(manager);
-            _managers.Sort();
+            Managers.Add(manager);
         }
 
         public void ReleaseAspectList<TAspectType>()
         {
-            _entityAspectManager.ReleaseAspectList<TAspectType>();
+            EntityAspectManager.ReleaseAspectList<TAspectType>();
         }
 
         public void RemoveAllSystems(bool shouldNotify)
         {
-            while (_systems.Count > 0)
-            {
-                RemoveSystem(_systems.First().GetType(), shouldNotify);
-            }
+            Systems.Clear(shouldNotify);
         }
 
         public void RemoveAllEntities()
         {
-            foreach (var entity in EntityManager.Entities)
-            {
-                entity.Value.Delete();
-            }
-
-            EntityManager.Entities.Clear();
+            EntityManager.Clear();
         }
 
         public void RemoveEntity(IEntity entity)
         {
-            if (!EntityManager.Entities.ContainsKey(entity.ID)) return;
-
-            entity = EntityManager.Entities[entity.ID];
-            entity.ComponentAdded -= EntityOnComponentAdded;
-            entity.ComponentRemoved -= EntityOnComponentRemoved;
-
-            _entityAspectManager.UnregisterEntity(entity);
-
-            EntityManager.Entities.Remove(entity.ID);
-
-            EntityRemoved?.Invoke(this, new EntityRemovedEventArgs(entity));
+            EntityManager.Remove(entity);
         }
 
         public void RemoveSystem<TSystemType>(bool shouldNotify) where TSystemType : ISystem
         {
-            RemoveSystem(typeof (TSystemType), shouldNotify);
+            RemoveSystem(typeof(TSystemType), shouldNotify);
         }
 
         public void StartSystem<TSystemType>() where TSystemType : ISystem
         {
-            var system = _systems.SingleOrDefault(s => s.GetType() == typeof (TSystemType));
-
-            if (system == null) return;
-
-            system.Start();
-
-            SystemStarted?.Invoke(this, new SystemStartedEventArgs(system));
+            Systems.Start(typeof(TSystemType));
         }
 
         public void SuspendSystem<TSystemType>() where TSystemType : ISystem
         {
-            var system = _systems.SingleOrDefault(s => s.GetType() == typeof (TSystemType));
-
-            if (system == null) return;
-
-            system.Stop();
-
-            SystemSuspended?.Invoke(this, new SystemSuspendedEventArgs(system));
+            Systems.Stop(typeof(TSystemType));
         }
 
         public virtual void Update(ITickEvent tickEvent)
         {
             IsUpdating = true;
 
-            var curChan = _channelManager.Channel;
-
-            foreach (var system in _systems.Where(system => system.IsInChannel(curChan, "all")))
-            {
-                system.Update(tickEvent);
-            }
+            Systems.Update(tickEvent);
 
             OnSystemsUpdated(tickEvent);
 
-            foreach (var manager in _managers)
-            {
-                manager.Update();
-            }
-
+            Managers.Update(tickEvent);
+            
             OnManagersUpdated(tickEvent);
 
             IsUpdating = false;
@@ -196,34 +122,14 @@ namespace PhoenixSystem.Engine.Game
         {
             IsDrawing = true;
 
-            foreach (var drawableSystem in DrawableSystems.Where(sys => sys.IsInChannel(_channelManager.Channel)))
-            {
-                drawableSystem.Draw(tickEvent);
-            }
+            Systems.Draw(tickEvent);
 
             IsDrawing = false;
         }
 
         public void RemoveSystem(Type systemType, bool shouldNotify)
         {
-            var system = _systems.FirstOrDefault(s => s.GetType() == systemType);
-
-            if (system == null) return;
-
-            system.RemoveFromGameManager(this);
-
-            _systems.Remove(system);
-            _systems.Sort();
-
-            if (system is IDrawableSystem)
-            {
-                _drawableSystems.Remove(system as IDrawableSystem);
-                _drawableSystems.Sort();
-            }
-
-            if (!shouldNotify) return;
-
-            SystemRemoved?.Invoke(this, new SystemRemovedEventArgs(system));
+            Systems.Remove(systemType, shouldNotify);
         }
 
         protected virtual void OnSystemsUpdated(ITickEvent tickEvent)
@@ -234,19 +140,45 @@ namespace PhoenixSystem.Engine.Game
         {
         }
 
-        private bool HasSystem(ISystem system)
+        private void RegisterManagers()
         {
-            return _systems.Any(s => s.ID == system.ID);
+            Managers.Register(this);
+
+            // Entity events
+            EntityManager.Register(this);
+            EntityManager.EntityAdded += EntityManagerOnEntityAdded;
+            EntityManager.EntityRemoved += EntityManagerOnEntityRemoved;
+            EntityManager.ComponentAdded += EntityManagerOnComponentAdded;
+            EntityManager.ComponentRemoved += EntityManagerOnComponentRemoved;
+
+            // Systems events
+            Systems.Register(this);
+            Systems.SystemAdded += (sender, args) => SystemAdded?.Invoke(sender, args);
+            Systems.SystemStarted += (sender, args) => SystemStarted?.Invoke(sender, args);
+            Systems.SystemRemoved += (sender, args) => SystemRemoved?.Invoke(sender, args);
+            Systems.SystemStopped += (sender, args) => SystemStopped?.Invoke(sender, args);
         }
 
-        private void EntityOnComponentRemoved(object sender, ComponentChangedEventArgs e)
+        private void EntityManagerOnComponentRemoved(object sender, ComponentRemovedEventArgs args)
         {
-            _entityAspectManager.ComponentRemovedFromEntity(sender as IEntity, e.Component);
+            EntityAspectManager.ComponentRemovedFromEntity(sender as IEntity, args.Component);
         }
 
-        private void EntityOnComponentAdded(object sender, ComponentChangedEventArgs e)
+        private void EntityManagerOnComponentAdded(object sender, ComponentChangedEventArgs args)
         {
-            _entityAspectManager.ComponentAddedToEntity(sender as IEntity, e.Component);
+            EntityAspectManager.ComponentAddedToEntity(sender as IEntity, args.Component);
+        }
+
+        private void EntityManagerOnEntityRemoved(object sender, EntityRemovedEventArgs args)
+        {
+            EntityAspectManager.UnregisterEntity(args.Entity);
+            EntityRemoved?.Invoke(sender, args);
+        }
+
+        private void EntityManagerOnEntityAdded(object sender, EntityChangedEventArgs args)
+        {
+            EntityAspectManager.RegisterEntity(args.Entity);
+            EntityAdded?.Invoke(sender, args);
         }
     }
 }

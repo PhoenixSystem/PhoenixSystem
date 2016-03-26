@@ -3,9 +3,9 @@ using PhoenixSystem.Engine.Component;
 
 namespace PhoenixSystem.Engine.Events
 {
-    public class ComponentChangedEventArgs : EventArgs
+    public class ComponentRemovedEventArgs : EventArgs
     {
-        public ComponentChangedEventArgs(IComponent component)
+        public ComponentRemovedEventArgs(IComponent component)
         {
             Component = component;
         }

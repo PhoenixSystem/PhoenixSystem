@@ -3,7 +3,7 @@ using PhoenixSystem.Engine.Entity;
 
 namespace PhoenixSystem.Engine.Events
 {
-    internal class EntityRemovedEventArgs : EventArgs
+    public class EntityRemovedEventArgs : EventArgs
     {
         public EntityRemovedEventArgs(IEntity entity)
         {

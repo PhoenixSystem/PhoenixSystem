@@ -38,6 +38,7 @@
     <None Include="PhoenixSystem.Engine.nuspec" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Events\ComponentRemovedEventArgs.cs" />
     <Compile Include="Extensions\AspectExtension.cs" />
     <Compile Include="Aspect\AspectManager.cs" />
     <Compile Include="Aspect\BaseAspect.cs" />
@@ -57,7 +58,6 @@
     <Compile Include="Collections\ObjectPool.cs" />
     <Compile Include="Component\BaseComponent.cs" />
     <Compile Include="Component\IComponent.cs" />
-    <Compile Include="Entity\BaseEntityAspectManager.cs" />
     <Compile Include="Entity\DefaultEntity.cs" />
     <Compile Include="Entity\DefaultEntityAspectManager.cs" />
     <Compile Include="Entity\EntityManager.cs" />
@@ -73,12 +73,14 @@
     <Compile Include="Events\SystemChangedEventArgs.cs" />
     <Compile Include="Events\SystemRemovedEventArgs.cs" />
     <Compile Include="Events\SystemStartedEventArgs.cs" />
-    <Compile Include="Events\SystemSuspendedEventArgs.cs" />
+    <Compile Include="Events\SystemStoppedEventArgs.cs" />
     <Compile Include="Events\TickEventArgs.cs" />
     <Compile Include="Extensions\EntityExtension.cs" />
     <Compile Include="Extensions\IChannelFilterableExtensions.cs" />
     <Compile Include="Game\BaseGameManager.cs" />
     <Compile Include="Game\IGameManager.cs" />
+    <Compile Include="Game\IManagerManager.cs" />
+    <Compile Include="Game\ManagerManager.cs" />
     <Compile Include="IDrawable.cs" />
     <Compile Include="IManager.cs" />
     <Compile Include="ITickEvent.cs" />
@@ -86,6 +88,8 @@
     <Compile Include="System\BaseSystem.cs" />
     <Compile Include="System\IDrawableSystem.cs" />
     <Compile Include="System\ISystem.cs" />
+    <Compile Include="System\ISystemManager.cs" />
+    <Compile Include="System\SystemManager.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
