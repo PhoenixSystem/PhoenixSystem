@@ -12,20 +12,18 @@ namespace PhoenixSystem.Engine.Game
         protected BaseGameManager(
             IEntityAspectManager entityAspectManager,
             IEntityManager entityManager,
-            ISystemManager systemManager, 
-            IManagerManager managers)
+            ISystemManager systemManager)
         {
             EntityAspectManager = entityAspectManager;
             EntityManager = entityManager;
             Systems = systemManager;
-            Managers = managers;
+            
 
             RegisterManagers();
         }
 
         public IEntityAspectManager EntityAspectManager { get; }
         public IEntityManager EntityManager { get; }
-        public IManagerManager Managers { get; }
         public ISystemManager Systems { get; }
 
         public bool IsUpdating { get; private set; }
@@ -62,12 +60,7 @@ namespace PhoenixSystem.Engine.Game
         {
             return EntityAspectManager.GetUnfilteredAspectList<TAspectType>();
         }
-
-        public void RegisterManager(IManager manager)
-        {
-            Managers.Add(manager);
-        }
-
+        
         public void ReleaseAspectList<TAspectType>()
         {
             EntityAspectManager.ReleaseAspectList<TAspectType>();
@@ -110,11 +103,7 @@ namespace PhoenixSystem.Engine.Game
             Systems.Update(tickEvent);
 
             OnSystemsUpdated(tickEvent);
-
-            Managers.Update(tickEvent);
             
-            OnManagersUpdated(tickEvent);
-
             IsUpdating = false;
         }
 
@@ -142,8 +131,7 @@ namespace PhoenixSystem.Engine.Game
 
         private void RegisterManagers()
         {
-            Managers.Register(this);
-
+            
             // Entity events
             EntityManager.Register(this);
             EntityManager.EntityAdded += EntityManagerOnEntityAdded;

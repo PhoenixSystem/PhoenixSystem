@@ -18,7 +18,7 @@ namespace PhoenixSystem.Engine.Game
 
         IEntityAspectManager EntityAspectManager { get; }
         IEntityManager EntityManager { get; }
-        IManagerManager Managers { get; }
+
         ISystemManager Systems { get; }
         bool IsUpdating { get; }
         bool IsDrawing { get; }
@@ -34,7 +34,6 @@ namespace PhoenixSystem.Engine.Game
         void SuspendSystem<TSystemType>() where TSystemType : ISystem;        
         void StartSystem<TSystemType>() where TSystemType : ISystem;        
         void ReleaseAspectList<TAspectType>();
-        void RegisterManager(IManager manager);
         IEnumerable<TAspectType> GetAspectList<TAspectType>() where TAspectType : IAspect, new();
         IEnumerable<TAspectType> GetUnfilteredAspectList<TAspectType>() where TAspectType : IAspect, new();
     }
